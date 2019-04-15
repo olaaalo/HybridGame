@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{722a07fa-0751-49e9-88f1-7d91103d9836}">
+        <property name="assetPath">
+            <value>389498__juanlopz08__19-metal-falling-screws-falling-distant-reverb-dverb.wav</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>1</value>
+        </property>
+        <property name="length">
+            <value>42.166666666666664</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{62d7ad39-04f3-4bc4-9d92-c345427cc29b}</destination>
+        </relationship>
+    </object>
+</objects>

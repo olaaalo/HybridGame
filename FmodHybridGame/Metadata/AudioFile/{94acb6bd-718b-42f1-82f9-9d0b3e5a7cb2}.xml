@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{94acb6bd-718b-42f1-82f9-9d0b3e5a7cb2}">
+        <property name="assetPath">
+            <value>367619__cameronwb__bicycle-gears.wav</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>18.454854166666667</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{62d7ad39-04f3-4bc4-9d92-c345427cc29b}</destination>
+        </relationship>
+    </object>
+</objects>
