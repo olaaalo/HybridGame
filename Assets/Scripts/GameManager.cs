@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEditor;
 using DG.Tweening;
 
@@ -14,7 +15,9 @@ public class GameManager : MonoSingleton<GameManager>
     public float spaceBtwSquare;
     public int wayCount;
     [Range(1, 4)] public int playerCounts;
-    
+    public Square[] playerSquares;
+    public int playerTurn;
+
     public enum SquareType { neutral, good, bad, exit }
 
     [System.Serializable]
@@ -39,6 +42,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     private List<Vector2> startPlayers;
     private List<int> playerSquareID;
+
+    [HideInInspector] public EventSystem eventSystem;
 
 
     [ContextMenu("DOIT")]
@@ -111,20 +116,70 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
+    private bool gameHasStarted;
+    private IEnumerator Start()
+    {
+        eventSystem = FindObjectOfType<EventSystem>();
+
+        yield return null;
+
+        GenerateBoard();
+        DOShowSquares();
+
+        playerSquares = new Square[playerCounts];
+        foreach (var sqr in squares)
+        {
+            if (sqr.spawnPlayer > -1)
+                playerSquares[sqr.spawnPlayer] = sqr;
+        }
+
+        gameHasStarted = true;
+
+        playerSquares[playerTurn].DOPlayerTurn();
+    }
+
+    private bool lockGeneration;
+    public void OnToggleLockGenerationBoard()
+    {
+        lockGeneration = !lockGeneration;
+        eventSystem.SetSelectedGameObject(null);
+    }
+
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            GenerateBoard();
+        if (!gameHasStarted) return;
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (!lockGeneration)
         {
-            for (int i = 0; i < squares.Count; ++i)
-            {
-                squares[i].DOShowSquare();
-            }
+            if (Input.GetKeyDown(KeyCode.Space))
+                GenerateBoard();
+
+            if (Input.GetKeyDown(KeyCode.Return))
+                DOShowSquares();
         }
     }
 
+    public void NextTurn(Square newPlayerSquare)
+    {
+        playerSquares[playerTurn].playersOnThis[playerTurn] = false;
+        playerSquares[playerTurn].STOPPlayerTurn();
+
+        playerSquares[playerTurn] = newPlayerSquare;
+        playerSquares[playerTurn].playersOnThis[playerTurn] = true;
+
+        playerTurn = (int)Mathf.Repeat(playerTurn + 1, playerCounts);
+
+        playerSquares[playerTurn].DOPlayerTurn();
+    }
+
+    public void DOShowSquares()
+    {
+        for (int i = 0; i < squares.Count; ++i)
+        {
+            squares[i].DOShowSquare();
+        }
+    }
 
     Square currentWaySquare;
     bool canContinue;
@@ -187,7 +242,7 @@ public class GameManager : MonoSingleton<GameManager>
 
                 if (!currentWaySquare.neightbors[randomSquare].isLock)
                 {
-                    for (int j = 0; j < currentWaySquare.neightbors[randomSquare].neightbors.Count; ++j)
+                    for (int j = 1; j < currentWaySquare.neightbors[randomSquare].neightbors.Count; ++j)
                     {
                         if (currentWaySquare.neightbors[randomSquare].neightbors[j].isLock)
                             countLock++;
@@ -235,7 +290,7 @@ public class GameManager : MonoSingleton<GameManager>
 
                     if (!squares[randomSquare].isLock && squares[randomSquare].squareStruct.fixeNumber < 1)
                     {
-                        for (int i = 0; i < squares[randomSquare].neightbors.Count; ++i)
+                        for (int i = 1; i < squares[randomSquare].neightbors.Count; ++i)
                         {
                             if (squares[randomSquare].neightbors[i].isLock)
                             {
@@ -245,7 +300,7 @@ public class GameManager : MonoSingleton<GameManager>
                             }
                             else if (squares[randomSquare].neightbors[i].squareStruct.type != SquareType.bad)
                             {
-                                for (int j = 0; j < squares[randomSquare].neightbors[i].neightbors.Count; ++j)
+                                for (int j = 1; j < squares[randomSquare].neightbors[i].neightbors.Count; ++j)
                                 {
                                     if (squares[randomSquare].neightbors[i].neightbors[j].isLock)
                                     {

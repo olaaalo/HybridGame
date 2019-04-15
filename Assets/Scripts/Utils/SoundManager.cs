@@ -1,33 +1,55 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SoundManager : MonoSingleton<SoundManager>
 {
-    public static FMOD.Studio.EventInstance FmodEvent_musicMainMenu;
-
-    public static FMOD.Studio.EventInstance FmodEvent_buttonValidation;
-    public static FMOD.Studio.EventInstance FmodEvent_buttonNavigation;
-    public static FMOD.Studio.EventInstance FmodEvent_buttonSelection;
-    public static FMOD.Studio.EventInstance FmodEvent_buttonReturn;
-
-    public static FMOD.Studio.EventInstance FmodEvent_deckBox;
-    public static FMOD.Studio.EventInstance FmodEvent_potOfGreed;
-    public static FMOD.Studio.EventInstance FmodEvent_milleniumPuzzle;
+    public static List<FMOD.Studio.EventInstance> FmodEvent_empties;
+    public static List<FMOD.Studio.EventInstance> FmodEvent_traps;
 
     override protected void Awake()
     {
         base.Awake();
 
-        FmodEvent_musicMainMenu = FMODUnity.RuntimeManager.CreateInstance("event:/Musics/Music_1");
+        FmodEvent_empties = new List<FMOD.Studio.EventInstance>();
+        FmodEvent_traps = new List<FMOD.Studio.EventInstance>();
+    }
 
-        FmodEvent_buttonValidation = FMODUnity.RuntimeManager.CreateInstance("event:/UI/Button_validation");
-        FmodEvent_buttonNavigation = FMODUnity.RuntimeManager.CreateInstance("event:/UI/Button_navigation");
-        FmodEvent_buttonSelection = FMODUnity.RuntimeManager.CreateInstance("event:/UI/Button_selection");
-        FmodEvent_buttonReturn = FMODUnity.RuntimeManager.CreateInstance("event:/UI/Button_return");
 
-        FmodEvent_deckBox = FMODUnity.RuntimeManager.CreateInstance("event:/Others/DeckBox_onClick");
-        FmodEvent_potOfGreed = FMODUnity.RuntimeManager.CreateInstance("event:/Others/PotOfGreed_onClick");
-        FmodEvent_milleniumPuzzle = FMODUnity.RuntimeManager.CreateInstance("event:/Others/MilleniumPuzzle_onClick");
+    static public void PlayEmptySound()
+    {
+        FmodEvent_empties.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Empty"));
+        FmodEvent_empties[FmodEvent_empties.Count - 1].start();
+    }
+
+    static public void PlayTrapSound()
+    {
+        FmodEvent_traps.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Trap"));
+        FmodEvent_traps[FmodEvent_traps.Count - 1].start();
+    }
+
+    static public void ClearEventSound()
+    {
+        foreach (var fEvent in FmodEvent_empties)
+            fEvent.stop(0);
+        foreach (var fEvent in FmodEvent_traps)
+            fEvent.stop(0);
+
+        DOVirtual.DelayedCall(0.5f, () => {
+            foreach (var fEvent in FmodEvent_empties)
+                fEvent.clearHandle();
+            foreach (var fEvent in FmodEvent_traps)
+                fEvent.clearHandle();
+
+            FmodEvent_empties = new List<FMOD.Studio.EventInstance>();
+            FmodEvent_traps = new List<FMOD.Studio.EventInstance>();
+        });
+
+    }
+
+    private void OnDisable()
+    {
+        ClearEventSound();
     }
 }
