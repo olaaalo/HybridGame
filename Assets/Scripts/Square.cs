@@ -47,9 +47,12 @@ public class Square : MonoBehaviour
         // LOOK UP
         neightbors = new List<Square>();
 
-        col2D = Physics2D.OverlapCircleAll(overlapSphereOrigin.position, 0.8f).ToList();
+        col2D = Physics2D.OverlapCircleAll(transform.position, 1f).ToList();
         if (col2D.Contains(selfCollider))
             col2D.Remove(selfCollider);
+
+        col2D.Sort((v,w)=> v.transform.position.x.CompareTo(w.transform.position.x));
+        col2D.Sort((v,w)=> v.transform.position.y.CompareTo(w.transform.position.y));
 
         for (int i = 0; i < col2D.Count; ++i)
             neightbors.Add(col2D[i].transform.parent.GetComponent<Square>());
@@ -65,15 +68,6 @@ public class Square : MonoBehaviour
     {
         image.DOKill();
         image.DOColor(Color.Lerp(Color.black, Color.white, 0.3f), 1f);
-
-        for (int i = 0; i < neightbors.Count; ++i)
-        {
-            if (neightbors[i] != GameManager.instance.playersSquare)
-            {
-                neightbors[i].image.DOKill();
-                neightbors[i].image.DOColor(Color.Lerp(Color.black, Color.white, 0.3f), 1f);
-            }
-        }
     }
 
     public void DOSoundScan()
@@ -82,17 +76,6 @@ public class Square : MonoBehaviour
 
         image.DOKill();
         image.DOColor(Color.black, 1f);
-
-        for (int i = 0; i < neightbors.Count; ++i)
-        {
-            if (neightbors[i] != GameManager.instance.playersSquare)
-            {
-                neightbors[i].PlayCurrentSound();
-
-                neightbors[i].image.DOKill();
-                neightbors[i].image.DOColor(Color.black, 1f);
-            }
-        }
     }
 
     public void DOVisualNeightborMove()
@@ -116,7 +99,7 @@ public class Square : MonoBehaviour
         {
             neightbors[i].isMovePosition = false;
             neightbors[i].image.DOKill();
-            neightbors[i].image.DOColor(Color.black, 0.2f);
+            neightbors[i].image.DOColor(Color.black, 0.1f);
         }
     }
 
@@ -147,7 +130,7 @@ public class Square : MonoBehaviour
 
     public void ResetState()
     {
-        isLock = false;
+        isLock = saveSpawnPlayer;
 
         if (!saveSpawnPlayer)
             squareStruct = GameManager.instance.squareStructs[0];

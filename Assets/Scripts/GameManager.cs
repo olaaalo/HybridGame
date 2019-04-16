@@ -66,8 +66,6 @@ public class GameManager : MonoSingleton<GameManager>
         squares = FindObjectsOfType<Square>().ToList();
 
         yield return null;
-        yield return null;
-        yield return null;
 
         GenerateBoard();
         DOShowSquares();
@@ -111,22 +109,62 @@ public class GameManager : MonoSingleton<GameManager>
 
         playersSquare.DOVisualPlayer();
 
-        playersSquare.neightbors[scanCount].DOEnableVisualScan();
+        if (scanCount == 0)
+        {
+            playersSquare.neightbors[0].DOEnableVisualScan();
+            playersSquare.neightbors[1].DOEnableVisualScan();
+            playersSquare.neightbors[2].DOEnableVisualScan();
+        }
+        else if (scanCount == 3)
+        {
+            playersSquare.neightbors[3].DOEnableVisualScan();
+            playersSquare.neightbors[1].DOEnableVisualScan();
+            playersSquare.neightbors[5].DOEnableVisualScan();
+        }
+        else if (scanCount == 4)
+        {
+            playersSquare.neightbors[4].DOEnableVisualScan();
+            playersSquare.neightbors[2].DOEnableVisualScan();
+            playersSquare.neightbors[5].DOEnableVisualScan();
+        }
     }
 
     public void OnScanButton()
     {
         if (!gameHasStarted) return;
 
-        playersSquare.neightbors[scanCount].DOSoundScan();
-        scanCount++;
+        if (scanCount == 0)
+        {
+            playersSquare.neightbors[0].DOSoundScan();
+            playersSquare.neightbors[1].DOSoundScan();
+            playersSquare.neightbors[2].DOSoundScan();
+        }
+        else if (scanCount == 3)
+        {
+            playersSquare.neightbors[3].DOSoundScan();
+            playersSquare.neightbors[1].DOSoundScan();
+            playersSquare.neightbors[5].DOSoundScan();
+        }
+        else if (scanCount == 4)
+        {
+            playersSquare.neightbors[4].DOSoundScan();
+            playersSquare.neightbors[2].DOSoundScan();
+            playersSquare.neightbors[5].DOSoundScan();
+        }
+
+        if (scanCount == 0)
+            scanCount = 3;
+        else if (scanCount == 3)
+            scanCount = 4;
+        else
+            scanCount = -1;
 
         scanButtonText.text = "SCANNING";
         scanButton.interactable = false;
 
         DOVirtual.DelayedCall(2f, () =>
         {
-            if (scanCount == playersSquare.neightbors.Count)
+            if (scanCount == -1)
                 DOMovingPhase();
             else
                 DOScanningPhase();
@@ -152,7 +190,7 @@ public class GameManager : MonoSingleton<GameManager>
         playersSquare.DOLastPlayerPlosition();
         playersSquare = newPosition;
         playersSquare.DONewPlayerPlosition();
-        
+
         if (newPosition.squareStruct.type == SquareType.good)
         {
             playerPoint++;
@@ -169,7 +207,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             turnCount++;
             turnCountText.text = string.Format("MISS : {0}/{1}", turnCount, maxTurn);
-            
+
             if (turnCount == maxTurn - 1)
                 turnCountText.DOColor(Color.Lerp(Color.black, Color.red, 0.3f), 0.5f).SetLoops(-1, LoopType.Yoyo);
 
@@ -246,22 +284,18 @@ public class GameManager : MonoSingleton<GameManager>
 
         foreach (var sqr in squares)
         {
-            if (sqr.playersOnThis)
-            {
-                playersSquare = sqr;
-                playersSquare.isLock = true;
-            }
+            playersSquare.isLock = true;
         }
 
         countLock = 0;
         while (countLock != squareStructs[1].fixeNumber)
         {
             random = Random.Range(0, squares.Count);
-            
-            if (!squares[random].isLock
-            && squares[random] != playersSquare.neightbors[0]
-            && squares[random] != playersSquare.neightbors[1]
-            && squares[random] != playersSquare.neightbors[2])
+
+            if (!squares[random].isLock &&
+                squares[random] != playersSquare.neightbors[0] &&
+                squares[random] != playersSquare.neightbors[1] &&
+                squares[random] != playersSquare.neightbors[2])
             {
                 badSquares.Add(squares[random]);
                 squares[random].squareStruct = squareStructs[1];
