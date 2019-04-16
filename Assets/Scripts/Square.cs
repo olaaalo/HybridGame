@@ -166,9 +166,13 @@ public class Square : MonoBehaviour
             GameManager.instance.playersSquares[GameManager.instance.currentTurn] = this;
             GameManager.instance.playersSquares[GameManager.instance.currentTurn].image.color =
                 GameManager.instance.playersColor[GameManager.instance.currentTurn];
+                
+            GameManager.instance.FMODListenerTranform.position = transform.position;
+            GameManager.instance.FMODEventMinautor.Play();
         }
         else
         {
+            GameManager.instance.FMODEventMinautorTranform.position = GameManager.instance.minotaurSquare.transform.position;
             GameManager.instance.minotaurSquare = this;
         }
 

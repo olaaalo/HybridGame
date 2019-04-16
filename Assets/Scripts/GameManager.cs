@@ -42,6 +42,10 @@ public class GameManager : MonoSingleton<GameManager>
     public int mazeTurn;
     public Text mazeTurnText;
 
+    public Transform FMODListenerTranform;
+    public Transform FMODEventMinautorTranform;
+    public FMODUnity.StudioEventEmitter FMODEventMinautor;
+
     public enum SquareType { neutral, good, bad }
 
     [System.Serializable]
@@ -84,8 +88,12 @@ public class GameManager : MonoSingleton<GameManager>
             playersSquares[i].image.color = playersColor[i];
         }
 
+        FMODEventMinautorTranform.position = minotaurSquare.transform.position;
+
         movingPhaseText.color = playersColor[0];
         movingPhaseText.text = string.Format("PLAYER 0");
+
+        OnClickMaze();
 
         // DOVirtual.DelayedCall(1f, DOScanningPhase);
     }
