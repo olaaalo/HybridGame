@@ -1,0 +1,102 @@
+fileFormatVersion: 2
+guid: 2d85380009aa3164ca9edcba37b7edd9
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Button4
+    21300002: Button2
+    21300004: Button1
+    21300006: Button3
+    21300008: Button5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 1
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 5
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Button4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 185
+        width: 200
+        height: 321
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Button2
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 312
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Button1
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 234
+        width: 161
+        height: 72
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 22, y: 33, z: 130, w: 21}
+    - name: Button3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Button5
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 0
+        width: 208
+        height: 220
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

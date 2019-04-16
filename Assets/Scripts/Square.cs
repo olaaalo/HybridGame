@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class Square : MonoBehaviour
 {
@@ -12,13 +13,18 @@ public class Square : MonoBehaviour
 
     public GameManager.SquareStruct _squareStruct = new GameManager.SquareStruct();
     public GameManager.SquareStruct squareStruct { get { return _squareStruct; } set { _squareStruct = value; ChangeStruct(); } }
-    public int spawnPlayer = -1;
-    
+
+    private bool saveSpawnPlayer;
+    public bool playersOnThis;
+    public bool isMovePosition;
+
     [HideInInspector] public bool isLock;
 
+    public Transform overlapSphereOrigin;
+    public Collider2D selfCollider;
     public List<Square> neightbors;
 
-    private RaycastHit2D hit2D;
+    private List<Collider2D> col2D;
 
     void ChangeStruct()
     {
@@ -28,56 +34,155 @@ public class Square : MonoBehaviour
             image.color = _squareStruct.color;
     }
 
+    private Quaternion baseRot;
+    private void Start()
+    {
+        baseRot = transform.rotation;
+        saveSpawnPlayer = playersOnThis;
+    }
+
     [ContextMenu("Check Neightbors")]
     public void CheckNeighborSquare()
     {
         // LOOK UP
         neightbors = new List<Square>();
 
-        /*
-        hit2D = Physics2D.Raycast(transform.position, Vector2.up);
-        if (hit2D.collider.gameObject.layer != 10)
-            neightbors.Add(hit2D.collider.GetComponent<Square>());
-            */
+        col2D = Physics2D.OverlapCircleAll(transform.position, 1f).ToList();
+        if (col2D.Contains(selfCollider))
+            col2D.Remove(selfCollider);
 
-        // LOOK RIGHT
-        hit2D = Physics2D.Raycast(transform.position, Vector2.right);
-        if (hit2D.collider.gameObject.layer != 10)
-            neightbors.Add(hit2D.collider.GetComponent<Square>());
+        col2D.Sort((v,w)=> v.transform.position.x.CompareTo(w.transform.position.x));
+        col2D.Sort((v,w)=> v.transform.position.y.CompareTo(w.transform.position.y));
 
-        // LOOK DOWN
-        hit2D = Physics2D.Raycast(transform.position, Vector2.down);
-        if (hit2D.collider.gameObject.layer != 10)
-            neightbors.Add(hit2D.collider.GetComponent<Square>());
+        for (int i = 0; i < col2D.Count; ++i)
+            neightbors.Add(col2D[i].transform.parent.GetComponent<Square>());
+    }
 
-        // LOOK LEFT
-        hit2D = Physics2D.Raycast(transform.position, Vector2.left);
-        if (hit2D.collider.gameObject.layer != 10)
-            neightbors.Add(hit2D.collider.GetComponent<Square>());
+    public void DOVisualPlayer()
+    {
+        image.DOKill();
+        image.DOColor(Color.Lerp(Color.black, Color.green, 0.8f), 0.5f);
+    }
+
+    public void DOEnableVisualScan()
+    {
+        image.DOKill();
+        image.DOColor(Color.Lerp(Color.black, Color.white, 0.3f), 1f);
+    }
+
+    public void DOSoundScan()
+    {
+        PlayCurrentSound();
+
+        image.DOKill();
+        image.DOColor(Color.black, 1f);
+    }
+
+    public void DOVisualNeightborMove()
+    {
+        for (int i = 0; i < neightbors.Count; ++i)
+        {
+            neightbors[i].isMovePosition = true;
+            neightbors[i].image.DOKill();
+            neightbors[i].image.DOColor(Color.Lerp(Color.black, Color.yellow, 0.3f), 0.5f).SetLoops(-1, LoopType.Yoyo);
+        }
+    }
+
+    public void DOLastPlayerPlosition()
+    {
+        playersOnThis = false;
+
+        image.DOKill();
+        image.DOColor(Color.black, 0.5f);
+
+        for (int i = 0; i < neightbors.Count; ++i)
+        {
+            neightbors[i].isMovePosition = false;
+            neightbors[i].image.DOKill();
+            neightbors[i].image.DOColor(Color.black, 0.1f);
+        }
+    }
+
+    public void DONewPlayerPlosition()
+    {
+        playersOnThis = true;
+    }
+
+    public void DOVisualSuccess()
+    {
+        playersOnThis = false;
+        isMovePosition = false;
+
+        image.DOKill();
+        image.color = Color.black;
+        image.DOColor(Color.Lerp(Color.black, Color.blue, 0.3f), 0.5f).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    public void DOVisualGameOver()
+    {
+        playersOnThis = false;
+        isMovePosition = false;
+
+        image.DOKill();
+        image.color = Color.black;
+        image.DOColor(Color.Lerp(Color.black, Color.red, 0.3f), 0.5f).SetLoops(-1, LoopType.Yoyo);
     }
 
     public void ResetState()
     {
-        isLock = false;
+        isLock = saveSpawnPlayer;
 
-        if (spawnPlayer == -1)
+        if (!saveSpawnPlayer)
             squareStruct = GameManager.instance.squareStructs[0];
+
+        playersOnThis = saveSpawnPlayer;
     }
 
     public void DOAnimate()
     {
         transform.DOKill();
         transform.localScale = Vector3.one;
-        transform.rotation = Quaternion.identity;
+        transform.rotation = baseRot;
         transform.DOScale(0.6f, 0.4f).From();
-        transform.DORotate(Vector3.forward * 90, 0.4f).From();
+        transform.DORotate(Vector3.forward * 90, 0.4f).From().SetRelative();
     }
 
     bool hide;
     public void DOShowSquare()
     {
+        if (playersOnThis)
+            return;
+
         hide = !hide;
         image.color = (hide) ? Color.black : squareStruct.color;
         text.enabled = !hide;
+    }
+
+    public void OnClick()
+    {
+        if (isMovePosition && GameManager.instance.onMovingPhase)
+        {
+            GameManager.instance.MovingPlayer(this);
+        }
+
+        GameManager.instance.eventSystem.SetSelectedGameObject(null);
+    }
+
+    public void PlayCurrentSound()
+    {
+        switch (squareStruct.name)
+        {
+        case "TRAP":
+            SoundManager.PlayTrapSound();
+            break;
+
+        case "":
+            SoundManager.PlayEmptySound();
+            break;
+
+        case "GOOD":
+            SoundManager.PlayMoneySound();
+            break;
+        }
     }
 }

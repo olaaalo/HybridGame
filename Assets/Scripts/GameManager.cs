@@ -1,21 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEditor;
+using System.Linq;
 using DG.Tweening;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public GridLayoutGroup gridLayout;
-    public GameObject outBoardPrefab;
-    public GameObject squarePrefab;
-    public int boardSize;
-    public float spaceBtwSquare;
-    public int wayCount;
-    [Range(1, 4)] public int playerCounts;
-    
-    public enum SquareType { neutral, good, bad, exit }
+    public int maxTurn;
+    public int turnCount;
+    public int playerPoint;
+    public int maxPlayerPoint;
+    public int scanCount;
+    public bool onMovingPhase;
+
+    public Text turnCountText;
+    public Text pointCountText;
+
+    public Button scanButton;
+    public Text scanButtonText;
+    public Text movingPhaseText;
+
+    //public GridLayoutGroup gridLayout;
+    //public GameObject outBoardPrefab;
+    //public GameObject squarePrefab;
+    //public int boardSize;
+    //public float spaceBtwSquare;
+    //public int wayCount;
+    //[Range(1, 4)] public int playerCounts;
+    public Square playersSquare;
+
+    public enum SquareType { neutral, good, bad }
 
     [System.Serializable]
     public struct SquareStruct
@@ -40,101 +57,217 @@ public class GameManager : MonoSingleton<GameManager>
     private List<Vector2> startPlayers;
     private List<int> playerSquareID;
 
+    [HideInInspector] public EventSystem eventSystem;
 
-    [ContextMenu("DOIT")]
-    void DOIT()
+    private bool gameHasStarted;
+    private IEnumerator Start()
     {
-        if (gridLayout.transform.childCount > 0)
-        {
-            GameObject oldObject = new GameObject { name = "TO DELETE" };
-            for (int i = gridLayout.transform.childCount - 1; i >= 0; --i)
-                gridLayout.transform.GetChild(i).SetParent(oldObject.transform);
-            oldObject.SetActive(false);
-        }        
+        eventSystem = FindObjectOfType<EventSystem>();
+        squares = FindObjectsOfType<Square>().ToList();
 
+        yield return null;
 
-        startPlayers = new List<Vector2>
-        {
-            new Vector2(Mathf.CeilToInt(boardSize / 2f), 0),
-            new Vector2(0, Mathf.CeilToInt(boardSize / 2f)),
-            new Vector2(boardSize, Mathf.CeilToInt(boardSize / 2f)),
-            new Vector2(Mathf.CeilToInt(boardSize / 2f), boardSize)
-        };
+        GenerateBoard();
+        DOShowSquares();
 
-        int size = boardSize + 2;
+        gameHasStarted = true;
+        movingPhaseText.color = Color.clear;
 
-        gridLayout.constraintCount = size;
-        gridLayout.spacing = Vector2.one * spaceBtwSquare;
+        turnCountText.text = string.Format(turnCountText.text, turnCount, maxTurn);
+        pointCountText.text = string.Format(pointCountText.text, playerPoint, maxPlayerPoint);
 
-        squares = new List<Square>();
-        playerSquareID = new List<int>();
+        DOVirtual.DelayedCall(1f, DOScanningPhase);
+    }
 
-        for (int i = 0; i < size; ++i)
-        {
-            var g = PrefabUtility.InstantiatePrefab(outBoardPrefab) as GameObject;
-            g.transform.SetParent(gridLayout.transform, false);
-        }
-
-        for (int i = 0; i < size - 2; ++i)
-        {
-            var g = PrefabUtility.InstantiatePrefab(outBoardPrefab) as GameObject;
-            g.transform.SetParent(gridLayout.transform, false);
-
-            for (int j = 0; j < size - 2; ++j)
-            {
-                var go = PrefabUtility.InstantiatePrefab(squarePrefab) as GameObject;
-                go.transform.SetParent(gridLayout.transform, false);
-
-                for (int p = 0; p < playerCounts; ++p)
-                {
-                    if (i == startPlayers[p].y && j + 1 == startPlayers[p].x)
-                    {
-                        go.GetComponent<Square>().spawnPlayer = p;
-                        break;
-                    }
-                }
-
-                squares.Add(go.GetComponent<Square>());
-
-                if (go.GetComponent<Square>().spawnPlayer != -1)
-                    playerSquareID.Add(squares.Count);
-            }
-
-            g = PrefabUtility.InstantiatePrefab(outBoardPrefab) as GameObject;
-            g.transform.SetParent(gridLayout.transform, false);
-        }
-
-        for (int i = 0; i < size; ++i)
-        {
-            var g = PrefabUtility.InstantiatePrefab(outBoardPrefab) as GameObject;
-            g.transform.SetParent(gridLayout.transform);
-        }
+    private bool lockGeneration;
+    public void OnToggleLockGenerationBoard()
+    {
+        lockGeneration = !lockGeneration;
+        eventSystem.SetSelectedGameObject(null);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            GenerateBoard();
+        if (!gameHasStarted) return;
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (!lockGeneration)
         {
-            for (int i = 0; i < squares.Count; ++i)
-            {
-                squares[i].DOShowSquare();
-            }
+            if (Input.GetKeyDown(KeyCode.Space))
+                GenerateBoard();
+
+            if (Input.GetKeyDown(KeyCode.Return))
+                DOShowSquares();
         }
     }
 
+    public void DOScanningPhase()
+    {
+        scanButtonText.text = "SCAN";
+        scanButton.interactable = true;
+        movingPhaseText.DOKill();
+        movingPhaseText.color = Color.clear;
 
-    Square currentWaySquare;
-    bool canContinue;
-    int randomSquare;
+        playersSquare.DOVisualPlayer();
+
+        if (scanCount == 0)
+        {
+            playersSquare.neightbors[0].DOEnableVisualScan();
+            playersSquare.neightbors[1].DOEnableVisualScan();
+            playersSquare.neightbors[2].DOEnableVisualScan();
+        }
+        else if (scanCount == 3)
+        {
+            playersSquare.neightbors[3].DOEnableVisualScan();
+            playersSquare.neightbors[1].DOEnableVisualScan();
+            playersSquare.neightbors[5].DOEnableVisualScan();
+        }
+        else if (scanCount == 4)
+        {
+            playersSquare.neightbors[4].DOEnableVisualScan();
+            playersSquare.neightbors[2].DOEnableVisualScan();
+            playersSquare.neightbors[5].DOEnableVisualScan();
+        }
+    }
+
+    public void OnScanButton()
+    {
+        if (!gameHasStarted) return;
+
+        if (scanCount == 0)
+        {
+            playersSquare.neightbors[0].DOSoundScan();
+            playersSquare.neightbors[1].DOSoundScan();
+            playersSquare.neightbors[2].DOSoundScan();
+        }
+        else if (scanCount == 3)
+        {
+            playersSquare.neightbors[3].DOSoundScan();
+            playersSquare.neightbors[1].DOSoundScan();
+            playersSquare.neightbors[5].DOSoundScan();
+        }
+        else if (scanCount == 4)
+        {
+            playersSquare.neightbors[4].DOSoundScan();
+            playersSquare.neightbors[2].DOSoundScan();
+            playersSquare.neightbors[5].DOSoundScan();
+        }
+
+        if (scanCount == 0)
+            scanCount = 3;
+        else if (scanCount == 3)
+            scanCount = 4;
+        else
+            scanCount = -1;
+
+        scanButtonText.text = "SCANNING";
+        scanButton.interactable = false;
+
+        DOVirtual.DelayedCall(2f, () =>
+        {
+            if (scanCount == -1)
+                DOMovingPhase();
+            else
+                DOScanningPhase();
+        });
+    }
+
+    public void DOMovingPhase()
+    {
+        scanButtonText.text = "MOVING PHASE";
+
+        movingPhaseText.DOKill();
+        movingPhaseText.DOColor(Color.yellow, 0.5f).SetLoops(-1, LoopType.Yoyo);
+
+        onMovingPhase = true;
+
+        playersSquare.DOVisualNeightborMove();
+    }
+
+    public void MovingPlayer(Square newPosition)
+    {
+        onMovingPhase = false;
+
+        playersSquare.DOLastPlayerPlosition();
+        playersSquare = newPosition;
+        playersSquare.DONewPlayerPlosition();
+
+        if (newPosition.squareStruct.type == SquareType.good)
+        {
+            playerPoint++;
+            pointCountText.text = string.Format("POINTS : {0}/{1}", playerPoint, maxPlayerPoint);
+            pointCountText.transform.DOScale(1.5f, 0.3f).From();
+
+            if (playerPoint == maxPlayerPoint)
+            {
+                Success();
+                return;
+            }
+        }
+        else
+        {
+            turnCount++;
+            turnCountText.text = string.Format("MISS : {0}/{1}", turnCount, maxTurn);
+
+            if (turnCount == maxTurn - 1)
+                turnCountText.DOColor(Color.Lerp(Color.black, Color.red, 0.3f), 0.5f).SetLoops(-1, LoopType.Yoyo);
+
+            if (turnCount == maxTurn || newPosition.squareStruct.type == SquareType.bad)
+            {
+                GameOver();
+                return;
+            }
+        }
+
+        newPosition.squareStruct = squareStructs[0];
+
+        scanCount = 0;
+        DOScanningPhase();
+    }
+
+    public void Success()
+    {
+        if (!gameHasStarted) return;
+
+        gameHasStarted = false;
+
+        for (int i = 0; i < squares.Count; ++i)
+            squares[i].DOVisualSuccess();
+
+        scanButtonText.text = "SUCCESS";
+        movingPhaseText.DOKill();
+        movingPhaseText.color = Color.blue;
+        movingPhaseText.text = "Deminer win !";
+    }
+
+    public void GameOver()
+    {
+        if (!gameHasStarted) return;
+
+        gameHasStarted = false;
+
+        for (int i = 0; i < squares.Count; ++i)
+            squares[i].DOVisualGameOver();
+
+        scanButtonText.text = "GAME OVER";
+        movingPhaseText.DOKill();
+        movingPhaseText.color = Color.red;
+        movingPhaseText.text = "Terrorist win !";
+    }
+
+    #region Generation TOOL
+    public void DOShowSquares()
+    {
+        for (int i = 0; i < squares.Count; ++i)
+        {
+            squares[i].DOShowSquare();
+        }
+    }
+
+    List<Square> emptySquares;
+    List<Square> goodSquares;
+    List<Square> badSquares;
     int countLock;
-    List<SquareStruct> waySquares;
-    List<SquareStruct> otherCommunSquares;
-    List<SquareStruct> otherRareSquares;
-    SquareStruct exitSquare;
-    int countReturn;
+    int random;
     [ContextMenu("Generate the Board")]
     void GenerateBoard()
     {
@@ -145,130 +278,50 @@ public class GameManager : MonoSingleton<GameManager>
             squares[i].DOAnimate();
         }
 
-        waySquares = new List<SquareStruct>();
-        otherCommunSquares = new List<SquareStruct>();
-        otherRareSquares = new List<SquareStruct>();
-        foreach (SquareStruct strct in squareStructs)
+        emptySquares = new List<Square>();
+        goodSquares = new List<Square>();
+        badSquares = new List<Square>();
+
+        foreach (var sqr in squares)
         {
-            if (strct.interest == 3)
-                waySquares.Add(strct);
-            if (strct.interest == 2)
-                otherCommunSquares.Add(strct);
-            if (strct.interest == 1)
-                otherRareSquares.Add(strct);
-            else if (strct.interest == 0 && strct.type == SquareType.exit)
-                exitSquare = strct;
+            playersSquare.isLock = true;
         }
 
-        foreach (Square sqr in squares)
+        countLock = 0;
+        while (countLock != squareStructs[1].fixeNumber)
         {
-            if (sqr.spawnPlayer == 0)
+            random = Random.Range(0, squares.Count);
+
+            if (!squares[random].isLock &&
+                squares[random] != playersSquare.neightbors[0] &&
+                squares[random] != playersSquare.neightbors[1] &&
+                squares[random] != playersSquare.neightbors[2])
             {
-                currentWaySquare = sqr;
-                break;
+                badSquares.Add(squares[random]);
+                squares[random].squareStruct = squareStructs[1];
+                squares[random].isLock = true;
+                countLock++;
             }
         }
 
-        for (int i = 0; i < wayCount; ++i)
+        countLock = 0;
+        while (countLock != squareStructs[2].fixeNumber)
         {
-            currentWaySquare.isLock = true;
-            currentWaySquare.squareStruct = waySquares[Random.Range(0, waySquares.Count)];
-
-            canContinue = false;
-
-            countLock = 0;
-            countReturn = 0;
-
-            while (!canContinue)
+            random = Random.Range(0, squares.Count);
+            if (!squares[random].isLock)
             {
-                randomSquare = Random.Range(0, currentWaySquare.neightbors.Count);
-
-                countReturn++;
-
-                if (!currentWaySquare.neightbors[randomSquare].isLock)
-                {
-                    for (int j = 0; j < currentWaySquare.neightbors[randomSquare].neightbors.Count; ++j)
-                    {
-                        if (currentWaySquare.neightbors[randomSquare].neightbors[j].isLock)
-                            countLock++;
-                    }
-
-                    if (countLock < 2 || countLock == currentWaySquare.neightbors[randomSquare].neightbors.Count)
-                        canContinue = true;
-                }
-                if (countReturn > 1000)
-                    canContinue = true;
+                goodSquares.Add(squares[random]);
+                squares[random].squareStruct = squareStructs[2];
+                squares[random].isLock = true;
+                countLock++;
             }
-
-            currentWaySquare = currentWaySquare.neightbors[randomSquare];
-
-            countLock = 0;
-            countReturn = 0;
         }
-
-        currentWaySquare.squareStruct = exitSquare;
-        currentWaySquare.isLock = true;
 
         for (int i = 0; i < squares.Count; ++i)
         {
             if (!squares[i].isLock)
-            {
-                squares[i].squareStruct = (Random.value < 0.7f) ? otherCommunSquares[Random.Range(0, waySquares.Count)] : otherRareSquares[Random.Range(0, waySquares.Count)];
-            }
-        }
-
-        int generationFixe;
-        foreach (SquareStruct strct in squareStructs)
-        {
-            generationFixe = 0;
-            countReturn = 0;
-
-
-            if (strct.fixeNumber > 0)
-            {
-                randomSquare = Random.Range(0, squares.Count);
-                canContinue = false;
-
-                while (generationFixe != strct.fixeNumber)
-                {
-                    countReturn++;
-
-                    if (!squares[randomSquare].isLock && squares[randomSquare].squareStruct.fixeNumber < 1)
-                    {
-                        for (int i = 0; i < squares[randomSquare].neightbors.Count; ++i)
-                        {
-                            if (squares[randomSquare].neightbors[i].isLock)
-                            {
-                                squares[randomSquare].squareStruct = strct;
-                                generationFixe++;
-                                canContinue = true;
-                            }
-                            else if (squares[randomSquare].neightbors[i].squareStruct.type != SquareType.bad)
-                            {
-                                for (int j = 0; j < squares[randomSquare].neightbors[i].neightbors.Count; ++j)
-                                {
-                                    if (squares[randomSquare].neightbors[i].neightbors[j].isLock)
-                                    {
-                                        squares[randomSquare].squareStruct = strct;
-                                        generationFixe++;
-                                        canContinue = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (canContinue)
-                                break;
-                        }
-                    }
-
-                    randomSquare = Random.Range(0, squares.Count);
-                    canContinue = false;
-
-                    if (countReturn > 1000)
-                        return;
-                }
-            }
+                emptySquares.Add(squares[i]);
         }
     }
+    #endregion
 }
