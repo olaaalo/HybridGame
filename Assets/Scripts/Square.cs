@@ -160,9 +160,31 @@ public class Square : MonoBehaviour
 
     public void OnClick()
     {
-        if (isMovePosition && GameManager.instance.onMovingPhase)
+        if(GameManager.instance.currentTurn < 4)
         {
-            GameManager.instance.MovingPlayer(this);
+            GameManager.instance.playersSquares[GameManager.instance.currentTurn].image.color = Color.white;
+            GameManager.instance.playersSquares[GameManager.instance.currentTurn] = this;
+            GameManager.instance.playersSquares[GameManager.instance.currentTurn].image.color =
+                GameManager.instance.playersColor[GameManager.instance.currentTurn];
+        }
+        else
+        {
+            GameManager.instance.minotaurSquare = this;
+        }
+
+        GameManager.instance.currentTurn = (int)Mathf.Repeat(GameManager.instance.currentTurn + 1, 5);
+
+        if(GameManager.instance.currentTurn < 4)
+        {
+            GameManager.instance.movingPhaseText.color = GameManager.instance.playersColor[GameManager.instance.currentTurn];
+            GameManager.instance.movingPhaseText.text = string.Format("PLAYER {0}", GameManager.instance.currentTurn);
+        }
+        else
+        {
+            GameManager.instance.movingPhaseText.color = Color.white;
+            GameManager.instance.movingPhaseText.text = string.Format("MINAUTOR");
+            GameManager.instance.mazeTurn++;
+            GameManager.instance.mazeTurnText.text = GameManager.instance.mazeTurn.ToString();
         }
 
         GameManager.instance.eventSystem.SetSelectedGameObject(null);

@@ -9,19 +9,22 @@ using UnityEngine.UI;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public int maxTurn;
-    public int turnCount;
-    public int playerPoint;
-    public int maxPlayerPoint;
-    public int scanCount;
-    public bool onMovingPhase;
+    // public int maxTurn;
+    // public int turnCount;
+    // public int playerPoint;
+    // public int maxPlayerPoint;
+    // public int scanCount;
+    // public bool onMovingPhase;
 
-    public Text turnCountText;
-    public Text pointCountText;
+    // public Text turnCountText;
+    // public Text pointCountText;
 
     public Button scanButton;
     public Text scanButtonText;
     public Text movingPhaseText;
+
+    public Image mazeImage;
+    public Sprite[] mazeSprites;
 
     //public GridLayoutGroup gridLayout;
     //public GameObject outBoardPrefab;
@@ -30,7 +33,14 @@ public class GameManager : MonoSingleton<GameManager>
     //public float spaceBtwSquare;
     //public int wayCount;
     //[Range(1, 4)] public int playerCounts;
-    public Square playersSquare;
+    public Square[] playersSquares;
+    public Color[] playersColor;
+    public Square minotaurSquare;
+    public Color minotaurColor;
+
+    public int currentTurn;
+    public int mazeTurn;
+    public Text mazeTurnText;
 
     public enum SquareType { neutral, good, bad }
 
@@ -54,9 +64,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     public List<Square> squares;
 
-    private List<Vector2> startPlayers;
-    private List<int> playerSquareID;
-
     [HideInInspector] public EventSystem eventSystem;
 
     private bool gameHasStarted;
@@ -67,16 +74,20 @@ public class GameManager : MonoSingleton<GameManager>
 
         yield return null;
 
-        GenerateBoard();
-        DOShowSquares();
+        // GenerateBoard();
+        // DOShowSquares();
 
         gameHasStarted = true;
         movingPhaseText.color = Color.clear;
 
-        turnCountText.text = string.Format(turnCountText.text, turnCount, maxTurn);
-        pointCountText.text = string.Format(pointCountText.text, playerPoint, maxPlayerPoint);
+        for (int i = 0; i < playersSquares.Length; ++i){
+            playersSquares[i].image.color = playersColor[i];
+        }
 
-        DOVirtual.DelayedCall(1f, DOScanningPhase);
+        movingPhaseText.color = playersColor[0];
+        movingPhaseText.text = string.Format("PLAYER 0");
+
+        // DOVirtual.DelayedCall(1f, DOScanningPhase);
     }
 
     private bool lockGeneration;
@@ -84,144 +95,6 @@ public class GameManager : MonoSingleton<GameManager>
     {
         lockGeneration = !lockGeneration;
         eventSystem.SetSelectedGameObject(null);
-    }
-
-    private void Update()
-    {
-        if (!gameHasStarted) return;
-
-        if (!lockGeneration)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-                GenerateBoard();
-
-            if (Input.GetKeyDown(KeyCode.Return))
-                DOShowSquares();
-        }
-    }
-
-    public void DOScanningPhase()
-    {
-        scanButtonText.text = "SCAN";
-        scanButton.interactable = true;
-        movingPhaseText.DOKill();
-        movingPhaseText.color = Color.clear;
-
-        playersSquare.DOVisualPlayer();
-
-        if (scanCount == 0)
-        {
-            playersSquare.neightbors[0].DOEnableVisualScan();
-            playersSquare.neightbors[1].DOEnableVisualScan();
-            playersSquare.neightbors[2].DOEnableVisualScan();
-        }
-        else if (scanCount == 3)
-        {
-            playersSquare.neightbors[3].DOEnableVisualScan();
-            playersSquare.neightbors[1].DOEnableVisualScan();
-            playersSquare.neightbors[5].DOEnableVisualScan();
-        }
-        else if (scanCount == 4)
-        {
-            playersSquare.neightbors[4].DOEnableVisualScan();
-            playersSquare.neightbors[2].DOEnableVisualScan();
-            playersSquare.neightbors[5].DOEnableVisualScan();
-        }
-    }
-
-    public void OnScanButton()
-    {
-        if (!gameHasStarted) return;
-
-        if (scanCount == 0)
-        {
-            playersSquare.neightbors[0].DOSoundScan();
-            playersSquare.neightbors[1].DOSoundScan();
-            playersSquare.neightbors[2].DOSoundScan();
-        }
-        else if (scanCount == 3)
-        {
-            playersSquare.neightbors[3].DOSoundScan();
-            playersSquare.neightbors[1].DOSoundScan();
-            playersSquare.neightbors[5].DOSoundScan();
-        }
-        else if (scanCount == 4)
-        {
-            playersSquare.neightbors[4].DOSoundScan();
-            playersSquare.neightbors[2].DOSoundScan();
-            playersSquare.neightbors[5].DOSoundScan();
-        }
-
-        if (scanCount == 0)
-            scanCount = 3;
-        else if (scanCount == 3)
-            scanCount = 4;
-        else
-            scanCount = -1;
-
-        scanButtonText.text = "SCANNING";
-        scanButton.interactable = false;
-
-        DOVirtual.DelayedCall(2f, () =>
-        {
-            if (scanCount == -1)
-                DOMovingPhase();
-            else
-                DOScanningPhase();
-        });
-    }
-
-    public void DOMovingPhase()
-    {
-        scanButtonText.text = "MOVING PHASE";
-
-        movingPhaseText.DOKill();
-        movingPhaseText.DOColor(Color.yellow, 0.5f).SetLoops(-1, LoopType.Yoyo);
-
-        onMovingPhase = true;
-
-        playersSquare.DOVisualNeightborMove();
-    }
-
-    public void MovingPlayer(Square newPosition)
-    {
-        onMovingPhase = false;
-
-        playersSquare.DOLastPlayerPlosition();
-        playersSquare = newPosition;
-        playersSquare.DONewPlayerPlosition();
-
-        if (newPosition.squareStruct.type == SquareType.good)
-        {
-            playerPoint++;
-            pointCountText.text = string.Format("POINTS : {0}/{1}", playerPoint, maxPlayerPoint);
-            pointCountText.transform.DOScale(1.5f, 0.3f).From();
-
-            if (playerPoint == maxPlayerPoint)
-            {
-                Success();
-                return;
-            }
-        }
-        else
-        {
-            turnCount++;
-            turnCountText.text = string.Format("MISS : {0}/{1}", turnCount, maxTurn);
-
-            if (turnCount == maxTurn - 1)
-                turnCountText.DOColor(Color.Lerp(Color.black, Color.red, 0.3f), 0.5f).SetLoops(-1, LoopType.Yoyo);
-
-            if (turnCount == maxTurn || newPosition.squareStruct.type == SquareType.bad)
-            {
-                GameOver();
-                return;
-            }
-        }
-
-        newPosition.squareStruct = squareStructs[0];
-
-        scanCount = 0;
-        DOScanningPhase();
     }
 
     public void Success()
@@ -254,74 +127,25 @@ public class GameManager : MonoSingleton<GameManager>
         movingPhaseText.text = "Terrorist win !";
     }
 
-    #region Generation TOOL
-    public void DOShowSquares()
+    int rdmMaze;
+    public void OnClickMaze()
     {
-        for (int i = 0; i < squares.Count; ++i)
+        rdmMaze = Random.Range(0, mazeSprites.Length);
+        while (mazeSprites[rdmMaze] == mazeImage.sprite)
         {
-            squares[i].DOShowSquare();
+            rdmMaze = Random.Range(0, mazeSprites.Length);
         }
+
+        mazeImage.sprite = mazeSprites[rdmMaze];
+
+        mazeTurn = 0;
+        mazeTurnText.text = mazeTurn.ToString();
     }
 
-    List<Square> emptySquares;
-    List<Square> goodSquares;
-    List<Square> badSquares;
-    int countLock;
-    int random;
-    [ContextMenu("Generate the Board")]
-    void GenerateBoard()
+    public void OnShowMinautor()
     {
-        for (int i = 0; i < squares.Count; ++i)
-        {
-            squares[i].CheckNeighborSquare();
-            squares[i].ResetState();
-            squares[i].DOAnimate();
-        }
-
-        emptySquares = new List<Square>();
-        goodSquares = new List<Square>();
-        badSquares = new List<Square>();
-
-        foreach (var sqr in squares)
-        {
-            playersSquare.isLock = true;
-        }
-
-        countLock = 0;
-        while (countLock != squareStructs[1].fixeNumber)
-        {
-            random = Random.Range(0, squares.Count);
-
-            if (!squares[random].isLock &&
-                squares[random] != playersSquare.neightbors[0] &&
-                squares[random] != playersSquare.neightbors[1] &&
-                squares[random] != playersSquare.neightbors[2])
-            {
-                badSquares.Add(squares[random]);
-                squares[random].squareStruct = squareStructs[1];
-                squares[random].isLock = true;
-                countLock++;
-            }
-        }
-
-        countLock = 0;
-        while (countLock != squareStructs[2].fixeNumber)
-        {
-            random = Random.Range(0, squares.Count);
-            if (!squares[random].isLock)
-            {
-                goodSquares.Add(squares[random]);
-                squares[random].squareStruct = squareStructs[2];
-                squares[random].isLock = true;
-                countLock++;
-            }
-        }
-
-        for (int i = 0; i < squares.Count; ++i)
-        {
-            if (!squares[i].isLock)
-                emptySquares.Add(squares[i]);
-        }
+        minotaurSquare.image.color = Color.white;
+        minotaurSquare.image.DOKill();
+        minotaurSquare.image.DOColor(minotaurColor, 0.3f).SetDelay(0.5f).From();;
     }
-    #endregion
 }
