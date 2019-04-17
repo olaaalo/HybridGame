@@ -29,10 +29,22 @@ public class Vehicule : MonoBehaviour
         transform.Translate(Vector3.right * speed / 10 * Time.deltaTime);
     }
 
+    private BetZone bZ;
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.layer == 9){
             GameManager.instance.gameIsEnded = true;
+        }
+        if (col.gameObject.layer == 11)
+        {
+            bZ = col.GetComponent<BetZone>();
+
+            if (!bZ.disable)
+            {
+                bZ.disable = true;
+                GameManager.instance.UpdateVehiculesSpeed();
+                bZ.gameObject.SetActive(false);
+            }
         }
     }
 }

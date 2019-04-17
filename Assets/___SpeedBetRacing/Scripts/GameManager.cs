@@ -59,20 +59,21 @@ public class GameManager : MonoSingleton<GameManager>
         {
             if (Input.GetKeyDown(input_playerOne[i]) && betLimitOne > 0)
             {
-                vehicules[i].speed -= 10;
-                vehicules[i].speed = Mathf.Clamp(vehicules[i].speed, 1, Mathf.Infinity);
+                // vehicules[i].speed -= 10;
+                // vehicules[i].speed = Mathf.Clamp(vehicules[i].speed, 1, Mathf.Infinity);
                 
-                vehicules[i].life--;
-                if (vehicules[i].life == 0){
-                    vehicules[i].life = 3;
-                    vehicules[i].speed = vehicules[i].baseSpeed;
-                }
+                // vehicules[i].life--;
+                // if (vehicules[i].life == 0){
+                //     vehicules[i].life = 3;
+                //     vehicules[i].speed = vehicules[i].baseSpeed;
+                // }
 
 
                 bet_playerOne[i]++;
-                vehicules[i].transform.DOKill();
-                vehicules[i].transform.localScale = Vector3.one;
-                vehicules[i].transform.DOScale(1.3f, 0.5f).From();
+
+                // vehicules[i].transform.DOKill();
+                // vehicules[i].transform.localScale = Vector3.one;
+                // vehicules[i].transform.DOScale(1.3f, 0.5f).From();
 
                 playerOneBetTexts[i].text = bet_playerOne[i].ToString();
                 playerOneBetTexts[i].transform.localScale -= Vector3.one * 0.07f;
@@ -93,22 +94,22 @@ public class GameManager : MonoSingleton<GameManager>
         {
             if (Input.GetKeyDown(input_playerTwo[i]) && betLimitTwo > 0)
             {
-                vehicules[i].speed -= 10;
-                vehicules[i].speed = Mathf.Clamp(vehicules[i].speed, 1, Mathf.Infinity);
+                // vehicules[i].speed -= 10;
+                // vehicules[i].speed = Mathf.Clamp(vehicules[i].speed, 1, Mathf.Infinity);
 
                 
-                vehicules[i].life--;
-                if (vehicules[i].life == 0){
-                    vehicules[i].life = 3;
-                    vehicules[i].speed = vehicules[i].baseSpeed;
-                }
+                // vehicules[i].life--;
+                // if (vehicules[i].life == 0){
+                //     vehicules[i].life = 3;
+                //     vehicules[i].speed = vehicules[i].baseSpeed;
+                // }
 
                 
                 bet_playerTwo[i]++;
 
-                vehicules[i].transform.DOKill();
-                vehicules[i].transform.localScale = Vector3.one;
-                vehicules[i].transform.DOScale(1.3f, 0.5f).From();
+                // vehicules[i].transform.DOKill();
+                // vehicules[i].transform.localScale = Vector3.one;
+                // vehicules[i].transform.DOScale(1.3f, 0.5f).From();
 
                 playerTwoBetTexts[i].text = bet_playerTwo[i].ToString();
                 playerTwoBetTexts[i].transform.localScale -= Vector3.one * 0.07f;
@@ -128,21 +129,21 @@ public class GameManager : MonoSingleton<GameManager>
         {
             if (Input.GetKeyDown(input_playerThree[i]) && betLimitThree > 0)
             {
-                vehicules[i].speed -= 10;
-                vehicules[i].speed = Mathf.Clamp(vehicules[i].speed, 1, Mathf.Infinity);
+                // vehicules[i].speed -= 10;
+                // vehicules[i].speed = Mathf.Clamp(vehicules[i].speed, 1, Mathf.Infinity);
                 
                 
-                vehicules[i].life--;
-                if (vehicules[i].life == 0){
-                    vehicules[i].life = 3;
-                    vehicules[i].speed = vehicules[i].baseSpeed;
-                }
+                // vehicules[i].life--;
+                // if (vehicules[i].life == 0){
+                //     vehicules[i].life = 3;
+                //     vehicules[i].speed = vehicules[i].baseSpeed;
+                // }
 
                 bet_playerThree[i]++;
                 
-                vehicules[i].transform.DOKill();
-                vehicules[i].transform.localScale = Vector3.one;
-                vehicules[i].transform.DOScale(1.3f, 0.5f).From();
+                // vehicules[i].transform.DOKill();
+                // vehicules[i].transform.localScale = Vector3.one;
+                // vehicules[i].transform.DOScale(1.3f, 0.5f).From();
 
                 playerThreeBetTexts[i].text = bet_playerThree[i].ToString();
                 playerThreeBetTexts[i].transform.localScale -= Vector3.one * 0.07f;
@@ -155,6 +156,14 @@ public class GameManager : MonoSingleton<GameManager>
 
                 playerBetTexts[2].text = "Player 3 : " + betLimitThree;
             }
+        }
+    }
+
+    public void UpdateVehiculesSpeed()
+    {
+        for (int i = 0; i < 5; ++i)
+        {
+            vehicules[i].speed = 10 + 10 * ((bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]) % 3);
         }
     }
 }
