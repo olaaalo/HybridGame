@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/0_Game.unity
+    path: Assets/_Minotaur/Scenes/0_Game_Minotaur.unity
     guid: 541b43559658f534f88887906c050659
   m_configObjects: {}
