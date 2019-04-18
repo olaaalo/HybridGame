@@ -14,6 +14,8 @@ public class GameManager : MonoSingleton<GameManager>
     public Text[] playerTwoBetTexts;
     public Text[] playerThreeBetTexts;
     public Text[] allBetTexts;
+    public Text betText;
+    public int currentVehiculeBet;
 
     public Vehicule[] vehicules;
     public Color[] colors;
@@ -42,6 +44,29 @@ public class GameManager : MonoSingleton<GameManager>
         playerBetTexts[0].text = "Player 1 : " + betLimitOne;
         playerBetTexts[1].text = "Player 2 : " + betLimitTwo;
         playerBetTexts[2].text = "Player 3 : " + betLimitThree;
+        
+        UpdateVehiculesSpeed();
+        StartCoroutine(coco());
+    }
+
+    IEnumerator coco()
+    {
+        while (gameIsEnded)
+            yield return null;
+
+        while (!gameIsEnded)
+        {
+            betText.transform.DOScale(1.5f, 0.5f).From();
+            currentVehiculeBet = Random.Range(0,5);
+
+            yield return new WaitForSeconds(4);
+
+            UpdateVehiculesSpeed();
+
+            currentVehiculeBet = -1;
+            
+            yield return new WaitForSeconds(2);
+        }
     }
 
     private int betLimitOne = 15;
@@ -52,7 +77,11 @@ public class GameManager : MonoSingleton<GameManager>
         if (Input.GetKeyDown(KeyCode.Return))
             gameIsEnded = false;
 
-        if (gameIsEnded) return;
+        if (gameIsEnded || currentVehiculeBet == -1)
+        {
+            betText.color = Color.black;
+            return;
+        }
 
         // Check Input Player 1
         for (int i = 0; i < 5; ++i)
@@ -69,7 +98,7 @@ public class GameManager : MonoSingleton<GameManager>
                 // }
 
 
-                bet_playerOne[i]++;
+                bet_playerOne[currentVehiculeBet]++;
 
                 // vehicules[i].transform.DOKill();
                 // vehicules[i].transform.localScale = Vector3.one;
@@ -77,15 +106,17 @@ public class GameManager : MonoSingleton<GameManager>
 
                 playerOneBetTexts[i].text = bet_playerOne[i].ToString();
                 playerOneBetTexts[i].transform.localScale -= Vector3.one * 0.07f;
-                allBetTexts[i].text = (bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]).ToString();
-                allBetTexts[i].transform.DOKill();
-                allBetTexts[i].transform.localScale = Vector3.one * 1.5f;
-                allBetTexts[i].transform.DOScale(2, 0.5f).From();
+                allBetTexts[currentVehiculeBet].text = (bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]).ToString();
+                allBetTexts[currentVehiculeBet].transform.DOKill();
+                allBetTexts[currentVehiculeBet].transform.localScale = Vector3.one * 1.5f;
+                allBetTexts[currentVehiculeBet].transform.DOScale(2, 0.5f).From();
                 
                 
                 betLimitOne--;
 
                 playerBetTexts[0].text = "Player 1 : " + betLimitOne;
+
+                //currentVehiculeBet = (currentVehiculeBet + 1) % 5;
             }
         }
 
@@ -105,7 +136,7 @@ public class GameManager : MonoSingleton<GameManager>
                 // }
 
                 
-                bet_playerTwo[i]++;
+                bet_playerTwo[currentVehiculeBet]++;
 
                 // vehicules[i].transform.DOKill();
                 // vehicules[i].transform.localScale = Vector3.one;
@@ -113,14 +144,16 @@ public class GameManager : MonoSingleton<GameManager>
 
                 playerTwoBetTexts[i].text = bet_playerTwo[i].ToString();
                 playerTwoBetTexts[i].transform.localScale -= Vector3.one * 0.07f;
-                allBetTexts[i].text = (bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]).ToString();
-                allBetTexts[i].transform.DOKill();
-                allBetTexts[i].transform.localScale = Vector3.one * 1.5f;
-                allBetTexts[i].transform.DOScale(2, 0.5f).From();
+                allBetTexts[currentVehiculeBet].text = (bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]).ToString();
+                allBetTexts[currentVehiculeBet].transform.DOKill();
+                allBetTexts[currentVehiculeBet].transform.localScale = Vector3.one * 1.5f;
+                allBetTexts[currentVehiculeBet].transform.DOScale(2, 0.5f).From();
 
                 betLimitTwo--;
 
                 playerBetTexts[1].text = "Player 2 : " + betLimitTwo;
+                
+                //currentVehiculeBet = (currentVehiculeBet + 1) % 5;
             }
         }
 
@@ -139,7 +172,7 @@ public class GameManager : MonoSingleton<GameManager>
                 //     vehicules[i].speed = vehicules[i].baseSpeed;
                 // }
 
-                bet_playerThree[i]++;
+                bet_playerThree[currentVehiculeBet]++;
                 
                 // vehicules[i].transform.DOKill();
                 // vehicules[i].transform.localScale = Vector3.one;
@@ -147,23 +180,48 @@ public class GameManager : MonoSingleton<GameManager>
 
                 playerThreeBetTexts[i].text = bet_playerThree[i].ToString();
                 playerThreeBetTexts[i].transform.localScale -= Vector3.one * 0.07f;
-                allBetTexts[i].text = (bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]).ToString();
-                allBetTexts[i].transform.DOKill();
-                allBetTexts[i].transform.localScale = Vector3.one * 1.5f;
-                allBetTexts[i].transform.DOScale(2, 0.5f).From();
+                allBetTexts[currentVehiculeBet].text = (bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]).ToString();
+                allBetTexts[currentVehiculeBet].transform.DOKill();
+                allBetTexts[currentVehiculeBet].transform.localScale = Vector3.one * 1.5f;
+                allBetTexts[currentVehiculeBet].transform.DOScale(2, 0.5f).From();
 
                 betLimitThree--;
 
                 playerBetTexts[2].text = "Player 3 : " + betLimitThree;
+
+                //currentVehiculeBet = (currentVehiculeBet + 1) % 5;
             }
         }
+
+        betText.color = colors[currentVehiculeBet];
     }
 
     public void UpdateVehiculesSpeed()
     {
         for (int i = 0; i < 5; ++i)
         {
-            vehicules[i].speed = 10 + 10 * ((bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]) % 3);
+            switch((bet_playerOne[i] + bet_playerTwo[i] + bet_playerThree[i]) % 4)
+            {
+                case 0:
+                vehicules[i].speed = 20; // base
+                break;
+
+                case 1:
+                vehicules[i].speed = 30; // base + 10
+                break;
+
+                case 2:
+                vehicules[i].speed = 40; // base + 20
+                break;
+
+                case 3:
+                vehicules[i].speed = 20; // base
+                break;
+
+                case 4:
+                vehicules[i].speed = 50; // base  + 30
+                break;
+            }
         }
     }
 }
