@@ -22,6 +22,21 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!206 &206331168273894064
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Blend Tree
+  m_Childs: []
+  m_BlendParameter: Blend
+  m_BlendParameterY: Blend
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1102 &1102063132378340182
 AnimatorState:
   serializedVersion: 5
@@ -29,7 +44,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Victory 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -55,7 +70,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disbelief 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -81,7 +96,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Idle 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -107,7 +122,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Angry 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -133,7 +148,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disapproval 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -159,7 +174,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Victory 5
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -185,7 +200,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disapproval 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -211,7 +226,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disapproval 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -237,7 +252,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Angry 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -263,7 +278,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Idle 4
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -289,7 +304,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Idle 3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -315,7 +330,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Laugning 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -341,7 +356,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Approval 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -367,7 +382,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Surprise 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -393,7 +408,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Yell 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -419,7 +434,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Yell 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -445,7 +460,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disapproval 3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -471,7 +486,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Clap 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -497,7 +512,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Clap 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -523,7 +538,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Angry 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -549,7 +564,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Clap 3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -575,7 +590,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Victory 3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -601,7 +616,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Clap 4
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -627,7 +642,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Idle 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -653,7 +668,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Yell 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -679,7 +694,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Victory 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -705,7 +720,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Idle 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -731,7 +746,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Talking 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -757,7 +772,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Victory 4
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -783,7 +798,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disbelief 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -809,7 +824,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Clap 5
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -835,7 +850,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Clap 0
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -861,7 +876,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Disbelief 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -887,7 +902,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Yell 3
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -913,7 +928,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mixamo_com
+  m_Name: Victory 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -943,116 +958,116 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102344021473251246}
-    m_Position: {x: 250, y: 51, z: 0}
+    m_Position: {x: -960, y: 444, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102154482619469958}
-    m_Position: {x: 262, y: 63, z: 0}
+    m_Position: {x: -960, y: 384, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102566377396256182}
-    m_Position: {x: 274, y: 75, z: 0}
+    m_Position: {x: -960, y: 324, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102508039221045740}
-    m_Position: {x: 286, y: 87, z: 0}
+    m_Position: {x: 0, y: -36, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102861571596853276}
-    m_Position: {x: 298, y: 99, z: 0}
+    m_Position: {x: 0, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102560592055924790}
-    m_Position: {x: 310, y: 111, z: 0}
+    m_Position: {x: 0, y: -180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102559894313600350}
-    m_Position: {x: 322, y: 123, z: 0}
+    m_Position: {x: 0, y: -240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102566559956352710}
-    m_Position: {x: 334, y: 135, z: 0}
+    m_Position: {x: 0, y: -300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102730740778827786}
-    m_Position: {x: 346, y: 147, z: 0}
+    m_Position: {x: 0, y: -360, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102826022412956926}
-    m_Position: {x: 358, y: 159, z: 0}
+    m_Position: {x: 0, y: -420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102189619979721228}
-    m_Position: {x: 370, y: 171, z: 0}
+    m_Position: {x: -240, y: 84, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102320264703561428}
-    m_Position: {x: 382, y: 183, z: 0}
+    m_Position: {x: -240, y: 24, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102285339017030464}
-    m_Position: {x: 394, y: 195, z: 0}
+    m_Position: {x: -240, y: -36, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102557440603153518}
-    m_Position: {x: 406, y: 207, z: 0}
+    m_Position: {x: -240, y: -96, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102145106381626204}
-    m_Position: {x: 418, y: 219, z: 0}
+    m_Position: {x: -480, y: 204, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102951990878149356}
-    m_Position: {x: 430, y: 231, z: 0}
+    m_Position: {x: -480, y: 144, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102811519479295010}
-    m_Position: {x: 442, y: 243, z: 0}
+    m_Position: {x: -480, y: 84, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102389059134443898}
-    m_Position: {x: 454, y: 255, z: 0}
+    m_Position: {x: 816, y: -336, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102148731381358338}
-    m_Position: {x: 466, y: 267, z: 0}
+    m_Position: {x: 816, y: -156, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102792199900936210}
-    m_Position: {x: 478, y: 279, z: 0}
+    m_Position: {x: 816, y: -216, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102466532460938046}
-    m_Position: {x: 490, y: 291, z: 0}
+    m_Position: {x: 816, y: -276, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102762382415883760}
-    m_Position: {x: 502, y: 303, z: 0}
+    m_Position: {x: 816, y: -96, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102468362328677310}
-    m_Position: {x: 514, y: 315, z: 0}
+    m_Position: {x: 588, y: -420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102518014006758224}
-    m_Position: {x: 526, y: 327, z: 0}
+    m_Position: {x: 816, y: -420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102801530040488122}
-    m_Position: {x: 538, y: 339, z: 0}
+    m_Position: {x: 1044, y: -420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102063132378340182}
-    m_Position: {x: 550, y: 351, z: 0}
+    m_Position: {x: 240, y: -156, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102998461876854048}
-    m_Position: {x: 562, y: 363, z: 0}
+    m_Position: {x: 240, y: -216, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102777551176013818}
-    m_Position: {x: 574, y: 375, z: 0}
+    m_Position: {x: 240, y: -276, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102703573597017620}
-    m_Position: {x: 586, y: 387, z: 0}
+    m_Position: {x: 240, y: -336, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102809097156370078}
-    m_Position: {x: 598, y: 399, z: 0}
+    m_Position: {x: 240, y: -396, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102244875692765880}
-    m_Position: {x: 610, y: 411, z: 0}
+    m_Position: {x: 240, y: -456, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102543233274396682}
-    m_Position: {x: 622, y: 423, z: 0}
+    m_Position: {x: -720, y: 324, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102771341089331442}
-    m_Position: {x: 634, y: 435, z: 0}
+    m_Position: {x: -720, y: 264, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102555544625360630}
-    m_Position: {x: 646, y: 447, z: 0}
+    m_Position: {x: -720, y: 204, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102958828968118194}
-    m_Position: {x: 658, y: 459, z: 0}
+    m_Position: {x: -720, y: 144, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: 840, y: 96, z: 0}
+  m_EntryPosition: {x: 840, y: 36, z: 0}
+  m_ExitPosition: {x: 528, y: 264, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 1102344021473251246}
+  m_DefaultState: {fileID: 1102762382415883760}

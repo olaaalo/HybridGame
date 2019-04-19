@@ -4,15 +4,36 @@ using UnityEngine;
 
 public class SpectatorsController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject[] spectatorPrefabs;
+    public Transform[] spectatorTransforms;
+
+    public List<Spectator> spectators;
+
+    private void OnDrawGizmos()
     {
-        
+        for (int i = 0; i < spectatorTransforms.Length; ++i)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(spectatorTransforms[i].position, 0.5f);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(spectatorTransforms[i].position, spectatorTransforms[i].position + spectatorTransforms[i].forward);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        spectators = new List<Spectator>();
+
+        for (int i = 0; i < spectatorTransforms.Length; ++i)
+        {
+            if (Random.value > 0.1f)
+            {
+                spectators.Add(Instantiate(
+                        spectatorPrefabs[Random.Range(0, spectatorPrefabs.Length)],
+                        spectatorTransforms[i].position, spectatorTransforms[i].rotation,
+                        spectatorTransforms[i])
+                    .GetComponent<Spectator>());
+            }
+        }
     }
 }

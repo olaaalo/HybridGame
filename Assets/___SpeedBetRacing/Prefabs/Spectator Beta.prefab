@@ -192,7 +192,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 633266551388043271}
-  surfaceRenderer: {fileID: 0}
+  surfaceRenderer: {fileID: 633266551392241349}
+  vehiculeID: 0
 --- !u!1 &633266551378643535
 GameObject:
   m_ObjectHideFlags: 0

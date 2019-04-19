@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67582fb35b2e3a44aab9d740470d8423, type: 3}
+  m_Name: _GameValue
+  m_EditorClassIdentifier: 
+  vehiclesInfos:
+  - isActive: 1
+    name: Dream Shark
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.21698113, g: 0.51894236, b: 0.8679245, a: 1}
+  - isActive: 1
+    name: Red Line
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.8584906, g: 0.2794144, b: 0.2794144, a: 1}
+  - isActive: 1
+    name: Serenity
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.28034887, g: 0.7924528, b: 0.32941267, a: 1}
+  - isActive: 1
+    name: Stardust
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.7830189, g: 0.7445555, b: 0.35826808, a: 1}
+  - isActive: 0
+    name: Magic Blow
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.61775964, g: 0.36187258, b: 0.7169812, a: 1}
+  - isActive: 0
+    name: Tropical Bear
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.36078432, g: 0.85490197, b: 0.7176471, a: 1}
+  - isActive: 0
+    name: Orange Earth
+    prefab: {fileID: 0}
+    material: {fileID: 0}
+    color: {r: 0.8584906, g: 0.3701283, b: 0.1822268, a: 1}
+  minBaseSpeed: 7
+  maxBaseSpeed: 11
+  minBetSpeed: 1.7
+  maxBetSpeed: 2.3
+  speedStepToOverride: 0
+  overrideChance: 0.1

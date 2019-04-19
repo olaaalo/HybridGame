@@ -888,6 +888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 841946524939424712}
   - component: {fileID: 3419865355760988936}
+  - component: {fileID: 4449889802106250522}
   m_Layer: 0
   m_Name: Spectator Alpha
   m_TagString: Untagged
@@ -931,6 +932,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4449889802106250522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3879186479530024905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42671b206dd8d004e9ef8e083a8ce49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3419865355760988936}
+  surfaceRenderer: {fileID: 3196554181464908148}
+  vehiculeID: 0
 --- !u!1 &3906597908784648810
 GameObject:
   m_ObjectHideFlags: 0
