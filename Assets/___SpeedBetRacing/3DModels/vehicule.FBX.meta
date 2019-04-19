@@ -41,6 +41,7 @@ ModelImporter:
     100070: tube_02_014
     100072: tube_02_015
     100074: Turbine
+    100076: attache 1
     400000: aeration_right003
     400002: aeration_top003
     400004: Line022
@@ -79,6 +80,7 @@ ModelImporter:
     400070: tube_02_014
     400072: tube_02_015
     400074: Turbine
+    400076: attache 1
     2100000: No Name
     2300000: aeration_right003
     2300002: aeration_top003
@@ -108,6 +110,7 @@ ModelImporter:
     2300050: tube_02_014
     2300052: tube_02_015
     2300054: Turbine
+    2300056: attache 1
     3300000: aeration_right003
     3300002: aeration_top003
     3300004: shape003
@@ -136,6 +139,7 @@ ModelImporter:
     3300050: tube_02_014
     3300052: tube_02_015
     3300054: Turbine
+    3300056: attache 1
     4300000: aeration_right003
     4300002: aeration_top003
     4300004: tube_01_010
@@ -164,6 +168,7 @@ ModelImporter:
     4300050: attache
     4300052: shape
     4300054: Tenant
+    4300056: attache
   externalObjects: {}
   materials:
     importMaterials: 1
