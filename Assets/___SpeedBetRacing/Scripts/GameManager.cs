@@ -11,12 +11,18 @@ using UnityEngine.UI;
 public class GameManager : MonoSingleton<GameManager>
 {
     public GameValue gameValue;
-
     
     public Transform vehiclesParent;
+    public List<Vehicle> vehicles;
 
     public Transform startTransform;
-    public List<Vehicle> vehicles;
+    public Transform endTransform;
+    public float circuitLength;
+    public List<int> vehiclesRank;
+    
+    public RectTransform vehiclesProgressionsParent;
+    public GameObject vehicleProgressionsPrefab;
+    public List<Slider> vehiclesProgressions;
 
     public int[] vehiclesBetOnStep;
     public int[] vehiclesBetAll;
@@ -39,6 +45,8 @@ public class GameManager : MonoSingleton<GameManager>
     private void SpawnVehiclesOnStart()
     {
         vehicles = new List<Vehicle>();
+        vehiclesProgressions = new List<Slider>();
+        vehiclesRank = new List<int>(gameValue.vehiclesInfos.Count);
 
         // Spawn
         for (int i = 0; i < gameValue.vehiclesInfos.Count; ++i)
@@ -47,14 +55,35 @@ public class GameManager : MonoSingleton<GameManager>
             {
                 vehicles.Add(Instantiate(gameValue.vehiclesInfos[i].prefab, startTransform.position, Quaternion.identity, vehiclesParent).GetComponent<Vehicle>());
                 vehicles[i].ID = i;
+                
+                vehiclesProgressions.Add(Instantiate(vehicleProgressionsPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
+                vehiclesProgressions[i].targetGraphic.color = gameValue.vehiclesInfos[i].color;
             }
+        }
+        
+        for (int i = 0; i < vehicles.Count; i++)
+        {
+            int randomIndex = Random.Range(i, vehicles.Count);
+
+            Vehicle tempV = vehicles[i];
+            vehicles[i] = vehicles[randomIndex];
+            vehicles[randomIndex] = tempV;
+
+            Slider tempS = vehiclesProgressions[i];
+            vehiclesProgressions[i] = vehiclesProgressions[randomIndex];
+            vehiclesProgressions[randomIndex] = tempS;
         }
 
         // Start Position
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            //vehicles[i].transform.position += Vector3
+            vehicles[i].transform.position += Vector3.forward * i * 4f - Vector3.forward * (vehicles.Count - 1) * 4f / 2;
         }
+
+        vehiclesBetOnStep = new int[vehicles.Count];
+        vehiclesBetAll = new int[vehicles.Count];
+
+        circuitLength = Vector3.Distance(startTransform.position, endTransform.position);
     }
 
     private void Update()
@@ -67,20 +96,22 @@ public class GameManager : MonoSingleton<GameManager>
         // Check Input Player 2
         for (int i = 0; i < gameValue.vehiclesInfos.Count; ++i)
         {
-            if (Input.GetKeyDown(input_playerOne[i]))
-            {
-                vehiclesBetOnStep[i]++;
-            }
+            vehiclesProgressions[i].value = 1 - (endTransform.position.x - vehicles[i].transform.position.x) / circuitLength;
 
-            if (Input.GetKeyDown(input_playerTwo[i]))
-            {
-                vehiclesBetOnStep[i]++;
-            }
+            // if (Input.GetKeyDown(input_playerOne[i]))
+            // {
+            //     vehiclesBetOnStep[i]++;
+            // }
 
-            if (Input.GetKeyDown(input_playerThree[i]))
-            {
-                vehiclesBetOnStep[i]++;
-            }
+            // if (Input.GetKeyDown(input_playerTwo[i]))
+            // {
+            //     vehiclesBetOnStep[i]++;
+            // }
+
+            // if (Input.GetKeyDown(input_playerThree[i]))
+            // {
+            //     vehiclesBetOnStep[i]++;
+            // }
         }
     }
 
