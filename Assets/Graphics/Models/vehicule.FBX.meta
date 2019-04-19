@@ -1,0 +1,160 @@
+fileFormatVersion: 2
+guid: 81db8034f1f861342ac9fc4252f52a71
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: aeration_right003
+    100002: aeration_top003
+    100004: Line022
+    100006: Line023
+    100008: Line024
+    100010: Line025
+    100012: Line026
+    100014: Line027
+    100016: Line028
+    100018: shape003
+    100020: tube_01_010
+    100022: tube_01_011
+    100024: tube_01_012
+    100026: tube_02_010
+    100028: tube_02_011
+    100030: tube_02_012
+    100032: turbine004
+    100034: V009
+    100036: //RootNode
+    400000: aeration_right003
+    400002: aeration_top003
+    400004: Line022
+    400006: Line023
+    400008: Line024
+    400010: Line025
+    400012: Line026
+    400014: Line027
+    400016: Line028
+    400018: shape003
+    400020: tube_01_010
+    400022: tube_01_011
+    400024: tube_01_012
+    400026: tube_02_010
+    400028: tube_02_011
+    400030: tube_02_012
+    400032: turbine004
+    400034: V009
+    400036: //RootNode
+    2100000: No Name
+    2300000: aeration_right003
+    2300002: aeration_top003
+    2300004: shape003
+    2300006: tube_01_010
+    2300008: tube_01_011
+    2300010: tube_01_012
+    2300012: tube_02_010
+    2300014: tube_02_011
+    2300016: tube_02_012
+    2300018: turbine004
+    3300000: aeration_right003
+    3300002: aeration_top003
+    3300004: shape003
+    3300006: tube_01_010
+    3300008: tube_01_011
+    3300010: tube_01_012
+    3300012: tube_02_010
+    3300014: tube_02_011
+    3300016: tube_02_012
+    3300018: turbine004
+    4300000: aeration_right003
+    4300002: aeration_top003
+    4300004: tube_01_010
+    4300006: tube_01_011
+    4300008: tube_01_012
+    4300010: tube_02_010
+    4300012: tube_02_011
+    4300014: tube_02_012
+    4300016: shape003
+    4300018: turbine004
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
