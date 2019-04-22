@@ -8,14 +8,19 @@ public class Vehicle : MonoBehaviour
     public TrailRenderer trail;
 
     public int ID;
+    public string machineName;
+    public Color color;
 
     public float speed;
     public float baseSpeed;
+    public int _betOnThis;
+    public int betOnThis { get {return _betOnThis; } set {_betOnThis = value; UpgradeSpeedStep(); } }
     public int speedStep;
 
     private void Start()
     {
-        meshRenderer.material = GameManager.instance.gameValue.vehiclesInfos[ID].material;
+        meshRenderer.material = GameManager.instance.gameValue.vehiclesInfos[ID - 1].material;
+        name = ID + " | " + machineName;
 
         baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
         speed = baseSpeed;
@@ -28,6 +33,21 @@ public class Vehicle : MonoBehaviour
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
+    public void UpgradeSpeedStep()
+    {
+        speedStep++;
+
+        if (Random.value > GameManager.instance.gameValue.overrideChance * speedStep || speedStep - GameManager.instance.gameValue.speedStepToOverride < 1)
+        {
+            speed += baseSpeed * Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
+        }
+        else
+        {
+            speedStep = 0;
+            speed = baseSpeed;
+        }
+    }
+
     private BetZone bZ;
     private void OnTriggerEnter(Collider col)
     {
@@ -35,10 +55,11 @@ public class Vehicle : MonoBehaviour
         {
             GameManager.instance.EndRace();
         }
+
         if (col.gameObject.layer == 11)
         {
+            GameManager.instance.CheckpointBet();
             col.gameObject.SetActive(false);
-            GameManager.instance.UpdateVehiclesSpeed();
         }
     }
 }

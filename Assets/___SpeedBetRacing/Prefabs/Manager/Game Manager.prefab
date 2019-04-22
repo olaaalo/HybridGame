@@ -44,51 +44,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameValue: {fileID: 11400000, guid: ba617f448779b0c41a11b70e4f4fa249, type: 2}
-  playerBetTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerOneBetTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerTwoBetTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerThreeBetTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  allBetTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  vehicules:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  colors:
-  - {r: 1, g: 0.4009434, b: 0.8129382, a: 1}
-  - {r: 0, g: 0.50980395, b: 1, a: 1}
-  - {r: 0.24563903, g: 0.754717, b: 0.24563903, a: 1}
-  - {r: 1, g: 0.29973018, b: 0, a: 1}
-  - {r: 1, g: 0.90361226, b: 0, a: 1}
-  bet_playerOne: 0000000000000000000000000000000000000000
-  bet_playerTwo: 0000000000000000000000000000000000000000
-  bet_playerThree: 0000000000000000000000000000000000000000
-  input_playerOne: 610000007a000000650000007200000074000000
-  input_playerTwo: 680000006a0000006b0000006c0000006d000000
-  input_playerThree: 0101000002010000030100000401000005010000
+  balanceKeyCodes: 010100000201000003010000040100000501000006010000070100000801000009010000
+  vehiclesParent: {fileID: 0}
+  vehicles: []
+  startTransform: {fileID: 0}
+  endTransform: {fileID: 0}
+  circuitLength: 0
+  vehiclesRank: []
+  vehiclesProgressionsParent: {fileID: 0}
+  vehicleProgressionsPrefab: {fileID: 3323252525684536880, guid: 42344f83dd78a914fa370d8385e30cf5,
+    type: 3}
+  vehiclesProgressions: []
+  vehiclesBetOnStep: 
+  vehiclesBetAll: 
   gameIsEnded: 1
-  playersMoney: 0f0000000f0000000f000000

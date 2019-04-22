@@ -19,7 +19,7 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: a203bb8ddcffbdd4cab1f4b48ea92518, type: 2}
     color: {r: 0.21698113, g: 0.51894236, b: 0.8679245, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Magma
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
@@ -37,7 +37,7 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: 62397fbecf49a804da74451eba574581, type: 2}
     color: {r: 0.7830189, g: 0.7445555, b: 0.35826808, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Magic Blow
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
@@ -60,4 +60,4 @@ MonoBehaviour:
   minBetSpeed: 1.7
   maxBetSpeed: 2.3
   speedStepToOverride: 2
-  overrideChance: 0.1
+  overrideChance: 0.15
