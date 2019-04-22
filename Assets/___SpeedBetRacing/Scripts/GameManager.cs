@@ -31,7 +31,7 @@ public class GameManager : MonoSingleton<GameManager>
     public int[] vehiclesBetOnStep;
     public int[] vehiclesBetAll;
 
-    public bool gameIsEnded;
+    [HideInInspector] public bool gameHasStarted;
 
     private BetZone[] betZones;
 
@@ -81,7 +81,7 @@ public class GameManager : MonoSingleton<GameManager>
         // Get info & Start Position
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            vehicles[i].transform.position += Vector3.forward * i * 4f - Vector3.forward * (vehicles.Count - 1) * 4f / 2;
+            vehicles[i].transform.position += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
         }
 
         vehiclesBetOnStep = new int[vehicles.Count];
@@ -94,9 +94,9 @@ public class GameManager : MonoSingleton<GameManager>
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
-            gameIsEnded = false;
+            gameHasStarted = true;
 
-        if (gameIsEnded) return;
+        if (!gameHasStarted) return;
 
         // Update all vehicles
         for (int i = 0; i < vehicles.Count; ++i)
@@ -131,18 +131,21 @@ public class GameManager : MonoSingleton<GameManager>
     {
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            for (int j = 0; j < vehiclesBetOnStep[i]; ++j)
+            if (!vehicles[i].isOverheated)
             {
-                vehicles[i].betOnThis++;
+                for (int j = 0; j < vehiclesBetOnStep[i]; ++j)
+                {
+                    vehicles[i].betOnThis++;
+                }
+                    
+                vehiclesBetOnStep[i] = 0;
             }
-                
-            vehiclesBetOnStep[i] = 0;
         }
     }
 
     public void EndRace()
     {
-        gameIsEnded = true;
+        gameHasStarted = false;
 
         DOVirtual.DelayedCall(3f, () =>
         {

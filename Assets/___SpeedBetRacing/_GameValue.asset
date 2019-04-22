@@ -57,7 +57,8 @@ MonoBehaviour:
     color: {r: 0.8584906, g: 0.3701283, b: 0.1822268, a: 1}
   minBaseSpeed: 7
   maxBaseSpeed: 11
+  baseAcceleration: 0.1
   minBetSpeed: 1.7
   maxBetSpeed: 2.3
   speedStepToOverride: 2
-  overrideChance: 0.15
+  overrideChance: 0.1

@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
-    public MeshRenderer meshRenderer;
-    public TrailRenderer trail;
-
     public int ID;
     public string machineName;
     public Color color;
 
-    public float speed;
+    public MeshRenderer meshRenderer;
+    public TrailRenderer trail;
+
+    public Transform engineTransform;
+    public Engine engine;
+
+    public GameObject engineDronePrefab;
+
     public float baseSpeed;
+    public float speed;
+    public float baseAcceleration;
+    public float acceleration;
     public int _betOnThis;
-    public int betOnThis { get {return _betOnThis; } set {_betOnThis = value; UpgradeSpeedStep(); } }
+    public int betOnThis { get { return _betOnThis; } set { _betOnThis = value; UpgradeSpeedStep(); } }
     public int speedStep;
+
+    public bool isOverheated;
+    public bool completeTrack;
 
     private void Start()
     {
@@ -23,12 +33,45 @@ public class Vehicle : MonoBehaviour
         name = ID + " | " + machineName;
 
         baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
+
+        baseAcceleration = GameManager.instance.gameValue.baseAcceleration;
+        acceleration = baseAcceleration;
+
+        AccelerationCoco = Acceleration();
+        StartCoroutine(AccelerationCoco);
+    }
+
+    IEnumerator AccelerationCoco;
+    float startTime;
+    float t;
+    IEnumerator Acceleration()
+    {
+        while (!GameManager.instance.gameHasStarted)
+            yield return null;
+
+        isOverheated = false;
+
+        startTime = Time.time;
+        t = 0;
+        while (Time.time - startTime < 3)
+        {
+            t += Time.deltaTime / 3;
+            speed = Mathf.Lerp(0, baseSpeed, t);
+            yield return null;
+        }
         speed = baseSpeed;
+
+        while (!completeTrack)
+        {
+            speed += acceleration;
+
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.instance.gameIsEnded) return;
+        if (!GameManager.instance.gameHasStarted) return;
 
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
@@ -39,13 +82,52 @@ public class Vehicle : MonoBehaviour
 
         if (Random.value > GameManager.instance.gameValue.overrideChance * speedStep || speedStep - GameManager.instance.gameValue.speedStepToOverride < 1)
         {
-            speed += baseSpeed * Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
+            acceleration += baseAcceleration * Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
         }
-        else
+        else if (!isOverheated)
         {
             speedStep = 0;
-            speed = baseSpeed;
+            StopCoroutine(AccelerationCoco);
+            StartCoroutine(Overheated());
         }
+    }
+
+    float speedBeforeOverheated;
+    EngineDrone drone;
+    IEnumerator Overheated()
+    {
+        isOverheated = true;
+
+        trail.emitting = false;
+        engine.DetachFromVehicle();
+        engine = null;
+
+        speedBeforeOverheated = speed;
+        acceleration = 0;
+
+        startTime = Time.time;
+        t = 0;
+
+        while (Time.time - startTime < 3)
+        {
+            t += Time.deltaTime / 3;
+            speed = Mathf.Lerp(speedBeforeOverheated, 0, t);
+
+            yield return null;
+        }
+
+        speed = 0;
+
+        drone = Instantiate(engineDronePrefab).GetComponent<EngineDrone>();
+        drone.vehicleTarget = this;
+    }
+
+    public void Repared()
+    {
+        engine.transform.SetParent(engineTransform);
+
+        AccelerationCoco = Acceleration();
+        StartCoroutine(AccelerationCoco);
     }
 
     private BetZone bZ;

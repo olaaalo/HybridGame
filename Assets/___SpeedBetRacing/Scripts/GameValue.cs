@@ -21,6 +21,8 @@ public class GameValue : ScriptableObject
     public float minBaseSpeed;
     public float maxBaseSpeed;
 
+    public float baseAcceleration;
+
     public float minBetSpeed;
     public float maxBetSpeed;
     

@@ -51,10 +51,14 @@ MonoBehaviour:
   endTransform: {fileID: 0}
   circuitLength: 0
   vehiclesRank: []
+  rankTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   vehiclesProgressionsParent: {fileID: 0}
   vehicleProgressionsPrefab: {fileID: 3323252525684536880, guid: 42344f83dd78a914fa370d8385e30cf5,
     type: 3}
   vehiclesProgressions: []
   vehiclesBetOnStep: 
   vehiclesBetAll: 
-  gameIsEnded: 1
+  gameHasStarted: 0
