@@ -51,5 +51,7 @@ public class CameraConstraint : MonoBehaviour
         {
             lookAtConstraint.target = vehicleToLookAt.transform;
         }
+
+        transform.SetParent(transformConstraint.target);
     }
 }
