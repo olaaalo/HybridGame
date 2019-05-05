@@ -8,7 +8,7 @@ public class Vehicle : MonoBehaviour
     public string machineName;
     public Color color;
 
-    public MeshRenderer meshRenderer;
+    public MeshRenderer[] meshRenderers;
     public TrailRenderer trail;
 
     public Transform engineTransform;
@@ -29,7 +29,11 @@ public class Vehicle : MonoBehaviour
 
     private void Start()
     {
-        meshRenderer.material = GameManager.instance.gameValue.vehiclesInfos[ID - 1].material;
+        for (int i = 0; i < meshRenderers.Length; ++i)
+        {
+            meshRenderers[i].material = GameManager.instance.gameValue.vehiclesInfos[ID - 1].material;
+        }
+
         name = ID + " | " + machineName;
 
         baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
