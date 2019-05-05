@@ -8,6 +8,8 @@ public class Vehicle : MonoBehaviour
     public string machineName;
     public Color color;
 
+    public CameraTarget[] cameraTargets;
+
     public MeshRenderer[] meshRenderers;
     public TrailRenderer trail;
 
@@ -26,6 +28,8 @@ public class Vehicle : MonoBehaviour
 
     public bool isOverheated;
     public bool completeTrack;
+
+    public float distanceRaycastForward;
 
     private void Start()
     {
@@ -73,12 +77,34 @@ public class Vehicle : MonoBehaviour
         }
     }
 
+    private RaycastHit hitForward;
+    private BetZone betZoneForward;
     private void FixedUpdate()
     {
         if (!GameManager.instance.gameHasStarted) return;
 
         transform.Translate(Vector3.right * speed * Time.deltaTime);
+
+        if (Physics.Raycast(transform.position, Vector3.right, out hitForward, distanceRaycastForward, 1 << 11))
+        {
+            betZoneForward = hitForward.transform.GetComponent<BetZone>();
+
+            if (!betZoneForward.wasPrepared)
+            {
+                betZoneForward.wasPrepared = true;
+
+                GameManager.instance.cameraConstraint.ChangeConstraint(betZoneForward.cameraTargets);
+            }
+        }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(transform.position, Vector3.right * distanceRaycastForward);
+    }
+#endif
 
     public void UpgradeSpeedStep()
     {
@@ -134,7 +160,7 @@ public class Vehicle : MonoBehaviour
         StartCoroutine(AccelerationCoco);
     }
 
-    private BetZone bZ;
+    private BetZone betZone;
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.layer == 9)
@@ -144,8 +170,13 @@ public class Vehicle : MonoBehaviour
 
         if (col.gameObject.layer == 11)
         {
-            GameManager.instance.CheckpointBet();
-            col.gameObject.SetActive(false);
+            betZone = col.GetComponent<BetZone>();
+
+            if (!betZone.wasActivated)
+            {
+                betZone.wasActivated = true;
+                GameManager.instance.CheckpointBet();
+            }
         }
     }
 }

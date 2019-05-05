@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class BetZone : MonoBehaviour
 {
-    public bool disable;
+    public CameraTarget[] cameraTargets;
+
+    public bool wasPrepared;
+    public bool wasActivated;
 }

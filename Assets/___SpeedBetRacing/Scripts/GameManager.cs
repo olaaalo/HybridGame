@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using DG.Tweening;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
 
 public class GameManager : MonoSingleton<GameManager>
 {
     public GameValue gameValue;
 
     public KeyCode[] balanceKeyCodes;
-    
+
+    public CameraConstraint cameraConstraint;
+
     public Transform vehiclesParent;
     [HideInInspector] public List<Vehicle> vehicles;
 
@@ -23,7 +25,7 @@ public class GameManager : MonoSingleton<GameManager>
     [HideInInspector] public float circuitLength;
     public List<Vehicle> vehiclesRank;
     public TextMeshProUGUI[] rankTexts;
-    
+
     public RectTransform vehiclesProgressionsParent;
     public GameObject vehicleProgressionsPrefab;
     [HideInInspector] public List<Slider> vehiclesProgressions;
@@ -57,7 +59,7 @@ public class GameManager : MonoSingleton<GameManager>
                 vehicles[vehicles.Count - 1].ID = i + 1;
                 vehicles[vehicles.Count - 1].machineName = gameValue.vehiclesInfos[i].name;
                 vehicles[vehicles.Count - 1].color = gameValue.vehiclesInfos[i].color;
-                
+
                 vehiclesProgressions.Add(Instantiate(vehicleProgressionsPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
                 vehiclesProgressions[vehiclesProgressions.Count - 1].targetGraphic.color = gameValue.vehiclesInfos[i].color;
             }
@@ -90,7 +92,6 @@ public class GameManager : MonoSingleton<GameManager>
         circuitLength = Vector3.Distance(startTransform.position, endTransform.position);
     }
 
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
@@ -113,10 +114,21 @@ public class GameManager : MonoSingleton<GameManager>
         UpdateVehicleRank();
     }
 
+    private Vehicle currentVehicleFirstRank;
     private void UpdateVehicleRank()
     {
         vehiclesRank = vehiclesRank.OrderBy(v => v.transform.position.x).ToList();
 
+        // Camera sur véhicle première classe
+        if (currentVehicleFirstRank != vehiclesRank[vehiclesRank.Count - 1])
+        {
+            currentVehicleFirstRank = vehiclesRank[vehiclesRank.Count - 1];
+
+            cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets);
+        }
+
+        
+        // Affichage UI classement
         for (int i = 0; i < rankTexts.Length; ++i)
         {
             rankTexts[i].text = string.Format("{0} <color=#{1}>|</color> {2}",
@@ -125,7 +137,6 @@ public class GameManager : MonoSingleton<GameManager>
                 vehiclesRank[vehiclesRank.Count - 1 - i].machineName);
         }
     }
-
 
     public void CheckpointBet()
     {
@@ -137,7 +148,7 @@ public class GameManager : MonoSingleton<GameManager>
                 {
                     vehicles[i].betOnThis++;
                 }
-                    
+
                 vehiclesBetOnStep[i] = 0;
             }
         }
