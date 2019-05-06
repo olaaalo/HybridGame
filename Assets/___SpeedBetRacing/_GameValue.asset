@@ -62,7 +62,7 @@ MonoBehaviour:
   maxBetSpeed: 5
   speedStepToOverride: 2
   overrideChance: 1
-  circuitLength: 500
+  circuitLength: 1000
   checkpointPositions:
   - 10
   - 25

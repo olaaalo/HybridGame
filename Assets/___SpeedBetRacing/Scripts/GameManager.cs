@@ -31,7 +31,12 @@ public class GameManager : MonoSingleton<GameManager>
     public int[] vehiclesBetOnStep;
     public int[] vehiclesBetAll;
 
+    public int countCheckpoint;
+    public RectTransform sectorRectTransform;
+    public TextMeshProUGUI sectorsCountText;
+
     public List<Vehicle> vehiclesRank;
+    public RectTransform rankRectTransform;
     public TextMeshProUGUI[] rankTexts;
 
     public RectTransform vehiclesProgressionsParent;
@@ -55,6 +60,10 @@ public class GameManager : MonoSingleton<GameManager>
 
         SpawnVehiclesOnStart();
         UpdateVehicleRank();
+        
+        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
+
+        rankRectTransform.localScale = new Vector3(1, 0, 1);
     }
 
     private void SpawnVehiclesOnStart()
@@ -104,8 +113,15 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) && !gameHasStarted)
+        {
             gameHasStarted = true;
+
+            for (int i = 0; i < vehicles.Count; ++i)
+            {
+                vehicles[i].DOStartRace();
+            }
+        }
 
         if (!gameHasStarted) return;
 
@@ -150,6 +166,15 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void CheckpointBet()
     {
+        countCheckpoint++;
+
+        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
+
+        if (countCheckpoint == 1)
+        {
+            rankRectTransform.DOScale(1, 0.5f);
+        }
+
         for (int i = 0; i < vehicles.Count; ++i)
         {
             if (!vehicles[i].isOverheated)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Vehicle : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Vehicle : MonoBehaviour
 
     public MeshRenderer[] meshRenderers;
     public TrailRenderer trail;
+
+    public ParticleSystem[] rowsParticles;
 
     public Transform engineTransform;
     public Engine engine;
@@ -41,23 +44,47 @@ public class Vehicle : MonoBehaviour
         name = ID + " | " + machineName;
 
         baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
-        speed = baseSpeed;
 
         baseAcceleration = GameManager.instance.gameValue.baseAcceleration;
         acceleration = baseAcceleration;
 
-        //AccelerationCoco = Acceleration();
-        //StartCoroutine(AccelerationCoco);
+        StartCoroutine(StartAnimation());
     }
+
+    private IEnumerator StartAnimation()
+    {
+        yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
+
+        for (int i = 0; i < rowsParticles.Length; ++i)
+        {
+            rowsParticles[i].Play();
+        }
+
+        transform.DOLocalMoveY(1f, 3f).SetEase(Ease.OutBack);
+
+        transform.DORotate(Vector3.right * -5f, 0.3f);
+        transform.DORotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
+        transform.DORotate(Vector3.right * -3f, 0.3f).SetDelay(0.8f);
+        transform.DORotate(Vector3.zero, 0.3f).SetDelay(1.2f);
+    }
+
+    public void DOStartRace()
+    {
+        DOVirtual.DelayedCall(Random.Range(0.1f, 0.4f), () =>
+        {
+            isStartRace = true;
+            
+            AccelerationCoco = Acceleration();
+            StartCoroutine(AccelerationCoco);
+        });
+    }
+
 
     IEnumerator AccelerationCoco;
     float startTime;
     float t;
     IEnumerator Acceleration()
     {
-        while (!GameManager.instance.gameHasStarted)
-            yield return null;
-
         isOverheated = false;
 
         startTime = Time.time;
@@ -81,10 +108,11 @@ public class Vehicle : MonoBehaviour
     private RaycastHit hitForward;
     private BetZone betZoneForward;
     private End endForward;
+    private bool isStartRace;
     private bool isArrived;
     private void FixedUpdate()
     {
-        if (!GameManager.instance.gameHasStarted || isArrived) return;
+        if (!isStartRace || isArrived) return;
 
         transform.Translate(Vector3.right * speed * Time.deltaTime);
 
@@ -141,6 +169,8 @@ public class Vehicle : MonoBehaviour
     EngineDrone drone;
     IEnumerator Overheated()
     {
+        PoolManager.instance.GetExplosionParticle(engine.transform.position, null);
+
         isOverheated = true;
 
         trail.emitting = false;
@@ -191,6 +221,7 @@ public class Vehicle : MonoBehaviour
             if (!betZone.wasActivated)
             {
                 betZone.wasActivated = true;
+                betZone.Activate();
                 GameManager.instance.CheckpointBet();
             }
         }
