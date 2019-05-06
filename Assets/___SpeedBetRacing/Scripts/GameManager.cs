@@ -77,18 +77,18 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
 
-        for (int i = 0; i < vehicles.Count; i++)
-        {
-            int randomIndex = Random.Range(i, vehicles.Count);
+        // for (int i = 0; i < vehicles.Count; i++)
+        // {
+        //     int randomIndex = Random.Range(i, vehicles.Count);
 
-            Vehicle tempV = vehicles[i];
-            vehicles[i] = vehicles[randomIndex];
-            vehicles[randomIndex] = tempV;
+        //     Vehicle tempV = vehicles[i];
+        //     vehicles[i] = vehicles[randomIndex];
+        //     vehicles[randomIndex] = tempV;
 
-            Slider tempS = vehiclesProgressions[i];
-            vehiclesProgressions[i] = vehiclesProgressions[randomIndex];
-            vehiclesProgressions[randomIndex] = tempS;
-        }
+        //     Slider tempS = vehiclesProgressions[i];
+        //     vehiclesProgressions[i] = vehiclesProgressions[randomIndex];
+        //     vehiclesProgressions[randomIndex] = tempS;
+        // }
 
         vehiclesRank = vehicles;
 
@@ -164,21 +164,21 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    public void EndRace()
-    {
-        gameHasStarted = false;
+    // public void EndRace()
+    // {
+    //     gameHasStarted = false;
 
-        DOVirtual.DelayedCall(3f, () =>
-        {
-            for (int i = 0; i < betZones.Length; ++i)
-            {
-                betZones[i].gameObject.SetActive(true);
-            }
-            // for (int i = 0; i < vehicles.Length; ++i)
-            // {
-            //     vehicles[i].transform.position = vehicles[i].basePosition;
-            //     vehicles[i].trail.Clear();
-            // }
-        });
-    }
+    //     DOVirtual.DelayedCall(3f, () =>
+    //     {
+    //         for (int i = 0; i < betZones.Length; ++i)
+    //         {
+    //             betZones[i].gameObject.SetActive(true);
+    //         }
+    //         // for (int i = 0; i < vehicles.Length; ++i)
+    //         // {
+    //         //     vehicles[i].transform.position = vehicles[i].basePosition;
+    //         //     vehicles[i].trail.Clear();
+    //         // }
+    //     });
+    // }
 }
