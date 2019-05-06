@@ -18,6 +18,8 @@ public class GameValue : ScriptableObject
 
     public List<VehicleInfo> vehiclesInfos;
 
+    [Header("VEHICLES")]
+
     public float minBaseSpeed;
     public float maxBaseSpeed;
 
@@ -28,4 +30,12 @@ public class GameValue : ScriptableObject
     
     public int speedStepToOverride;
     public float overrideChance;
+
+    
+    [Header("CIRCUIT")]
+
+    public float circuitLength;
+
+    [Range(0, 100)]
+    public float[] checkpointPositions; 
 }

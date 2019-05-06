@@ -25,7 +25,7 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: d74dafb2e8381cf48906fc318b36f946, type: 2}
     color: {r: 0.8584906, g: 0.2794144, b: 0.2794144, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Serenity
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
@@ -37,7 +37,7 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: 62397fbecf49a804da74451eba574581, type: 2}
     color: {r: 0.7830189, g: 0.7445555, b: 0.35826808, a: 1}
-  - isActive: 0
+  - isActive: 1
     name: Magic Blow
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
@@ -62,3 +62,10 @@ MonoBehaviour:
   maxBetSpeed: 2.3
   speedStepToOverride: 2
   overrideChance: 0.1
+  circuitLength: 1500
+  checkpointPositions:
+  - 10
+  - 25
+  - 40
+  - 60
+  - 80

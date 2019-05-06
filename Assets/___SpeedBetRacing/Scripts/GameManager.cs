@@ -11,18 +11,26 @@ using UnityEngine.UI;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public GameValue gameValue;
-
     public KeyCode[] balanceKeyCodes;
 
+    public GameValue gameValue;
+
+    [HideInInspector] public bool gameHasStarted;
+
     public CameraConstraint cameraConstraint;
+    
+    public Transform startTransform;
+    public Transform endTransform;
+    public Transform circuitParent;
+    public Transform roadTransform;
+    public GameObject betZonePrefab;
+    private BetZone[] betZones;
 
     public Transform vehiclesParent;
     [HideInInspector] public List<Vehicle> vehicles;
+    public int[] vehiclesBetOnStep;
+    public int[] vehiclesBetAll;
 
-    public Transform startTransform;
-    public Transform endTransform;
-    [HideInInspector] public float circuitLength;
     public List<Vehicle> vehiclesRank;
     public TextMeshProUGUI[] rankTexts;
 
@@ -30,19 +38,23 @@ public class GameManager : MonoSingleton<GameManager>
     public GameObject vehicleProgressionsPrefab;
     [HideInInspector] public List<Slider> vehiclesProgressions;
 
-    public int[] vehiclesBetOnStep;
-    public int[] vehiclesBetAll;
-
-    [HideInInspector] public bool gameHasStarted;
-
-    private BetZone[] betZones;
 
     private void Start()
     {
-        SpawnVehiclesOnStart();
-        UpdateVehicleRank();
+        roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
+
+        endTransform.position = Vector3.right * gameValue.circuitLength;
+
+        for (int i = 0; i < gameValue.checkpointPositions.Length; ++i)
+        {
+            Instantiate(betZonePrefab, Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100),
+                Quaternion.identity, circuitParent);
+        }
 
         betZones = FindObjectsOfType<BetZone>();
+
+        SpawnVehiclesOnStart();
+        UpdateVehicleRank();
     }
 
     private void SpawnVehiclesOnStart()
@@ -88,8 +100,6 @@ public class GameManager : MonoSingleton<GameManager>
 
         vehiclesBetOnStep = new int[vehicles.Count];
         vehiclesBetAll = new int[vehicles.Count];
-
-        circuitLength = Vector3.Distance(startTransform.position, endTransform.position);
     }
 
     private void Update()
@@ -102,7 +112,7 @@ public class GameManager : MonoSingleton<GameManager>
         // Update all vehicles
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            vehiclesProgressions[i].value = 1 - (endTransform.position.x - vehicles[i].transform.position.x) / circuitLength;
+            vehiclesProgressions[i].value = 1 - (endTransform.position.x - vehicles[i].transform.position.x) / gameValue.circuitLength;
 
             if (Input.GetKeyDown(balanceKeyCodes[i]))
             {
