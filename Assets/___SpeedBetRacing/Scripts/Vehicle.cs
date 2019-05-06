@@ -34,6 +34,10 @@ public class Vehicle : MonoBehaviour
 
     public float distanceRaycastForward;
 
+    public FMODUnity.StudioEventEmitter startEngineEventEmitter;
+    public FMODUnity.StudioEventEmitter engineEventEmitter;
+    public FMODUnity.StudioEventEmitter engineUpStepEventEmitter;
+
     private void Start()
     {
         for (int i = 0; i < meshRenderers.Length; ++i)
@@ -55,6 +59,8 @@ public class Vehicle : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
 
+        startEngineEventEmitter.Play();
+
         for (int i = 0; i < rowsParticles.Length; ++i)
         {
             rowsParticles[i].Play();
@@ -65,7 +71,8 @@ public class Vehicle : MonoBehaviour
         transform.DORotate(Vector3.right * -5f, 0.3f);
         transform.DORotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
         transform.DORotate(Vector3.right * -3f, 0.3f).SetDelay(0.8f);
-        transform.DORotate(Vector3.zero, 0.3f).SetDelay(1.2f);
+        transform.DORotate(Vector3.zero, 0.3f).SetDelay(1.2f)
+            .OnStart(() => engineEventEmitter.Play());
     }
 
     public void DOStartRace()
@@ -76,6 +83,8 @@ public class Vehicle : MonoBehaviour
             
             AccelerationCoco = Acceleration();
             StartCoroutine(AccelerationCoco);
+
+            engineUpStepEventEmitter.Play();
         });
     }
 
@@ -89,9 +98,9 @@ public class Vehicle : MonoBehaviour
 
         startTime = Time.time;
         t = 0;
-        while (Time.time - startTime < 3)
+        while (Time.time - startTime < 1)
         {
-            t += Time.deltaTime / 3;
+            t += Time.deltaTime;
             speed = Mathf.Lerp(0, baseSpeed, t);
             yield return null;
         }
@@ -154,6 +163,8 @@ public class Vehicle : MonoBehaviour
 
         if (Random.value > GameManager.instance.gameValue.overrideChance * speedStep || speedStep - GameManager.instance.gameValue.speedStepToOverride < 1)
         {
+            engineUpStepEventEmitter.Play();
+
             speed += Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
             //acceleration += baseAcceleration * Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
         }
@@ -183,9 +194,9 @@ public class Vehicle : MonoBehaviour
         startTime = Time.time;
         t = 0;
 
-        while (Time.time - startTime < 3)
+        while (Time.time - startTime < 1)
         {
-            t += Time.deltaTime / 3;
+            t += Time.deltaTime / 1;
             speed = Mathf.Lerp(speedBeforeOverheated, 0, t);
 
             yield return null;
