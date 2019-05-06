@@ -4859,8 +4859,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3801282556662022229}
   - component: {fileID: 3801282556676179221}
+  - component: {fileID: 2984270496083404819}
   - component: {fileID: 3801282556676226229}
-  - component: {fileID: 1933180813605541423}
+  - component: {fileID: 6954702823753995590}
   m_Layer: 0
   m_Name: ExplosiveSmoke Big
   m_TagString: Untagged
@@ -9553,6 +9554,19 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &2984270496083404819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3801282556662193269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e100d7f577e1e3c4ab05bae3a422988a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventEmitter: {fileID: 6954702823753995590}
 --- !u!199 &3801282556676226229
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -9615,7 +9629,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &1933180813605541423
+--- !u!114 &6954702823753995590
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9624,9 +9638,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3801282556662193269}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bef7484712d65a48b278a039c77af3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Event: event:/Explosion
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &3801282556662193273
 GameObject:
   m_ObjectHideFlags: 0

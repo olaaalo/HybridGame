@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DespawnParticle : MonoBehaviour {
-
+public class SpawnerParticle : MonoBehaviour
+{
 	ParticleSystem particle;
 
-	void OnSpawned ()
+	public FMODUnity.StudioEventEmitter eventEmitter;
+
+	void OnSpawned()
 	{
 		if (particle == null)
 			particle = GetComponent<ParticleSystem>();
@@ -19,9 +21,11 @@ public class DespawnParticle : MonoBehaviour {
 
 		cocoDespawn = CheckDespawnParticle();
 		StartCoroutine(cocoDespawn);
+
+		eventEmitter?.Play();
 	}
 
-	void OnDespawned ()
+	void OnDespawned()
 	{
 		if (cocoDespawn != null)
 		{
@@ -29,13 +33,13 @@ public class DespawnParticle : MonoBehaviour {
 			cocoDespawn = null;
 		}
 	}
-	
+
 	IEnumerator cocoDespawn;
-	IEnumerator CheckDespawnParticle ()
+	IEnumerator CheckDespawnParticle()
 	{
-		while(particle.isPlaying)
+		while (particle.isPlaying)
 			yield return null;
-		
+
 		PoolManager.instance.Despawn(transform);
 	}
 }
