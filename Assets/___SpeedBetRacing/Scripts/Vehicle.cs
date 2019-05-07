@@ -26,9 +26,11 @@ public class Vehicle : MonoBehaviour
     public int speedStep;
 
     public bool isOverheated;
-    public bool completeTrack;
 
     public float distanceRaycastForward;
+
+    public bool isArrived;
+    public int raceRank;
 
     public FMODUnity.StudioEventEmitter startEngineEventEmitter;
     public FMODUnity.StudioEventEmitter engineEventEmitter;
@@ -46,7 +48,7 @@ public class Vehicle : MonoBehaviour
             meshRenderers[i].material = GameManager.instance.gameValue.vehiclesInfos[ID - 1].material;
         }
 
-        baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
+        baseSpeed = GameManager.instance.gameValue.baseSpeed;
 
         StartCoroutine(StartAnimation());
     }
@@ -71,13 +73,19 @@ public class Vehicle : MonoBehaviour
             .OnStart(() => engineEventEmitter.Play());
     }
 
+    private float timeToWait;
     public void DOStartRace()
     {
-        DOVirtual.DelayedCall(Random.Range(0.1f, 0.4f), () =>
+        if (raceRank == 0)
+            timeToWait = Random.Range(0.1f, 0.3f);
+        else
+            timeToWait = 0.1f + (raceRank - 1) * 0.5f; 
+
+        DOVirtual.DelayedCall(timeToWait, () =>
         {
             isStartRace = true;
 
-            AccelerationCoco = Acceleration(baseSpeed);
+            AccelerationCoco = Acceleration(raceRank == 0 ? baseSpeed : speed);
             StartCoroutine(AccelerationCoco);
 
             engineUpStepEventEmitter.Play();
@@ -106,11 +114,10 @@ public class Vehicle : MonoBehaviour
     private RaycastHit hitForward;
     private BetZone betZoneForward;
     private End endForward;
-    private bool isStartRace;
-    private bool isArrived;
+    public bool isStartRace;
     private void FixedUpdate()
     {
-        if (!isStartRace || isArrived || isOverheated ) return;
+        if (!GameManager.instance.gameHasStarted || !isStartRace || isArrived || isOverheated) return;
 
         transform.Translate(Vector3.right * speed * Time.deltaTime, transform);
 
@@ -131,7 +138,7 @@ public class Vehicle : MonoBehaviour
 
             if (!endForward.wasPrepared)
             {
-                betZoneForward.wasPrepared = true;
+                endForward.wasPrepared = true;
 
                 GameManager.instance.cameraConstraint.ChangeConstraint(endForward.cameraTargets);
             }
@@ -149,19 +156,37 @@ public class Vehicle : MonoBehaviour
     private float saveSpeed;
     public void UpgradeSpeedStep(int step, int stepToOverride)
     {
-        if (!isOverheated)
+        if (!GameManager.instance.gameValue.withResetSpeed)
         {
-            if (speedStep + step >= stepToOverride)
-                StartCoroutine(Overheated(speed));
-            else
-                engineUpStepEventEmitter.Play();
+            if (!isOverheated)
+            {
+                if (Random.value < GameManager.instance.gameValue.overrideChance * (speedStep + step))
+                    StartCoroutine(Overheated(speed));
+                else
+                    engineUpStepEventEmitter.Play();
+            }
+
+            speedStep += step;
+
+            speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * speedStep;
+            saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * speedStep;
         }
+        else
+        {
+            if (!isOverheated)
+            {
+                if (speedStep + step >= stepToOverride)
+                    StartCoroutine(Overheated(speed));
+                else
+                    engineUpStepEventEmitter.Play();
+            }
 
-        speedStep += step;
-        speedStep = speedStep % stepToOverride;
+            speedStep += step;
+            speedStep = speedStep % stepToOverride;
 
-        speed = GameManager.instance.gameValue.maxBaseSpeed + GameManager.instance.gameValue.maxBetSpeed * (speedStep % stepToOverride);
-        saveSpeed = GameManager.instance.gameValue.maxBaseSpeed + GameManager.instance.gameValue.maxBetSpeed * (speedStep % stepToOverride);
+            speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
+            saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
+        }
     }
 
     EngineDrone drone;
@@ -205,8 +230,13 @@ public class Vehicle : MonoBehaviour
     {
         if (col.gameObject.layer == 9)
         {
-            //GameManager.instance.EndRace();
             isArrived = true;
+
+            GameManager.instance.CheckEndRace();
+
+            raceRank = GameManager.instance.countVehiclesArrived;
+
+            transform.DOLocalMoveX(GameManager.instance.endTransform.localPosition.x + 5 + 0.6f / raceRank, 0.5f);
         }
 
         if (col.gameObject.layer == 11)

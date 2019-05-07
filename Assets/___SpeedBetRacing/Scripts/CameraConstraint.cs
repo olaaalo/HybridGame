@@ -42,7 +42,8 @@ public class CameraConstraint : MonoBehaviour
         currentCameraTarget = camTarget;
         currentVehicleTarget = vehicleToLookAt;
 
-        camTarget.tweenAnimation?.DORestart();
+        camTarget.tweenAnimation?.DOKill();
+        camTarget.tweenAnimation?.DOPlay();
 
         transformConstraint.target = currentCameraTarget.transformTarget;
 

@@ -18,9 +18,11 @@ public class GameManager : MonoSingleton<GameManager>
     [HideInInspector] public bool gameHasStarted;
 
     public CameraConstraint cameraConstraint;
+    public CameraTarget startCameraTarget;
 
     public Transform startTransform;
     public Transform endTransform;
+    public End end;
     public Transform circuitParent;
     public Transform roadTransform;
     public GameObject betZonePrefab;
@@ -42,6 +44,9 @@ public class GameManager : MonoSingleton<GameManager>
     public TextMeshProUGUI[] speedStepRankedTexts;
 
     public Image timeToBetImage;
+    public RectTransform ratingRectTransform;
+    public TextMeshProUGUI[] ratingVehicleTexts;
+    public TextMeshProUGUI[] ratingVehicleBetTexts;
 
     public RectTransform vehiclesProgressionsParent;
     public GameObject vehicleProgressionsPrefab;
@@ -60,14 +65,9 @@ public class GameManager : MonoSingleton<GameManager>
                 var checkpoint = Instantiate(betZonePrefab, circuitParent);
                 checkpoint.transform.localPosition = Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100);
             }
+        }
 
-            sectorRectTransform.gameObject.SetActive(true);
-            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
-        }
-        else
-        {
-            sectorRectTransform.gameObject.SetActive(false);
-        }
+        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace, gameValue.stepRacing);
 
         betZones = FindObjectsOfType<BetZone>();
 
@@ -75,8 +75,15 @@ public class GameManager : MonoSingleton<GameManager>
         UpdateVehicleRank();
 
         rankRectTransform.localScale = new Vector3(1, 0, 1);
+        ratingRectTransform.localScale = new Vector3(1, 0, 1);
 
         timeToBetImage.fillAmount = 0;
+
+        if (!gameValue.withResetSpeed)
+        {
+            for (int i = 0; i < speedStepRankedTexts.Length; ++i)
+                speedStepRankedTexts[i].gameObject.SetActive(false);
+        }
     }
 
     private void SpawnVehiclesOnStart()
@@ -109,27 +116,34 @@ public class GameManager : MonoSingleton<GameManager>
 
         vehiclesBetOnStep = new int[vehicles.Count];
         vehiclesBetAll = new int[vehicles.Count];
+
+        StartRace();
     }
 
     private void StartRace()
     {
-        rankRectTransform.DOScale(1, 0.5f);
-
-        for (int i = 0; i < vehicles.Count; ++i)
+        DOVirtual.DelayedCall(3f, () =>
         {
-            vehicles[i].DOStartRace();
-        }
+            gameHasStarted = true;
+
+            rankRectTransform.DOScale(1, 0.5f);
+
+            for (int i = 0; i < vehicles.Count; ++i)
+            {
+                vehicles[i].DOStartRace();
+            }
+        });
     }
 
     private float timeCount;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && !gameHasStarted)
-        {
-            gameHasStarted = true;
+        // if (Input.GetKeyDown(KeyCode.Return) && !gameHasStarted)
+        // {
+        //     gameHasStarted = true;
 
-            StartRace();
-        }
+        //     StartRace();
+        // }
 
         if (!gameHasStarted) return;
 
@@ -168,7 +182,10 @@ public class GameManager : MonoSingleton<GameManager>
         {
             currentVehicleFirstRank = vehiclesRank[vehiclesRank.Count - 1];
 
-            cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets);
+            if (countVehiclesArrived == 0)
+            {
+                cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets);
+            }
         }
 
         // Affichage UI classement
@@ -181,17 +198,18 @@ public class GameManager : MonoSingleton<GameManager>
 
             speedStepImages[i].color = vehiclesRank[vehiclesRank.Count - 1 - i].isOverheated ? Color.red : Color.white;
 
-            speedStepRankedTexts[i].text = string.Format("{0} / {1}",
-                vehiclesRank[vehiclesRank.Count - 1 - i].speedStep,
-                gameValue.speedStepToOverride);
+            if (gameValue.withResetSpeed)
+            {
+                speedStepRankedTexts[i].text = string.Format("{0} / {1}",
+                    vehiclesRank[vehiclesRank.Count - 1 - i].speedStep,
+                    gameValue.speedStepToOverride);
+            }
         }
     }
 
     public void UpdateBetValue()
     {
         countCheckpoint++;
-
-        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
 
         for (int i = 0; i < vehicles.Count; ++i)
         {
@@ -204,21 +222,61 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    // public void EndRace()
-    // {
-    //     gameHasStarted = false;
+    public int countVehiclesArrived;
+    public void CheckEndRace()
+    {
+        countVehiclesArrived++;
 
-    //     DOVirtual.DelayedCall(3f, () =>
-    //     {
-    //         for (int i = 0; i < betZones.Length; ++i)
-    //         {
-    //             betZones[i].gameObject.SetActive(true);
-    //         }
-    //         // for (int i = 0; i < vehicles.Length; ++i)
-    //         // {
-    //         //     vehicles[i].transform.position = vehicles[i].basePosition;
-    //         //     vehicles[i].trail.Clear();
-    //         // }
-    //     });
-    // }
+        if (countVehiclesArrived == vehicles.Count)
+            EndRace();
+    }
+
+    public int countRace;
+    private void EndRace()
+    {
+        countRace++;
+
+        gameHasStarted = false;
+
+        timeToBetImage.fillAmount = 0;
+        countVehiclesArrived = 0;
+
+        rankRectTransform.DOScaleY(0, 0.5f);
+        ratingRectTransform.DOScale(1, 0.3f);
+
+        for (int i = 0; i < ratingVehicleTexts.Length; ++i)
+        {
+            ratingVehicleTexts[i].text = string.Format("<color=#{0}>|</color> {1}",
+                ColorUtility.ToHtmlStringRGB(vehicles[i].color),
+                vehicles[i].machineName);
+
+            ratingVehicleBetTexts[i].text = vehiclesBetAll[i].ToString();
+        }
+
+        if (countRace == gameValue.stepRacing)
+        {
+            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace, gameValue.stepRacing);
+            return;
+        }
+
+        DOVirtual.DelayedCall(5f, () =>
+        {
+            cameraConstraint.ChangeConstraint(startCameraTarget);
+
+            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace, gameValue.stepRacing);
+
+            ratingRectTransform.DOScaleY(0, 0.3f);
+
+            for (int i = 0; i < vehicles.Count; ++i)
+            {
+                vehicles[i].transform.localPosition = new Vector3(0, vehicles[i].transform.localPosition.y, vehicles[i].transform.localPosition.z);
+                vehicles[i].isArrived = false;
+                vehicles[i].isStartRace = false;
+            }
+
+            end.wasPrepared = false;
+
+            StartRace();
+        });
+    }
 }

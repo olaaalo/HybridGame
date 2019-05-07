@@ -55,13 +55,12 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: 61a912182470ad24fa2c945aeb5a9c79, type: 2}
     color: {r: 0.8584906, g: 0.3701283, b: 0.1822268, a: 1}
-  minBaseSpeed: 25
-  maxBaseSpeed: 25
-  baseAcceleration: 0
-  minBetSpeed: 12.5
-  maxBetSpeed: 12.5
+  baseSpeed: 25
+  addBetSpeed: 12.5
+  withResetSpeed: 1
   speedStepToOverride: 4
-  overrideChance: 1
+  overrideChance: 0.1
+  stepRacing: 3
   checkpointPositions: []
   timeToApplyBet: 3
   circuitLength: 1650
