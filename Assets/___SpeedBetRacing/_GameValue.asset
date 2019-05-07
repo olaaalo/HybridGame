@@ -20,7 +20,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: a203bb8ddcffbdd4cab1f4b48ea92518, type: 2}
     color: {r: 0.21698113, g: 0.51894236, b: 0.8679245, a: 1}
   - isActive: 1
-    name: Magma
+    name: Burning Line
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: d74dafb2e8381cf48906fc318b36f946, type: 2}

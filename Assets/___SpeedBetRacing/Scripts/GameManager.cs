@@ -67,7 +67,7 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
 
-        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace, gameValue.stepRacing);
+        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
 
         betZones = FindObjectsOfType<BetZone>();
 
@@ -239,7 +239,6 @@ public class GameManager : MonoSingleton<GameManager>
         gameHasStarted = false;
 
         timeToBetImage.fillAmount = 0;
-        countVehiclesArrived = 0;
 
         rankRectTransform.DOScaleY(0, 0.5f);
         ratingRectTransform.DOScale(1, 0.3f);
@@ -255,15 +254,17 @@ public class GameManager : MonoSingleton<GameManager>
 
         if (countRace == gameValue.stepRacing)
         {
-            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace, gameValue.stepRacing);
+            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
             return;
         }
 
         DOVirtual.DelayedCall(5f, () =>
         {
+            countVehiclesArrived = 0;
+
             cameraConstraint.ChangeConstraint(startCameraTarget);
 
-            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace, gameValue.stepRacing);
+            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
 
             ratingRectTransform.DOScaleY(0, 0.3f);
 

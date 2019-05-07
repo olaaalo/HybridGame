@@ -79,7 +79,7 @@ public class Vehicle : MonoBehaviour
         if (raceRank == 0)
             timeToWait = Random.Range(0.1f, 0.3f);
         else
-            timeToWait = 0.1f + (raceRank - 1) * 0.5f; 
+            timeToWait = 0.1f + (raceRank - 1) * 0.8f; 
 
         DOVirtual.DelayedCall(timeToWait, () =>
         {
@@ -235,8 +235,8 @@ public class Vehicle : MonoBehaviour
             GameManager.instance.CheckEndRace();
 
             raceRank = GameManager.instance.countVehiclesArrived;
-
-            transform.DOLocalMoveX(GameManager.instance.endTransform.localPosition.x + 5 + 0.6f / raceRank, 0.5f);
+            
+            transform.DOLocalMoveX(GameManager.instance.endTransform.localPosition.x + 5f + 0.6f / raceRank, 0.5f);
         }
 
         if (col.gameObject.layer == 11)
