@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Vehicle : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Vehicle : MonoBehaviour
 
     public MeshRenderer[] meshRenderers;
     public TrailRenderer trail;
+
+    public ParticleSystem[] rowsParticles;
 
     public Transform engineTransform;
     public Engine engine;
@@ -31,6 +34,10 @@ public class Vehicle : MonoBehaviour
 
     public float distanceRaycastForward;
 
+    public FMODUnity.StudioEventEmitter startEngineEventEmitter;
+    public FMODUnity.StudioEventEmitter engineEventEmitter;
+    public FMODUnity.StudioEventEmitter engineUpStepEventEmitter;
+
     private void Start()
     {
         for (int i = 0; i < meshRenderers.Length; ++i)
@@ -41,30 +48,59 @@ public class Vehicle : MonoBehaviour
         name = ID + " | " + machineName;
 
         baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
-        speed = baseSpeed;
 
         baseAcceleration = GameManager.instance.gameValue.baseAcceleration;
         acceleration = baseAcceleration;
 
-        //AccelerationCoco = Acceleration();
-        //StartCoroutine(AccelerationCoco);
+        StartCoroutine(StartAnimation());
     }
+
+    private IEnumerator StartAnimation()
+    {
+        yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
+
+        startEngineEventEmitter.Play();
+
+        for (int i = 0; i < rowsParticles.Length; ++i)
+        {
+            rowsParticles[i].Play();
+        }
+
+        transform.DOLocalMoveY(1f, 3f).SetEase(Ease.OutBack);
+
+        transform.DOLocalRotate(Vector3.right * -5f, 0.3f);
+        transform.DOLocalRotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
+        transform.DOLocalRotate(Vector3.right * -3f, 0.3f).SetDelay(0.8f);
+        transform.DOLocalRotate(Vector3.zero, 0.3f).SetDelay(1.2f)
+            .OnStart(() => engineEventEmitter.Play());
+    }
+
+    public void DOStartRace()
+    {
+        DOVirtual.DelayedCall(Random.Range(0.1f, 0.4f), () =>
+        {
+            isStartRace = true;
+            
+            AccelerationCoco = Acceleration();
+            StartCoroutine(AccelerationCoco);
+
+            engineUpStepEventEmitter.Play();
+        });
+    }
+
 
     IEnumerator AccelerationCoco;
     float startTime;
     float t;
     IEnumerator Acceleration()
     {
-        while (!GameManager.instance.gameHasStarted)
-            yield return null;
-
         isOverheated = false;
 
         startTime = Time.time;
         t = 0;
-        while (Time.time - startTime < 3)
+        while (Time.time - startTime < 1)
         {
-            t += Time.deltaTime / 3;
+            t += Time.deltaTime;
             speed = Mathf.Lerp(0, baseSpeed, t);
             yield return null;
         }
@@ -81,14 +117,15 @@ public class Vehicle : MonoBehaviour
     private RaycastHit hitForward;
     private BetZone betZoneForward;
     private End endForward;
+    private bool isStartRace;
     private bool isArrived;
     private void FixedUpdate()
     {
-        if (!GameManager.instance.gameHasStarted || isArrived) return;
+        if (!isStartRace || isArrived) return;
 
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
+        transform.Translate(Vector3.right * speed * Time.deltaTime, transform);
 
-        if (Physics.Raycast(transform.position, Vector3.right, out hitForward, distanceRaycastForward, 1 << 11))
+        if (Physics.Raycast(transform.position, transform.right, out hitForward, distanceRaycastForward, 1 << 11))
         {
             betZoneForward = hitForward.transform.GetComponent<BetZone>();
 
@@ -99,7 +136,7 @@ public class Vehicle : MonoBehaviour
                 GameManager.instance.cameraConstraint.ChangeConstraint(betZoneForward.cameraTargets);
             }
         }
-        else if (Physics.Raycast(transform.position, Vector3.right, out hitForward, distanceRaycastForward, 1 << 9))
+        else if (Physics.Raycast(transform.position, transform.right, out hitForward, distanceRaycastForward, 1 << 9))
         {
             endForward = hitForward.transform.GetComponent<End>();
 
@@ -116,7 +153,7 @@ public class Vehicle : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position, Vector3.right * distanceRaycastForward);
+        Gizmos.DrawRay(transform.position, transform.right * distanceRaycastForward);
     }
 #endif
 
@@ -126,6 +163,8 @@ public class Vehicle : MonoBehaviour
 
         if (Random.value > GameManager.instance.gameValue.overrideChance * speedStep || speedStep - GameManager.instance.gameValue.speedStepToOverride < 1)
         {
+            engineUpStepEventEmitter.Play();
+
             speed += Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
             //acceleration += baseAcceleration * Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
         }
@@ -141,6 +180,8 @@ public class Vehicle : MonoBehaviour
     EngineDrone drone;
     IEnumerator Overheated()
     {
+        PoolManager.instance.GetExplosionParticle(engine.transform.position, null);
+
         isOverheated = true;
 
         trail.emitting = false;
@@ -153,9 +194,9 @@ public class Vehicle : MonoBehaviour
         startTime = Time.time;
         t = 0;
 
-        while (Time.time - startTime < 3)
+        while (Time.time - startTime < 1)
         {
-            t += Time.deltaTime / 3;
+            t += Time.deltaTime / 1;
             speed = Mathf.Lerp(speedBeforeOverheated, 0, t);
 
             yield return null;
@@ -191,6 +232,7 @@ public class Vehicle : MonoBehaviour
             if (!betZone.wasActivated)
             {
                 betZone.wasActivated = true;
+                betZone.Activate();
                 GameManager.instance.CheckpointBet();
             }
         }

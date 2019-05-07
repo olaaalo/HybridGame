@@ -263,6 +263,9 @@ GameObject:
   - component: {fileID: 3915200254371551709}
   - component: {fileID: 7343837487601205353}
   - component: {fileID: 7812506730631197170}
+  - component: {fileID: 5761402159721778026}
+  - component: {fileID: 6502318159998342978}
+  - component: {fileID: 4721617618890420508}
   m_Layer: 10
   m_Name: Vehicle Type 0
   m_TagString: Untagged
@@ -323,6 +326,11 @@ MonoBehaviour:
   - {fileID: 8246707012397622129}
   - {fileID: 4979055694945304553}
   trail: {fileID: 2364750801379129888}
+  rowsParticles:
+  - {fileID: 276558472782349682}
+  - {fileID: 954586701598899097}
+  - {fileID: 4810037919752199884}
+  - {fileID: 2900006745509165989}
   engineTransform: {fileID: 1305244161298891393}
   engine: {fileID: 3503355254343560424}
   engineDronePrefab: {fileID: 6009586301857708838, guid: 677ab7ef4c247ef4eadaeeb854073179,
@@ -336,6 +344,9 @@ MonoBehaviour:
   isOverheated: 0
   completeTrack: 0
   distanceRaycastForward: 30
+  startEngineEventEmitter: {fileID: 5761402159721778026}
+  engineEventEmitter: {fileID: 6502318159998342978}
+  engineUpStepEventEmitter: {fileID: 4721617618890420508}
 --- !u!54 &7812506730631197170
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -352,6 +363,75 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 124
   m_CollisionDetection: 0
+--- !u!114 &5761402159721778026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3915200254371551708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/StartEngine
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &6502318159998342978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3915200254371551708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/Engine
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &4721617618890420508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3915200254371551708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: event:/EngineUpStep
+  PlayEvent: 0
+  StopEvent: 0
+  CollisionTag: 
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6209283573278275079
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +922,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vortex_Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -899,6 +984,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b93c0444844b4243b2af58d8f51c842, type: 3}
+--- !u!198 &2900006745509165989 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
+    type: 3}
+  m_PrefabInstance: {fileID: 994803375192309350}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2900006745527516901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
@@ -1126,6 +1217,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vortex_Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1183,6 +1279,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b93c0444844b4243b2af58d8f51c842, type: 3}
+--- !u!198 &276558472782349682 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
+    type: 3}
+  m_PrefabInstance: {fileID: 2748933912509808817}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &276558472768192562 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
@@ -1308,6 +1410,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vortex_Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1368,6 +1475,12 @@ PrefabInstance:
 --- !u!4 &954586701617250009 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
+    type: 3}
+  m_PrefabInstance: {fileID: 2940845261647265370}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &954586701598899097 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
     type: 3}
   m_PrefabInstance: {fileID: 2940845261647265370}
   m_PrefabAsset: {fileID: 0}
@@ -1465,12 +1578,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3985859784e56a64f81c8e2d3596d656, type: 3}
---- !u!4 &1291455173737432756 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
-    type: 3}
-  m_PrefabInstance: {fileID: 3047310296674187847}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1291455173737432759 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4298144002262334704, guid: 3985859784e56a64f81c8e2d3596d656,
@@ -1483,6 +1590,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dfd4e28dd5afbe439bed64c82adb08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1291455173737432756 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
+    type: 3}
+  m_PrefabInstance: {fileID: 3047310296674187847}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5660807714839924202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1689,6 +1802,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3985859784e56a64f81c8e2d3596d656, type: 3}
+--- !u!4 &8447481354383546877 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
+    type: 3}
+  m_PrefabInstance: {fileID: 5664799056230491406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8447481354383546878 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4298144002262334704, guid: 3985859784e56a64f81c8e2d3596d656,
@@ -1701,12 +1820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dfd4e28dd5afbe439bed64c82adb08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &8447481354383546877 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
-    type: 3}
-  m_PrefabInstance: {fileID: 5664799056230491406}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7435465678674467599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1718,6 +1831,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Vortex_Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
         type: 3}
@@ -1779,6 +1897,12 @@ PrefabInstance:
 --- !u!4 &4810037919766354828 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2733865994049355907, guid: 3b93c0444844b4243b2af58d8f51c842,
+    type: 3}
+  m_PrefabInstance: {fileID: 7435465678674467599}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4810037919752199884 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2733865994068755907, guid: 3b93c0444844b4243b2af58d8f51c842,
     type: 3}
   m_PrefabInstance: {fileID: 7435465678674467599}
   m_PrefabAsset: {fileID: 0}

@@ -142,6 +142,7 @@ MonoBehaviour:
   - {fileID: 4880668469557852895}
   - {fileID: 6260446909806706308}
   - {fileID: 3037420145526027850}
+  shapeObject: {fileID: 2519342737826911228}
   wasPrepared: 0
   wasActivated: 0
 --- !u!1001 &1261296745500101306

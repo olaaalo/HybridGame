@@ -77,6 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformTarget: {fileID: 8426687034624314689}
   lookAtTarget: {fileID: 4298144004130013925}
+  tweenAnimation: {fileID: 0}
   drawGizmos: 1
 --- !u!1 &4298144004130013946
 GameObject:

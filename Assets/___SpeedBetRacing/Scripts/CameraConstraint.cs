@@ -21,6 +21,7 @@ public class CameraConstraint : MonoBehaviour
         if (currentCameraTarget != null)
         {
             ChangeConstraint(currentCameraTarget);
+            transform.SetParent(transformConstraint.target);
         }
     }
 
@@ -40,6 +41,8 @@ public class CameraConstraint : MonoBehaviour
 
         currentCameraTarget = camTarget;
         currentVehicleTarget = vehicleToLookAt;
+
+        camTarget.tweenAnimation?.DORestart();
 
         transformConstraint.target = currentCameraTarget.transformTarget;
 
