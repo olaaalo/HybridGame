@@ -60,12 +60,8 @@ MonoBehaviour:
   baseAcceleration: 0
   minBetSpeed: 12.5
   maxBetSpeed: 12.5
-  speedStepToOverride: 2
+  speedStepToOverride: 4
   overrideChance: 1
+  checkpointPositions: []
+  timeToApplyBet: 3
   circuitLength: 1650
-  checkpointPositions:
-  - 10
-  - 25
-  - 40
-  - 60
-  - 80

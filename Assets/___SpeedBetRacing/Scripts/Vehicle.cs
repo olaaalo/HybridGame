@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
@@ -23,10 +23,6 @@ public class Vehicle : MonoBehaviour
 
     public float baseSpeed;
     public float speed;
-    public float baseAcceleration;
-    public float acceleration;
-    public int _betOnThis;
-    public int betOnThis { get { return _betOnThis; } set { _betOnThis = value; UpgradeSpeedStep(); } }
     public int speedStep;
 
     public bool isOverheated;
@@ -40,17 +36,17 @@ public class Vehicle : MonoBehaviour
 
     private void Start()
     {
+
+#if UNITY_EDITOR
+        name = ID + " | " + machineName;
+#endif
+
         for (int i = 0; i < meshRenderers.Length; ++i)
         {
             meshRenderers[i].material = GameManager.instance.gameValue.vehiclesInfos[ID - 1].material;
         }
 
-        name = ID + " | " + machineName;
-
         baseSpeed = Random.Range(GameManager.instance.gameValue.minBaseSpeed, GameManager.instance.gameValue.maxBaseSpeed);
-
-        baseAcceleration = GameManager.instance.gameValue.baseAcceleration;
-        acceleration = baseAcceleration;
 
         StartCoroutine(StartAnimation());
     }
@@ -80,19 +76,18 @@ public class Vehicle : MonoBehaviour
         DOVirtual.DelayedCall(Random.Range(0.1f, 0.4f), () =>
         {
             isStartRace = true;
-            
-            AccelerationCoco = Acceleration();
+
+            AccelerationCoco = Acceleration(baseSpeed);
             StartCoroutine(AccelerationCoco);
 
             engineUpStepEventEmitter.Play();
         });
     }
 
-
     IEnumerator AccelerationCoco;
     float startTime;
     float t;
-    IEnumerator Acceleration()
+    IEnumerator Acceleration(float speedToGo)
     {
         isOverheated = false;
 
@@ -101,17 +96,11 @@ public class Vehicle : MonoBehaviour
         while (Time.time - startTime < 1)
         {
             t += Time.deltaTime;
-            speed = Mathf.Lerp(0, baseSpeed, t);
+            speed = Mathf.Lerp(0, speedToGo, t);
             yield return null;
         }
-        speed = baseSpeed;
 
-        while (!completeTrack)
-        {
-            speed += acceleration;
-
-            yield return new WaitForSeconds(0.1f);
-        }
+        speed = speedToGo;
     }
 
     private RaycastHit hitForward;
@@ -121,7 +110,7 @@ public class Vehicle : MonoBehaviour
     private bool isArrived;
     private void FixedUpdate()
     {
-        if (!isStartRace || isArrived) return;
+        if (!isStartRace || isArrived || isOverheated ) return;
 
         transform.Translate(Vector3.right * speed * Time.deltaTime, transform);
 
@@ -157,28 +146,26 @@ public class Vehicle : MonoBehaviour
     }
 #endif
 
-    public void UpgradeSpeedStep()
+    private float saveSpeed;
+    public void UpgradeSpeedStep(int step, int stepToOverride)
     {
-        speedStep++;
-
-        if (Random.value > GameManager.instance.gameValue.overrideChance * speedStep || speedStep - GameManager.instance.gameValue.speedStepToOverride < 1)
+        if (!isOverheated)
         {
-            engineUpStepEventEmitter.Play();
+            if (speedStep + step >= stepToOverride)
+                StartCoroutine(Overheated(speed));
+            else
+                engineUpStepEventEmitter.Play();
+        }
 
-            speed += Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
-            //acceleration += baseAcceleration * Random.Range(GameManager.instance.gameValue.minBetSpeed, GameManager.instance.gameValue.maxBetSpeed);
-        }
-        else if (!isOverheated)
-        {
-            speedStep = 0;
-            //StopCoroutine(AccelerationCoco);
-            StartCoroutine(Overheated());
-        }
+        speedStep += step;
+        speedStep = speedStep % stepToOverride;
+
+        speed = GameManager.instance.gameValue.maxBaseSpeed + GameManager.instance.gameValue.maxBetSpeed * (speedStep % stepToOverride);
+        saveSpeed = GameManager.instance.gameValue.maxBaseSpeed + GameManager.instance.gameValue.maxBetSpeed * (speedStep % stepToOverride);
     }
 
-    float speedBeforeOverheated;
     EngineDrone drone;
-    IEnumerator Overheated()
+    IEnumerator Overheated(float sp)
     {
         PoolManager.instance.GetExplosionParticle(engine.transform.position, null);
 
@@ -188,16 +175,13 @@ public class Vehicle : MonoBehaviour
         engine.DetachFromVehicle();
         engine = null;
 
-        speedBeforeOverheated = speed;
-        acceleration = 0;
-
         startTime = Time.time;
         t = 0;
 
         while (Time.time - startTime < 1)
         {
             t += Time.deltaTime / 1;
-            speed = Mathf.Lerp(speedBeforeOverheated, 0, t);
+            speed = Mathf.Lerp(sp, 0, t);
 
             yield return null;
         }
@@ -212,7 +196,7 @@ public class Vehicle : MonoBehaviour
     {
         engine.transform.SetParent(engineTransform);
 
-        AccelerationCoco = Acceleration();
+        AccelerationCoco = Acceleration(saveSpeed);
         StartCoroutine(AccelerationCoco);
     }
 
@@ -233,7 +217,7 @@ public class Vehicle : MonoBehaviour
             {
                 betZone.wasActivated = true;
                 betZone.Activate();
-                GameManager.instance.CheckpointBet();
+                GameManager.instance.UpdateBetValue();
             }
         }
     }

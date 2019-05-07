@@ -31,11 +31,15 @@ public class GameValue : ScriptableObject
     public int speedStepToOverride;
     public float overrideChance;
 
+
+    [Header("BETS")]
+
+    [Range(0, 100)]
+    public float[] checkpointPositions; 
+    public float timeToApplyBet;
+
     
     [Header("CIRCUIT")]
 
     public float circuitLength;
-
-    [Range(0, 100)]
-    public float[] checkpointPositions; 
 }

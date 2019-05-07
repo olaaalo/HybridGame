@@ -18,7 +18,7 @@ public class GameManager : MonoSingleton<GameManager>
     [HideInInspector] public bool gameHasStarted;
 
     public CameraConstraint cameraConstraint;
-    
+
     public Transform startTransform;
     public Transform endTransform;
     public Transform circuitParent;
@@ -38,11 +38,14 @@ public class GameManager : MonoSingleton<GameManager>
     public List<Vehicle> vehiclesRank;
     public RectTransform rankRectTransform;
     public TextMeshProUGUI[] rankTexts;
+    public Image[] speedStepImages;
+    public TextMeshProUGUI[] speedStepRankedTexts;
+
+    public Image timeToBetImage;
 
     public RectTransform vehiclesProgressionsParent;
     public GameObject vehicleProgressionsPrefab;
     [HideInInspector] public List<Slider> vehiclesProgressions;
-
 
     private void Start()
     {
@@ -50,20 +53,30 @@ public class GameManager : MonoSingleton<GameManager>
 
         endTransform.localPosition = Vector3.right * gameValue.circuitLength;
 
-        for (int i = 0; i < gameValue.checkpointPositions.Length; ++i)
+        if (gameValue.checkpointPositions.Length > 0)
         {
-            var checkpoint = Instantiate(betZonePrefab, circuitParent);
-            checkpoint.transform.localPosition = Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100);
+            for (int i = 0; i < gameValue.checkpointPositions.Length; ++i)
+            {
+                var checkpoint = Instantiate(betZonePrefab, circuitParent);
+                checkpoint.transform.localPosition = Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100);
+            }
+
+            sectorRectTransform.gameObject.SetActive(true);
+            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
+        }
+        else
+        {
+            sectorRectTransform.gameObject.SetActive(false);
         }
 
         betZones = FindObjectsOfType<BetZone>();
 
         SpawnVehiclesOnStart();
         UpdateVehicleRank();
-        
-        sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
 
         rankRectTransform.localScale = new Vector3(1, 0, 1);
+
+        timeToBetImage.fillAmount = 0;
     }
 
     private void SpawnVehiclesOnStart()
@@ -86,19 +99,6 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
 
-        // for (int i = 0; i < vehicles.Count; i++)
-        // {
-        //     int randomIndex = Random.Range(i, vehicles.Count);
-
-        //     Vehicle tempV = vehicles[i];
-        //     vehicles[i] = vehicles[randomIndex];
-        //     vehicles[randomIndex] = tempV;
-
-        //     Slider tempS = vehiclesProgressions[i];
-        //     vehiclesProgressions[i] = vehiclesProgressions[randomIndex];
-        //     vehiclesProgressions[randomIndex] = tempS;
-        // }
-
         vehiclesRank = vehicles;
 
         // Get info & Start Position
@@ -111,16 +111,24 @@ public class GameManager : MonoSingleton<GameManager>
         vehiclesBetAll = new int[vehicles.Count];
     }
 
+    private void StartRace()
+    {
+        rankRectTransform.DOScale(1, 0.5f);
+
+        for (int i = 0; i < vehicles.Count; ++i)
+        {
+            vehicles[i].DOStartRace();
+        }
+    }
+
+    private float timeCount;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return) && !gameHasStarted)
         {
             gameHasStarted = true;
 
-            for (int i = 0; i < vehicles.Count; ++i)
-            {
-                vehicles[i].DOStartRace();
-            }
+            StartRace();
         }
 
         if (!gameHasStarted) return;
@@ -135,6 +143,16 @@ public class GameManager : MonoSingleton<GameManager>
                 vehiclesBetOnStep[i]++;
                 vehiclesBetAll[i]++;
             }
+        }
+
+        // Update Bet values
+        timeCount += Time.deltaTime;
+        timeToBetImage.fillAmount = timeCount / gameValue.timeToApplyBet;
+        if (timeCount >= gameValue.timeToApplyBet)
+        {
+            timeCount = 0;
+
+            UpdateBetValue();
         }
 
         UpdateVehicleRank();
@@ -153,7 +171,6 @@ public class GameManager : MonoSingleton<GameManager>
             cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets);
         }
 
-        
         // Affichage UI classement
         for (int i = 0; i < rankTexts.Length; ++i)
         {
@@ -161,31 +178,29 @@ public class GameManager : MonoSingleton<GameManager>
                 i + 1,
                 ColorUtility.ToHtmlStringRGB(vehiclesRank[vehiclesRank.Count - 1 - i].color),
                 vehiclesRank[vehiclesRank.Count - 1 - i].machineName);
+
+            speedStepImages[i].color = vehiclesRank[vehiclesRank.Count - 1 - i].isOverheated ? Color.red : Color.white;
+
+            speedStepRankedTexts[i].text = string.Format("{0} / {1}",
+                vehiclesRank[vehiclesRank.Count - 1 - i].speedStep,
+                gameValue.speedStepToOverride);
         }
     }
 
-    public void CheckpointBet()
+    public void UpdateBetValue()
     {
         countCheckpoint++;
 
         sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countCheckpoint, gameValue.checkpointPositions.Length);
 
-        if (countCheckpoint == 1)
-        {
-            rankRectTransform.DOScale(1, 0.5f);
-        }
-
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            if (!vehicles[i].isOverheated)
+            if (vehiclesBetOnStep[i] > 0)
             {
-                for (int j = 0; j < vehiclesBetOnStep[i]; ++j)
-                {
-                    vehicles[i].betOnThis++;
-                }
-
-                vehiclesBetOnStep[i] = 0;
+                vehicles[i].UpgradeSpeedStep(vehiclesBetOnStep[i], gameValue.speedStepToOverride + 1);
             }
+
+            vehiclesBetOnStep[i] = 0;
         }
     }
 
