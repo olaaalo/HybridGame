@@ -68,10 +68,10 @@ public class Vehicle : MonoBehaviour
 
         transform.DOLocalMoveY(1f, 3f).SetEase(Ease.OutBack);
 
-        transform.DORotate(Vector3.right * -5f, 0.3f);
-        transform.DORotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
-        transform.DORotate(Vector3.right * -3f, 0.3f).SetDelay(0.8f);
-        transform.DORotate(Vector3.zero, 0.3f).SetDelay(1.2f)
+        transform.DOLocalRotate(Vector3.right * -5f, 0.3f);
+        transform.DOLocalRotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
+        transform.DOLocalRotate(Vector3.right * -3f, 0.3f).SetDelay(0.8f);
+        transform.DOLocalRotate(Vector3.zero, 0.3f).SetDelay(1.2f)
             .OnStart(() => engineEventEmitter.Play());
     }
 
@@ -123,9 +123,9 @@ public class Vehicle : MonoBehaviour
     {
         if (!isStartRace || isArrived) return;
 
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
+        transform.Translate(Vector3.right * speed * Time.deltaTime, transform);
 
-        if (Physics.Raycast(transform.position, Vector3.right, out hitForward, distanceRaycastForward, 1 << 11))
+        if (Physics.Raycast(transform.position, transform.right, out hitForward, distanceRaycastForward, 1 << 11))
         {
             betZoneForward = hitForward.transform.GetComponent<BetZone>();
 
@@ -136,7 +136,7 @@ public class Vehicle : MonoBehaviour
                 GameManager.instance.cameraConstraint.ChangeConstraint(betZoneForward.cameraTargets);
             }
         }
-        else if (Physics.Raycast(transform.position, Vector3.right, out hitForward, distanceRaycastForward, 1 << 9))
+        else if (Physics.Raycast(transform.position, transform.right, out hitForward, distanceRaycastForward, 1 << 9))
         {
             endForward = hitForward.transform.GetComponent<End>();
 
@@ -153,7 +153,7 @@ public class Vehicle : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position, Vector3.right * distanceRaycastForward);
+        Gizmos.DrawRay(transform.position, transform.right * distanceRaycastForward);
     }
 #endif
 

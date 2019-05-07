@@ -13,10 +13,13 @@ public class EngineDrone : MonoBehaviour
 
     private void Start()
     {
-        startPosition = new Vector3(vehicleTarget.transform.position.x - 15f, 10f, 45f);
-        transform.position = startPosition;
+        transform.SetParent(GameManager.instance.circuitParent);
 
-        transform.DORotate(Vector3.up * -90f, 0.8f).SetDelay(timeToVehicle - 1f);
+        startPosition = vehicleTarget.transform.localPosition + new Vector3(-15f, 10f, 45f);
+        transform.localPosition = startPosition;
+        transform.rotation = vehicleTarget.transform.rotation;
+
+        transform.DOLocalRotate(Vector3.up * -90f, 0.8f).SetDelay(timeToVehicle - 1f).SetRelative();
         transform.DOMoveX(vehicleTarget.engineTransform.position.x + 1f, timeToVehicle).SetEase(Ease.InQuad);
         transform.DOMoveY(vehicleTarget.engineTransform.position.y + 3f, timeToVehicle).SetEase(Ease.OutSine);
         transform.DOMoveZ(vehicleTarget.engineTransform.position.z, timeToVehicle).SetEase(Ease.InSine)
@@ -28,8 +31,8 @@ public class EngineDrone : MonoBehaviour
                         engine = null;
                         vehicleTarget = null;
 
-                        transform.DORotateQuaternion(Quaternion.identity, 1f);
-                        transform.DOMove(startPosition, timeToVehicle / 1.5f);
+                        transform.DOLocalRotateQuaternion(Quaternion.identity, 1f);
+                        transform.DOLocalMove(startPosition, timeToVehicle / 1.5f);
                     });
             });
     }

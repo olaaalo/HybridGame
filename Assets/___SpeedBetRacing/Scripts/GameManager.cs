@@ -48,12 +48,12 @@ public class GameManager : MonoSingleton<GameManager>
     {
         roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
 
-        endTransform.position = Vector3.right * gameValue.circuitLength;
+        endTransform.localPosition = Vector3.right * gameValue.circuitLength;
 
         for (int i = 0; i < gameValue.checkpointPositions.Length; ++i)
         {
-            Instantiate(betZonePrefab, Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100),
-                Quaternion.identity, circuitParent);
+            var checkpoint = Instantiate(betZonePrefab, circuitParent);
+            checkpoint.transform.localPosition = Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100);
         }
 
         betZones = FindObjectsOfType<BetZone>();
@@ -76,7 +76,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             if (gameValue.vehiclesInfos[i].isActive)
             {
-                vehicles.Add(Instantiate(gameValue.vehiclesInfos[i].prefab, startTransform.position, Quaternion.identity, vehiclesParent).GetComponent<Vehicle>());
+                vehicles.Add(Instantiate(gameValue.vehiclesInfos[i].prefab, vehiclesParent).GetComponent<Vehicle>());
                 vehicles[vehicles.Count - 1].ID = i + 1;
                 vehicles[vehicles.Count - 1].machineName = gameValue.vehiclesInfos[i].name;
                 vehicles[vehicles.Count - 1].color = gameValue.vehiclesInfos[i].color;
@@ -104,7 +104,7 @@ public class GameManager : MonoSingleton<GameManager>
         // Get info & Start Position
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            vehicles[i].transform.position += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
+            vehicles[i].transform.localPosition += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
         }
 
         vehiclesBetOnStep = new int[vehicles.Count];
@@ -128,7 +128,7 @@ public class GameManager : MonoSingleton<GameManager>
         // Update all vehicles
         for (int i = 0; i < vehicles.Count; ++i)
         {
-            vehiclesProgressions[i].value = 1 - (endTransform.position.x - vehicles[i].transform.position.x) / gameValue.circuitLength;
+            vehiclesProgressions[i].value = 1 - (gameValue.circuitLength - vehicles[i].transform.localPosition.x) / gameValue.circuitLength;
 
             if (Input.GetKeyDown(balanceKeyCodes[i]))
             {
@@ -143,7 +143,7 @@ public class GameManager : MonoSingleton<GameManager>
     private Vehicle currentVehicleFirstRank;
     private void UpdateVehicleRank()
     {
-        vehiclesRank = vehiclesRank.OrderBy(v => v.transform.position.x).ToList();
+        vehiclesRank = vehiclesRank.OrderBy(v => v.transform.localPosition.x).ToList();
 
         // Camera sur véhicle première classe
         if (currentVehicleFirstRank != vehiclesRank[vehiclesRank.Count - 1])
