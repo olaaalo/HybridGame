@@ -11,6 +11,7 @@ public class GameValue : ScriptableObject
     {
         public bool isActive;
         public string name;
+        public KeyCode keyCode;
         public GameObject prefab;
         public Material material;
         public Color color;

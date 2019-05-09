@@ -11,8 +11,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public KeyCode[] balanceKeyCodes;
-
     public GameValue gameValue;
 
     [HideInInspector] public bool gameHasStarted;
@@ -152,7 +150,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             vehiclesProgressions[i].value = 1 - (gameValue.circuitLength - vehicles[i].transform.localPosition.x) / gameValue.circuitLength;
 
-            if (Input.GetKeyDown(balanceKeyCodes[i]))
+            if (Input.GetKeyDown(gameValue.vehiclesInfos[i].keyCode))
             {
                 vehiclesBetOnStep[i]++;
                 vehiclesBetAll[i]++;
