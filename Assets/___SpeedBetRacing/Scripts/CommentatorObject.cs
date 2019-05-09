@@ -12,6 +12,7 @@ public class CommentatorObject : ScriptableObject
         public List<AudioClip> startGame;
         public List<AudioClip> startRace;
 
+        public List<AudioClip> firstPlaceDreamShark;
         public List<AudioClip> firstRankDreamShark;
         public List<AudioClip> secondRankDreamShark;
         public List<AudioClip> thirdRankDreamShark;
@@ -19,6 +20,7 @@ public class CommentatorObject : ScriptableObject
         public List<AudioClip> fifthRankDreamShark;
         public List<AudioClip> explosionDreamShark;
         
+        public List<AudioClip> firstPlaceTropicalBear;
         public List<AudioClip> firstRankTropicalBear;
         public List<AudioClip> secondRankTropicalBear;
         public List<AudioClip> thirdRankTropicalBear;
@@ -26,6 +28,7 @@ public class CommentatorObject : ScriptableObject
         public List<AudioClip> fifthRankTropicalBear;
         public List<AudioClip> explosionTropicalBear;
         
+        public List<AudioClip> firstPlaceOrangeEarth;
         public List<AudioClip> firstRankOrangeEarth;
         public List<AudioClip> secondRankOrangeEarth;
         public List<AudioClip> thirdRankOrangeEarth;
@@ -33,6 +36,7 @@ public class CommentatorObject : ScriptableObject
         public List<AudioClip> fifthRankOrangeEarth;
         public List<AudioClip> explosionOrangeEarth;
 
+        public List<AudioClip> firstPlaceSerenity;
         public List<AudioClip> firstRankSerenity;
         public List<AudioClip> secondRankSerenity;
         public List<AudioClip> thirdRankSerenity;
@@ -40,6 +44,7 @@ public class CommentatorObject : ScriptableObject
         public List<AudioClip> fifthRankSerenity;
         public List<AudioClip> explosionSerenity;
         
+        public List<AudioClip> firstPlaceBurningLine;
         public List<AudioClip> firstRankBurningLine;
         public List<AudioClip> secondRankBurningLine;
         public List<AudioClip> thirdRankBurningLine;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -28,14 +29,14 @@ public class GameManager : MonoSingleton<GameManager>
 
     public Transform vehiclesParent;
     [HideInInspector] public List<Vehicle> vehicles;
-    public int[] vehiclesBetOnStep;
-    public int[] vehiclesBetAll;
+    [HideInInspector] public List<Vehicle> vehiclesRankList;
+    [HideInInspector] public int[] vehiclesBetOnStep;
+    [HideInInspector] public int[] vehiclesBetAll;
+    [HideInInspector] public List<int[]> vehiclesRanks;
 
-    public int countCheckpoint;
     public RectTransform sectorRectTransform;
     public TextMeshProUGUI sectorsCountText;
 
-    public List<Vehicle> vehiclesRank;
     public RectTransform rankRectTransform;
     public TextMeshProUGUI[] rankTexts;
     public Image[] speedStepImages;
@@ -43,8 +44,15 @@ public class GameManager : MonoSingleton<GameManager>
 
     public Image timeToBetImage;
     public RectTransform ratingRectTransform;
-    public TextMeshProUGUI[] ratingVehicleTexts;
-    public TextMeshProUGUI[] ratingVehicleBetTexts;
+
+    [Serializable]
+    public struct RatingVehicleInfo
+    {
+        public TextMeshProUGUI ratingVehicleName;
+        public TextMeshProUGUI ratingVehicleBet;
+        public TextMeshProUGUI[] ratingVehicleRank;
+    }
+    public List<RatingVehicleInfo> ratingVehicleInfos;
 
     public RectTransform vehiclesProgressionsParent;
     public GameObject vehicleProgressionsPrefab;
@@ -88,6 +96,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         vehicles = new List<Vehicle>();
         vehiclesProgressions = new List<Slider>();
+        vehiclesRanks = new List<int[]>();
 
         // Spawn
         for (int i = 0; i < gameValue.vehiclesInfos.Count; ++i)
@@ -104,12 +113,13 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
 
-        vehiclesRank = vehicles;
+        vehiclesRankList = vehicles;
 
         // Get info & Start Position
         for (int i = 0; i < vehicles.Count; ++i)
         {
             vehicles[i].transform.localPosition += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
+            vehiclesRanks.Add(new int[5]);
         }
 
         vehiclesBetOnStep = new int[vehicles.Count];
@@ -173,12 +183,12 @@ public class GameManager : MonoSingleton<GameManager>
     private Vehicle currentVehicleFirstRank;
     private void UpdateVehicleRank()
     {
-        vehiclesRank = vehiclesRank.OrderBy(v => v.transform.localPosition.x).ToList();
+        vehiclesRankList = vehiclesRankList.OrderBy(v => v.transform.localPosition.x).ToList();
 
         // Camera sur véhicle première classe
-        if (currentVehicleFirstRank != vehiclesRank[vehiclesRank.Count - 1])
+        if (currentVehicleFirstRank != vehiclesRankList[vehiclesRankList.Count - 1])
         {
-            currentVehicleFirstRank = vehiclesRank[vehiclesRank.Count - 1];
+            currentVehicleFirstRank = vehiclesRankList[vehiclesRankList.Count - 1];
 
             if (countVehiclesArrived == 0)
             {
@@ -191,15 +201,15 @@ public class GameManager : MonoSingleton<GameManager>
         {
             rankTexts[i].text = string.Format("{0} <color=#{1}>|</color> {2}",
                 i + 1,
-                ColorUtility.ToHtmlStringRGB(vehiclesRank[vehiclesRank.Count - 1 - i].color),
-                vehiclesRank[vehiclesRank.Count - 1 - i].machineName);
+                ColorUtility.ToHtmlStringRGB(vehiclesRankList[vehiclesRankList.Count - 1 - i].color),
+                vehiclesRankList[vehiclesRankList.Count - 1 - i].machineName);
 
-            speedStepImages[i].color = vehiclesRank[vehiclesRank.Count - 1 - i].isOverheated ? Color.red : Color.white;
+            speedStepImages[i].color = vehiclesRankList[vehiclesRankList.Count - 1 - i].isOverheated ? Color.red : Color.white;
 
             if (gameValue.withResetSpeed)
             {
                 speedStepRankedTexts[i].text = string.Format("{0} / {1}",
-                    vehiclesRank[vehiclesRank.Count - 1 - i].speedStep,
+                    vehiclesRankList[vehiclesRankList.Count - 1 - i].speedStep,
                     gameValue.speedStepToOverride);
             }
         }
@@ -207,8 +217,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void UpdateBetValue()
     {
-        countCheckpoint++;
-
         for (int i = 0; i < vehicles.Count; ++i)
         {
             if (vehiclesBetOnStep[i] > 0)
@@ -241,13 +249,13 @@ public class GameManager : MonoSingleton<GameManager>
         rankRectTransform.DOScaleY(0, 0.5f);
         ratingRectTransform.DOScale(1, 0.3f);
 
-        for (int i = 0; i < ratingVehicleTexts.Length; ++i)
+        for (int i = 0; i < ratingVehicleInfos.Count; ++i)
         {
-            ratingVehicleTexts[i].text = string.Format("<color=#{0}>|</color> {1}",
+            ratingVehicleInfos[i].ratingVehicleName.text = string.Format("<color=#{0}>|</color> {1}",
                 ColorUtility.ToHtmlStringRGB(vehicles[i].color),
                 vehicles[i].machineName);
 
-            ratingVehicleBetTexts[i].text = vehiclesBetAll[i].ToString();
+            ratingVehicleInfos[i].ratingVehicleBet.text = vehiclesBetAll[i].ToString();
         }
 
         if (countRace == gameValue.stepRacing)

@@ -67,7 +67,7 @@ MonoBehaviour:
   withResetSpeed: 1
   speedStepToOverride: 4
   overrideChance: 0.1
-  stepRacing: 3
+  stepRacing: 5
   checkpointPositions: []
   timeToApplyBet: 3
   circuitLength: 1500
