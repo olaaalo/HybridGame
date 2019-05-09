@@ -13,41 +13,95 @@ MonoBehaviour:
   m_Name: _CommentatorObject
   m_EditorClassIdentifier: 
   commentatorQuotes:
-  - startGame: []
-    startRace: []
-    firstPlaceDreamShark: []
-    firstRankDreamShark: []
-    secondRankDreamShark: []
-    thirdRankDreamShark: []
-    fourthRankDreamShark: []
-    fifthRankDreamShark: []
-    explosionDreamShark: []
-    firstPlaceTropicalBear: []
-    firstRankTropicalBear: []
-    secondRankTropicalBear: []
-    thirdRankTropicalBear: []
-    fourthRankTropicalBear: []
-    fifthRankTropicalBear: []
-    explosionTropicalBear: []
-    firstPlaceOrangeEarth: []
-    firstRankOrangeEarth: []
-    secondRankOrangeEarth: []
-    thirdRankOrangeEarth: []
-    fourthRankOrangeEarth: []
-    fifthRankOrangeEarth: []
-    explosionOrangeEarth: []
-    firstPlaceSerenity: []
-    firstRankSerenity: []
-    secondRankSerenity: []
-    thirdRankSerenity: []
-    fourthRankSerenity: []
-    fifthRankSerenity: []
-    explosionSerenity: []
-    firstPlaceBurningLine: []
-    firstRankBurningLine: []
-    secondRankBurningLine: []
-    thirdRankBurningLine: []
-    fourthRankBurningLine: []
-    fifthRankBurningLine: []
-    explosionBurningLine: []
-    randomQuote: []
+  - startGame:
+    - {fileID: 8300000, guid: 52a4e813fe5d31b488ec3e500d42ab79, type: 3}
+    - {fileID: 8300000, guid: ef9a0da6e80ac4649a5c8ab974f1be23, type: 3}
+    startRace:
+    - {fileID: 8300000, guid: 1833c5fa7204e114d878d300166998cf, type: 3}
+    - {fileID: 8300000, guid: d6837372fa13acb42b88d75820c93f7e, type: 3}
+    - {fileID: 8300000, guid: 329ccac803a6dc14cacf2443bff62e87, type: 3}
+    - {fileID: 8300000, guid: cd6912b4272f9df4c8ef05221e06a1c9, type: 3}
+    firstPlaceDreamShark:
+    - {fileID: 8300000, guid: f6a586405939f184aba6148cba00bfe7, type: 3}
+    firstRankDreamShark:
+    - {fileID: 8300000, guid: 602d0df603733b14e89d931d0dba6a16, type: 3}
+    - {fileID: 8300000, guid: f533e3d981ea2064b98c3a93ed93fba4, type: 3}
+    secondRankDreamShark:
+    - {fileID: 8300000, guid: d4d0204b54a87c84499ca6479b4ea9fb, type: 3}
+    - {fileID: 8300000, guid: 81efb7d6538212c4a8c06de2bc47f145, type: 3}
+    thirdRankDreamShark:
+    - {fileID: 8300000, guid: b3a5829efd1a44f499a91ac34fd1b3a1, type: 3}
+    fourthRankDreamShark:
+    - {fileID: 8300000, guid: 6741b6236f97ca24bbb8fd54270ae045, type: 3}
+    fifthRankDreamShark:
+    - {fileID: 8300000, guid: 5c3c05867095db048a0d34df502fdce5, type: 3}
+    - {fileID: 8300000, guid: 6751707ec6416b44197fbb34bd69169a, type: 3}
+    explosionDreamShark:
+    - {fileID: 8300000, guid: de0587abb128fc8498542d6242782c66, type: 3}
+    - {fileID: 8300000, guid: b55f91d38eca8034da269516396199f5, type: 3}
+    - {fileID: 8300000, guid: 55a00b107d7deca41994b720d310b4bb, type: 3}
+    firstPlaceTropicalBear:
+    - {fileID: 8300000, guid: 0b6f07d8f88622b48a393ecae7ce940f, type: 3}
+    firstRankTropicalBear:
+    - {fileID: 8300000, guid: 50aaf27b9702c0a47b5c5d1352bd54a2, type: 3}
+    secondRankTropicalBear:
+    - {fileID: 8300000, guid: 0f6f90e24e945ff44936a441f13c151f, type: 3}
+    thirdRankTropicalBear:
+    - {fileID: 8300000, guid: 72f1c06d934696949ba28ce1775d7cb8, type: 3}
+    fourthRankTropicalBear:
+    - {fileID: 8300000, guid: d6d07059a6e9091409efc0bb2c7c88a4, type: 3}
+    fifthRankTropicalBear:
+    - {fileID: 8300000, guid: d1194817f56b7334db129a4a6ade87e5, type: 3}
+    - {fileID: 8300000, guid: a9441f70f31d3724aa0742304f6ff130, type: 3}
+    explosionTropicalBear:
+    - {fileID: 8300000, guid: 600ab48a832b6ad4ba0d0c5b8c1d9144, type: 3}
+    firstPlaceOrangeEarth:
+    - {fileID: 8300000, guid: b027230c143d36c40be13e30e51591b1, type: 3}
+    firstRankOrangeEarth:
+    - {fileID: 8300000, guid: f72a59f25dc423a489b0020d4cfe1483, type: 3}
+    - {fileID: 8300000, guid: cd5775a7a27a4834ebafc65e36a7ba74, type: 3}
+    secondRankOrangeEarth:
+    - {fileID: 8300000, guid: 5c6e52afb9b4a574b9a55a00bf6e07d8, type: 3}
+    - {fileID: 8300000, guid: 2403f4aab7fc9db4bbac13639d53399e, type: 3}
+    thirdRankOrangeEarth:
+    - {fileID: 8300000, guid: 14ac2f07800eb19429bb6fe90525a2e0, type: 3}
+    fourthRankOrangeEarth:
+    - {fileID: 8300000, guid: a053d0e3ed606324fb874817cdf12220, type: 3}
+    fifthRankOrangeEarth:
+    - {fileID: 8300000, guid: c1a5999e0f9884047b681054e1a846ce, type: 3}
+    explosionOrangeEarth:
+    - {fileID: 8300000, guid: 1a559b510eecd964db6de3738a053dd2, type: 3}
+    firstPlaceSerenity:
+    - {fileID: 8300000, guid: b6e3ece8b36367647bf21c0d9868a228, type: 3}
+    firstRankSerenity:
+    - {fileID: 8300000, guid: 9643e120eb37cf948b00f141c0e10be8, type: 3}
+    secondRankSerenity:
+    - {fileID: 8300000, guid: 8a98c85a2201664439ac2249a3dcbd01, type: 3}
+    thirdRankSerenity:
+    - {fileID: 8300000, guid: 108f1c37202a1fa48b334ff5494a799e, type: 3}
+    fourthRankSerenity:
+    - {fileID: 8300000, guid: 7514085e8e4848148ac5864af0e3a73f, type: 3}
+    fifthRankSerenity:
+    - {fileID: 8300000, guid: 4241eefe6b9d56546b04f902e07c3ea1, type: 3}
+    explosionSerenity:
+    - {fileID: 8300000, guid: 49244ea87401b784b8ce1a6b71373402, type: 3}
+    firstPlaceBurningLine:
+    - {fileID: 8300000, guid: b78dc6d3f3e83004cb7bdb1f1e6dc894, type: 3}
+    firstRankBurningLine:
+    - {fileID: 8300000, guid: 77086a59fe53b9543b3fc909f0640266, type: 3}
+    secondRankBurningLine:
+    - {fileID: 8300000, guid: b5491bc59543b2a44ae87b95b5395dee, type: 3}
+    thirdRankBurningLine:
+    - {fileID: 8300000, guid: a5d1a7bc7b4ff094faa3ff935e62a861, type: 3}
+    fourthRankBurningLine:
+    - {fileID: 8300000, guid: 6025ed84698f49a419d2adc0ef0fa4b8, type: 3}
+    fifthRankBurningLine:
+    - {fileID: 8300000, guid: 719e351afbab60e479e2836d1ea09197, type: 3}
+    explosionBurningLine:
+    - {fileID: 8300000, guid: 587317b9b790458479393aa4993474ff, type: 3}
+    randomQuote:
+    - {fileID: 8300000, guid: bd2d852407df70b4c94738ff2f6431cb, type: 3}
+    - {fileID: 8300000, guid: ea136ad2a7dbbf34da7509687b2faf29, type: 3}
+    - {fileID: 8300000, guid: 43523d25cfa02714f8f9a847d3d722d6, type: 3}
+    - {fileID: 8300000, guid: 135b3d14cc5bca6489b81f29fc72a967, type: 3}
+    - {fileID: 8300000, guid: 86562a5124935da4a80416106796100b, type: 3}

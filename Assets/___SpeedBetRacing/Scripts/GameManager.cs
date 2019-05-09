@@ -277,7 +277,7 @@ public class GameManager : MonoSingleton<GameManager>
             return;
         }
 
-        DOVirtual.DelayedCall(5f, () =>
+        DOVirtual.DelayedCall(15f, () =>
         {
             countVehiclesArrived = 0;
 
