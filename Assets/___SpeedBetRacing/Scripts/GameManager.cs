@@ -204,7 +204,7 @@ public class GameManager : MonoSingleton<GameManager>
 
             if (countVehiclesArrived == 0 && gameHasStarted)
             {
-                cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets);
+                cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets, null);
                 commentator.FirstPlaceVehicle(currentVehicleFirstRank.machineName);
             }
         }

@@ -14,6 +14,7 @@ public class CameraConstraint : MonoBehaviour
 
     public CameraTarget currentCameraTarget;
     public Vehicle currentVehicleTarget;
+    
 
     [ContextMenu("Apply Camera Constraint")]
     private void Start()
@@ -43,7 +44,7 @@ public class CameraConstraint : MonoBehaviour
         currentVehicleTarget = vehicleToLookAt;
 
         camTarget.tweenAnimation?.DOKill();
-        camTarget.tweenAnimation?.DOPlay();
+        camTarget.tweenAnimation?.DORestart();
 
         transformConstraint.target = currentCameraTarget.transformTarget;
 

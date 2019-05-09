@@ -80,7 +80,7 @@ public class Vehicle : MonoBehaviour
         if (raceRank == 0)
             timeToWait = Random.Range(0.1f, 0.3f);
         else
-            timeToWait = 0.1f + (raceRank - 1) * 0.8f; 
+            timeToWait = 0.1f + (raceRank - 1) * 0.6f;
 
         DOVirtual.DelayedCall(timeToWait, () =>
         {

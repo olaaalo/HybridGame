@@ -58,8 +58,6 @@ public class Commentator : MonoBehaviour
 
     public void FirstPlaceVehicle(string machineName)
     {
-        audioSource.Stop();
-
         switch (machineName)
         {
         case "Dream Shark":
