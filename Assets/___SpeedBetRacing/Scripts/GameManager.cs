@@ -119,7 +119,7 @@ public class GameManager : MonoSingleton<GameManager>
         for (int i = 0; i < vehicles.Count; ++i)
         {
             vehicles[i].transform.localPosition += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
-            vehiclesRanks.Add(new int[5]);
+            vehiclesRanks.Add(new int[gameValue.stepRacing]);
         }
 
         vehiclesBetOnStep = new int[vehicles.Count];
