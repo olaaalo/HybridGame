@@ -44,21 +44,90 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameValue: {fileID: 11400000, guid: ba617f448779b0c41a11b70e4f4fa249, type: 2}
-  balanceKeyCodes: 010100000201000003010000040100000501000006010000070100000801000009010000
-  vehiclesParent: {fileID: 0}
-  vehicles: []
+  commentatorObject: {fileID: 11400000, guid: 3ebb7db0693be3d48bc094693f1962bf, type: 2}
+  gameHasStarted: 0
+  commentator: {fileID: 0}
+  cameraConstraint: {fileID: 0}
+  startCameraTarget: {fileID: 0}
   startTransform: {fileID: 0}
   endTransform: {fileID: 0}
-  circuitLength: 0
-  vehiclesRank: []
+  end: {fileID: 0}
+  circuitParent: {fileID: 0}
+  roadTransform: {fileID: 0}
+  betZonePrefab: {fileID: 7125351640781891476, guid: ede4c7b8a32a2324290d8e084e358fe1,
+    type: 3}
+  vehiclesParent: {fileID: 0}
+  vehicles: []
+  vehiclesRankList: []
+  vehiclesBetOnStep: 
+  vehiclesBetAll: 
+  sectorRectTransform: {fileID: 0}
+  sectorsCountText: {fileID: 0}
+  rankRectTransform: {fileID: 0}
   rankTexts:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  speedStepImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  speedStepRankedTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  timeToBetImage: {fileID: 0}
+  ratingRectTransform: {fileID: 0}
+  ratingVehicleInfos:
+  - ratingVehicleName: {fileID: 0}
+    ratingVehicleBet: {fileID: 0}
+    ratingVehicleRank:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - ratingVehicleName: {fileID: 0}
+    ratingVehicleBet: {fileID: 0}
+    ratingVehicleRank:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - ratingVehicleName: {fileID: 0}
+    ratingVehicleBet: {fileID: 0}
+    ratingVehicleRank:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - ratingVehicleName: {fileID: 0}
+    ratingVehicleBet: {fileID: 0}
+    ratingVehicleRank:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - ratingVehicleName: {fileID: 0}
+    ratingVehicleBet: {fileID: 0}
+    ratingVehicleRank:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   vehiclesProgressionsParent: {fileID: 0}
   vehicleProgressionsPrefab: {fileID: 3323252525684536880, guid: 42344f83dd78a914fa370d8385e30cf5,
     type: 3}
   vehiclesProgressions: []
-  vehiclesBetOnStep: 
-  vehiclesBetAll: 
-  gameHasStarted: 0
+  countVehiclesArrived: 0
+  countRace: 0

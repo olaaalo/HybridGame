@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionParticlePrefab: {fileID: 3801282556662193269, guid: bfc902857b043b148962eb73bc6f0e56,
     type: 3}
-  nbExplosionParticle: 5
+  nbExplosionParticle: 10

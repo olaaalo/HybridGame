@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PoolManager : MonoSingleton<PoolManager>
 {
-	[SerializeField] private GameObject explosionParticlePrefab;
-	[SerializeField] private int nbExplosionParticle;
+	public GameObject explosionParticlePrefab;
+	public int nbExplosionParticle;
 	private List<Transform> explosionParticleList;
 
 
@@ -35,7 +35,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 		}
 		if (tTemp == null)
 		{
-			Debug.LogWarning("[PoolManager] Instantiate new pool object for list : \"" + list + "\"");
+			Debug.LogWarning("[PoolManager] Instantiate new pool object for list contains : \"" + list[0].name + "\"");
 
 			var t = Instantiate(objectPrefab, transform);
 			t.gameObject.SetActive(false);

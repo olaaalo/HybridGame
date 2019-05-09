@@ -13,8 +13,11 @@ using UnityEngine.UI;
 public class GameManager : MonoSingleton<GameManager>
 {
     public GameValue gameValue;
+    public CommentatorObject commentatorObject;
 
     [HideInInspector] public bool gameHasStarted;
+
+    public Commentator commentator;
 
     public CameraConstraint cameraConstraint;
     public CameraTarget startCameraTarget;
@@ -24,8 +27,6 @@ public class GameManager : MonoSingleton<GameManager>
     public End end;
     public Transform circuitParent;
     public Transform roadTransform;
-    public GameObject betZonePrefab;
-    private BetZone[] betZones;
 
     public Transform vehiclesParent;
     [HideInInspector] public List<Vehicle> vehicles;
@@ -64,18 +65,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         endTransform.localPosition = Vector3.right * gameValue.circuitLength;
 
-        if (gameValue.checkpointPositions.Length > 0)
-        {
-            for (int i = 0; i < gameValue.checkpointPositions.Length; ++i)
-            {
-                var checkpoint = Instantiate(betZonePrefab, circuitParent);
-                checkpoint.transform.localPosition = Vector3.right * (gameValue.circuitLength * gameValue.checkpointPositions[i] / 100);
-            }
-        }
-
         sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
-
-        betZones = FindObjectsOfType<BetZone>();
 
         SpawnVehiclesOnStart();
         UpdateVehicleRank();
@@ -90,6 +80,8 @@ public class GameManager : MonoSingleton<GameManager>
             for (int i = 0; i < speedStepRankedTexts.Length; ++i)
                 speedStepRankedTexts[i].gameObject.SetActive(false);
         }
+
+        commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
     }
 
     private void SpawnVehiclesOnStart()
@@ -144,6 +136,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void StartRace()
     {
+        commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startRace);
+
         DOVirtual.DelayedCall(4f, () =>
         {
             gameHasStarted = true;
@@ -160,13 +154,6 @@ public class GameManager : MonoSingleton<GameManager>
     private float timeCount;
     private void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Return) && !gameHasStarted)
-        // {
-        //     gameHasStarted = true;
-
-        //     StartRace();
-        // }
-
         if (!gameHasStarted) return;
 
         // Update all vehicles
@@ -243,9 +230,14 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public int countVehiclesArrived;
-    public void CheckEndRace(int vehicleID)
+    public void CheckEndRace(int vehicleID, string machineName)
     {
         countVehiclesArrived++;
+
+        if (countVehiclesArrived == 1)
+        {
+           commentator.FirstPlaceVehicle(machineName);
+        }
 
         vehiclesRanks[countRace][vehicleID] = countVehiclesArrived;
 
@@ -271,6 +263,11 @@ public class GameManager : MonoSingleton<GameManager>
             ratingVehicleInfos[i].ratingVehicleRank[countRace].text = vehiclesRanks[countRace][i].ToString();
             ratingVehicleInfos[i].ratingVehicleRank[countRace].fontStyle = (vehiclesRanks[countRace][i] == 1) ? TMPro.FontStyles.Bold : TMPro.FontStyles.Normal;
             ratingVehicleInfos[i].ratingVehicleRank[countRace].fontSize = (vehiclesRanks[countRace][i] == 1) ? 20f : 16f;
+
+            if (countRace - 1 >= 0)
+            {
+                ratingVehicleInfos[i].ratingVehicleRank[countRace].color = Color.grey;
+            }
         }
 
         countRace++;

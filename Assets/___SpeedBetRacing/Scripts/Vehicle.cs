@@ -194,6 +194,7 @@ public class Vehicle : MonoBehaviour
     IEnumerator Overheated(float sp)
     {
         PoolManager.instance.GetExplosionParticle(engine.transform.position, null);
+        GameManager.instance.commentator.ExplosionVehicle(machineName);
 
         isOverheated = true;
 
@@ -233,7 +234,7 @@ public class Vehicle : MonoBehaviour
         {
             isArrived = true;
 
-            GameManager.instance.CheckEndRace(inGameID);
+            GameManager.instance.CheckEndRace(inGameID, machineName);
 
             raceRank = GameManager.instance.countVehiclesArrived;
             
