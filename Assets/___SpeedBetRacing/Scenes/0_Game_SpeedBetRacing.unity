@@ -11381,7 +11381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commentatorObject: {fileID: 11400000, guid: 3ebb7db0693be3d48bc094693f1962bf, type: 2}
   audioSource: {fileID: 1425996536}
-  timeToRandomQuote: 1.5
+  timeToRandomQuote: 3
 --- !u!1 &1428636579
 GameObject:
   m_ObjectHideFlags: 0

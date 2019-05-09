@@ -31,25 +31,25 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: 9a21f405ffe068e419d562e8e27cf715, type: 2}
     color: {r: 0.28034887, g: 0.7924528, b: 0.32941267, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Stardust
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: 62397fbecf49a804da74451eba574581, type: 2}
     color: {r: 0.7830189, g: 0.7445555, b: 0.35826808, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Magic Blow
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: fc1ca3d81fde24c438c0c0d5002abbcf, type: 2}
     color: {r: 0.61775964, g: 0.36187258, b: 0.7169812, a: 1}
-  - isActive: 0
+  - isActive: 1
     name: Tropical Bear
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: d23edc258869cb14ab6a2ff8eb1b3629, type: 2}
     color: {r: 0.36078432, g: 0.85490197, b: 0.7176471, a: 1}
-  - isActive: 0
+  - isActive: 1
     name: Orange Earth
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}

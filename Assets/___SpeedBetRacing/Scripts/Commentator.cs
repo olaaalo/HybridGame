@@ -32,6 +32,10 @@ public class Commentator : MonoBehaviour
 
     public void ExplosionVehicle(string machineName)
     {
+        if (!GameManager.instance.gameHasStarted) return;
+
+        audioSource.Stop();
+
         switch (machineName)
         {
         case "Dream Shark":
@@ -54,6 +58,8 @@ public class Commentator : MonoBehaviour
 
     public void FirstPlaceVehicle(string machineName)
     {
+        audioSource.Stop();
+
         switch (machineName)
         {
         case "Dream Shark":
@@ -76,6 +82,8 @@ public class Commentator : MonoBehaviour
 
     public void RanksVehicle(int[] ranks)
     {
+        audioSource.Stop();
+
         StartCoroutine(QuoteRank(ranks));
     }
 

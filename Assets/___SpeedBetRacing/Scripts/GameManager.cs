@@ -80,8 +80,6 @@ public class GameManager : MonoSingleton<GameManager>
             for (int i = 0; i < speedStepRankedTexts.Length; ++i)
                 speedStepRankedTexts[i].gameObject.SetActive(false);
         }
-
-        commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
     }
 
     private void SpawnVehiclesOnStart()
@@ -130,6 +128,19 @@ public class GameManager : MonoSingleton<GameManager>
 
         vehiclesBetOnStep = new int[vehicles.Count];
         vehiclesBetAll = new int[vehicles.Count];
+        
+        StartCoroutine(StartGameCoco());
+    }
+
+    IEnumerator StartGameCoco()
+    {
+        yield return null;
+        yield return null;
+        yield return null;
+
+        commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
+
+        yield return null;
 
         StartRace();
     }
@@ -191,9 +202,10 @@ public class GameManager : MonoSingleton<GameManager>
         {
             currentVehicleFirstRank = vehiclesRankList[vehiclesRankList.Count - 1];
 
-            if (countVehiclesArrived == 0)
+            if (countVehiclesArrived == 0 && gameHasStarted)
             {
                 cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets);
+                commentator.FirstPlaceVehicle(currentVehicleFirstRank.machineName);
             }
         }
 
@@ -234,11 +246,6 @@ public class GameManager : MonoSingleton<GameManager>
     {
         countVehiclesArrived++;
 
-        if (countVehiclesArrived == 1)
-        {
-           commentator.FirstPlaceVehicle(machineName);
-        }
-
         vehiclesRanks[countRace][vehicleID] = countVehiclesArrived;
 
         if (countVehiclesArrived == vehicles.Count)
@@ -266,9 +273,11 @@ public class GameManager : MonoSingleton<GameManager>
 
             if (countRace - 1 >= 0)
             {
-                ratingVehicleInfos[i].ratingVehicleRank[countRace].color = Color.grey;
+                ratingVehicleInfos[i].ratingVehicleRank[countRace - 1].color = Color.grey;
             }
         }
+
+        commentator.RanksVehicle(vehiclesRanks[countRace]);
 
         countRace++;
 
