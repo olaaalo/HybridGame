@@ -115,11 +115,25 @@ public class GameManager : MonoSingleton<GameManager>
 
         vehiclesRankList = vehicles;
 
-        // Get info & Start Position
         for (int i = 0; i < vehicles.Count; ++i)
         {
+            // Vehicles position & info
             vehicles[i].transform.localPosition += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
+            vehicles[i].inGameID = i;
+
+            // Rank panel preparation
             vehiclesRanks.Add(new int[gameValue.stepRacing]);
+
+            ratingVehicleInfos[i].ratingVehicleName.text = string.Format("<color=#{0}>|</color> {1}",
+                ColorUtility.ToHtmlStringRGB(vehicles[i].color),
+                vehicles[i].machineName);
+
+            ratingVehicleInfos[i].ratingVehicleBet.text = "0";
+
+            for (int j = 0; j < gameValue.stepRacing; ++j)
+            {
+                ratingVehicleInfos[i].ratingVehicleRank[j].text = string.Empty;
+            }
         }
 
         vehiclesBetOnStep = new int[vehicles.Count];
@@ -130,7 +144,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void StartRace()
     {
-        DOVirtual.DelayedCall(3f, () =>
+        DOVirtual.DelayedCall(4f, () =>
         {
             gameHasStarted = true;
 
@@ -160,7 +174,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             vehiclesProgressions[i].value = 1 - (gameValue.circuitLength - vehicles[i].transform.localPosition.x) / gameValue.circuitLength;
 
-            if (Input.GetKeyDown(gameValue.vehiclesInfos[i].keyCode))
+            if (Input.GetKeyDown(gameValue.betKeyCodes[i]))
             {
                 vehiclesBetOnStep[i]++;
                 vehiclesBetAll[i]++;
@@ -229,9 +243,11 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public int countVehiclesArrived;
-    public void CheckEndRace()
+    public void CheckEndRace(int vehicleID)
     {
         countVehiclesArrived++;
+
+        vehiclesRanks[countRace][vehicleID] = countVehiclesArrived;
 
         if (countVehiclesArrived == vehicles.Count)
             EndRace();
@@ -240,8 +256,6 @@ public class GameManager : MonoSingleton<GameManager>
     public int countRace;
     private void EndRace()
     {
-        countRace++;
-
         gameHasStarted = false;
 
         timeToBetImage.fillAmount = 0;
@@ -249,18 +263,20 @@ public class GameManager : MonoSingleton<GameManager>
         rankRectTransform.DOScaleY(0, 0.5f);
         ratingRectTransform.DOScale(1, 0.3f);
 
+        // Rank Panel info
         for (int i = 0; i < ratingVehicleInfos.Count; ++i)
         {
-            ratingVehicleInfos[i].ratingVehicleName.text = string.Format("<color=#{0}>|</color> {1}",
-                ColorUtility.ToHtmlStringRGB(vehicles[i].color),
-                vehicles[i].machineName);
-
             ratingVehicleInfos[i].ratingVehicleBet.text = vehiclesBetAll[i].ToString();
+
+            ratingVehicleInfos[i].ratingVehicleRank[countRace].text = vehiclesRanks[countRace][i].ToString();
+            ratingVehicleInfos[i].ratingVehicleRank[countRace].fontStyle = (vehiclesRanks[countRace][i] == 1) ? TMPro.FontStyles.Bold : TMPro.FontStyles.Normal;
+            ratingVehicleInfos[i].ratingVehicleRank[countRace].fontSize = (vehiclesRanks[countRace][i] == 1) ? 20f : 16f;
         }
+
+        countRace++;
 
         if (countRace == gameValue.stepRacing)
         {
-            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
             return;
         }
 

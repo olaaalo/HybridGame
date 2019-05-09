@@ -6,6 +6,7 @@ using UnityEngine;
 public class Vehicle : MonoBehaviour
 {
     public int ID;
+    public int inGameID;
     public string machineName;
     public Color color;
 
@@ -232,7 +233,7 @@ public class Vehicle : MonoBehaviour
         {
             isArrived = true;
 
-            GameManager.instance.CheckEndRace();
+            GameManager.instance.CheckEndRace(inGameID);
 
             raceRank = GameManager.instance.countVehiclesArrived;
             

@@ -11,7 +11,6 @@ public class GameValue : ScriptableObject
     {
         public bool isActive;
         public string name;
-        public KeyCode keyCode;
         public GameObject prefab;
         public Material material;
         public Color color;
@@ -20,6 +19,8 @@ public class GameValue : ScriptableObject
     public List<VehicleInfo> vehiclesInfos;
 
     [Header("VEHICLES")]
+
+    public KeyCode[] betKeyCodes;
 
     public float baseSpeed;
     public float addBetSpeed;
