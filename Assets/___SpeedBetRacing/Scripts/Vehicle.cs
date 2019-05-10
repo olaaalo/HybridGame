@@ -13,7 +13,6 @@ public class Vehicle : MonoBehaviour
     public CameraTarget[] cameraTargets;
 
     public MeshRenderer[] meshRenderers;
-    public TrailRenderer trail;
 
     public ParticleSystem[] rowsParticles;
 
@@ -32,6 +31,9 @@ public class Vehicle : MonoBehaviour
 
     public bool isArrived;
     public int raceRank;
+
+    public ParticleSystem dustParticle;
+    public ParticleSystem engineFireParticle;
 
     public FMODUnity.StudioEventEmitter startEngineEventEmitter;
     public FMODUnity.StudioEventEmitter engineEventEmitter;
@@ -98,6 +100,9 @@ public class Vehicle : MonoBehaviour
     float t;
     IEnumerator Acceleration(float speedToGo)
     {
+        engineFireParticle.Play();
+        dustParticle.Play();
+
         isOverheated = false;
 
         startTime = Time.time;
@@ -193,12 +198,14 @@ public class Vehicle : MonoBehaviour
     EngineDrone drone;
     IEnumerator Overheated(float sp)
     {
+        engineFireParticle.Stop();
+        dustParticle.Stop();
+
         PoolManager.instance.GetExplosionParticle(engine.transform.position, null);
         GameManager.instance.commentator.ExplosionVehicle(machineName);
 
         isOverheated = true;
 
-        trail.emitting = false;
         engine.DetachFromVehicle();
         engine = null;
 
@@ -237,8 +244,11 @@ public class Vehicle : MonoBehaviour
             GameManager.instance.CheckEndRace(inGameID, machineName);
 
             raceRank = GameManager.instance.countVehiclesArrived;
-            
+
             transform.DOLocalMoveX(GameManager.instance.endTransform.localPosition.x + 5f + 0.6f / raceRank, 0.5f);
+
+            engineFireParticle.Stop();
+            dustParticle.Stop();
         }
 
         if (col.gameObject.layer == 11)
