@@ -472,75 +472,6 @@ Transform:
   m_Father: {fileID: 535033881}
   m_RootOrder: 43
   m_LocalEulerAnglesHint: {x: 0, y: -180.00002, z: 0}
---- !u!1001 &40644242
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_Name
-      value: Vehicle Type 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3915200254371551709, guid: 539a0e8ec35e33246892a3fcd9eec319,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 539a0e8ec35e33246892a3fcd9eec319, type: 3}
 --- !u!1 &40740865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,7 +1159,7 @@ MonoBehaviour:
   isRelative: 1
   isFrom: 0
   isIndependentUpdate: 0
-  autoKill: 1
+  autoKill: 0
   isActive: 1
   isValid: 1
   target: {fileID: 333889100}
@@ -2631,7 +2562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &375383235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2753,7 +2684,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 150
+  orthographic size: 450
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2776,13 +2707,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375383233}
-  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 252.33333, y: 186.33, z: -208}
+  m_LocalRotation: {x: 0.61237186, y: 0.35355335, z: -0.35355228, w: 0.61237377}
+  m_LocalPosition: {x: 280, y: 805, z: 434}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: -60.000004}
 --- !u!1 &384419394
 GameObject:
   m_ObjectHideFlags: 0
@@ -10173,6 +10104,7 @@ MonoBehaviour:
   limitTimeToChange: 1
   currentCameraTarget: {fileID: 306596091}
   currentVehicleTarget: {fileID: 0}
+  timeToRandomQuote: 2
 --- !u!114 &1231412262
 MonoBehaviour:
   m_ObjectHideFlags: 0

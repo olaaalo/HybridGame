@@ -33,7 +33,12 @@ public class Vehicle : MonoBehaviour
     public int raceRank;
 
     public ParticleSystem dustParticle;
-    public ParticleSystem engineFireParticle;
+    public ParticleSystem engineSpeedUpParticle;
+    public ParticleSystem engineBigFireParticle;
+    public ParticleSystem[] engineSmallFireParticles;
+
+    private float baseSpeedBigFireParticle;
+    private float baseSpeedSmallFireParticle;
 
     public FMODUnity.StudioEventEmitter startEngineEventEmitter;
     public FMODUnity.StudioEventEmitter engineEventEmitter;
@@ -54,6 +59,9 @@ public class Vehicle : MonoBehaviour
         baseSpeed = GameManager.instance.gameValue.baseSpeed;
 
         StartCoroutine(StartAnimation());
+
+        baseSpeedBigFireParticle = engineBigFireParticle.main.startSpeed.constant;
+        baseSpeedSmallFireParticle = engineSmallFireParticles[0].main.startSpeed.constant;
     }
 
     private IEnumerator StartAnimation()
@@ -100,7 +108,8 @@ public class Vehicle : MonoBehaviour
     float t;
     IEnumerator Acceleration(float speedToGo)
     {
-        engineFireParticle.Play();
+        engineSpeedUpParticle.Play();
+        engineBigFireParticle.Play();
         dustParticle.Play();
 
         isOverheated = false;
@@ -160,8 +169,13 @@ public class Vehicle : MonoBehaviour
 #endif
 
     private float saveSpeed;
+    private ParticleSystem.ForceOverLifetimeModule mainA;
+    private ParticleSystem.ForceOverLifetimeModule mainB_0;
+    private ParticleSystem.ForceOverLifetimeModule mainB_1;
     public void UpgradeSpeedStep(int step, int stepToOverride)
     {
+        engineSpeedUpParticle.Play();
+
         if (!GameManager.instance.gameValue.withResetSpeed)
         {
             if (!isOverheated)
@@ -184,11 +198,20 @@ public class Vehicle : MonoBehaviour
                 if (speedStep + step >= stepToOverride)
                     StartCoroutine(Overheated(speed));
                 else
+                {
                     engineUpStepEventEmitter.Play();
+                }
             }
 
             speedStep += step;
             speedStep = speedStep % stepToOverride;
+
+            mainA = engineBigFireParticle.forceOverLifetime;
+            mainA.z = speedStep * 10;
+            mainB_0 = engineSmallFireParticles[0].forceOverLifetime;
+            mainB_0.z = speedStep * 10;
+            mainB_1 = engineSmallFireParticles[1].forceOverLifetime;
+            mainB_1.z = speedStep * 10;
 
             speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
             saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
@@ -198,7 +221,7 @@ public class Vehicle : MonoBehaviour
     EngineDrone drone;
     IEnumerator Overheated(float sp)
     {
-        engineFireParticle.Stop();
+        engineBigFireParticle.Stop();
         dustParticle.Stop();
 
         PoolManager.instance.GetExplosionParticle(engine.transform.position, null);
@@ -247,7 +270,7 @@ public class Vehicle : MonoBehaviour
 
             transform.DOLocalMoveX(GameManager.instance.endTransform.localPosition.x + 5f + 0.6f / raceRank, 0.5f);
 
-            engineFireParticle.Stop();
+            engineBigFireParticle.Stop();
             dustParticle.Stop();
         }
 

@@ -14,6 +14,9 @@ public class CameraConstraint : MonoBehaviour
 
     public CameraTarget currentCameraTarget;
     public Vehicle currentVehicleTarget;
+
+    public float timeToRandomQuote;
+    private WaitForSeconds waitRandomQuote;
     
 
     [ContextMenu("Apply Camera Constraint")]
@@ -24,7 +27,10 @@ public class CameraConstraint : MonoBehaviour
             ChangeConstraint(currentCameraTarget);
             transform.SetParent(transformConstraint.target);
         }
+
+        waitRandomQuote = new WaitForSeconds(timeToRandomQuote);
     }
+
 
     private float lastChangeTime;
 
@@ -43,7 +49,7 @@ public class CameraConstraint : MonoBehaviour
         currentCameraTarget = camTarget;
         currentVehicleTarget = vehicleToLookAt;
 
-        camTarget.tweenAnimation?.DOKill();
+        //camTarget.tweenAnimation?.DOKill();
         camTarget.tweenAnimation?.DORestart();
 
         transformConstraint.target = currentCameraTarget.transformTarget;
@@ -58,5 +64,28 @@ public class CameraConstraint : MonoBehaviour
         }
 
         transform.SetParent(transformConstraint.target);
+
+        if (countdown != null)
+            StopCoroutine(countdown);
+
+        countdown = cocoCountdown();
+
+        StartCoroutine(countdown);
+    }
+
+
+    private IEnumerator countdown;
+    private IEnumerator cocoCountdown()
+    {
+        yield return waitRandomQuote;
+
+        ChangeConstraintGlobalRace();
+    }
+
+    public void ChangeConstraintGlobalRace()
+    {
+        //TODO => Position camera qui voit globalement la course
+
+        
     }
 }

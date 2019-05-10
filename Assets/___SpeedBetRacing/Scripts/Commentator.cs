@@ -78,6 +78,36 @@ public class Commentator : MonoBehaviour
         }
     }
 
+    public void FirstRankVehicle(int[] ranks)
+    {
+        audioSource.Stop();
+
+        for (int i = 0; i < ranks.Length; ++i)
+        {
+            if (ranks[i] == 1)
+            {
+                switch (i)
+                {
+                case 0:
+                    PlayQuote(commentatorObject.commentatorQuotes[0].firstRankDreamShark);
+                    break;
+                case 1:
+                    PlayQuote(commentatorObject.commentatorQuotes[0].firstRankBurningLine);
+                    break;
+                case 2:
+                    PlayQuote(commentatorObject.commentatorQuotes[0].firstRankSerenity);
+                    break;
+                case 3:
+                    PlayQuote(commentatorObject.commentatorQuotes[0].firstRankTropicalBear);
+                    break;
+                case 4:
+                    PlayQuote(commentatorObject.commentatorQuotes[0].firstRankOrangeEarth);
+                    break;
+                }
+            }
+        }
+    }
+
     public void RanksVehicle(int[] ranks)
     {
         audioSource.Stop();

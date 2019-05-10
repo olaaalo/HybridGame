@@ -112,7 +112,7 @@ public class GameManager : MonoSingleton<GameManager>
             vehicles[i].inGameID = i;
 
             // Rank panel preparation
-            vehiclesRanks.Add(new int[gameValue.stepRacing]);
+            vehiclesRanks.Add(new int[vehicles.Count]);
 
             ratingVehicleInfos[i].ratingVehicleName.text = string.Format("<color=#{0}>|</color> {1}",
                 ColorUtility.ToHtmlStringRGB(vehicles[i].color),
@@ -277,7 +277,8 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
 
-        commentator.RanksVehicle(vehiclesRanks[countRace]);
+        //commentator.RanksVehicle(vehiclesRanks[countRace]);
+        commentator.FirstRankVehicle(vehiclesRanks[countRace]);
 
         countRace++;
 
@@ -286,7 +287,7 @@ public class GameManager : MonoSingleton<GameManager>
             return;
         }
 
-        DOVirtual.DelayedCall(15f, () =>
+        DOVirtual.DelayedCall(3f, () =>
         {
             countVehiclesArrived = 0;
 

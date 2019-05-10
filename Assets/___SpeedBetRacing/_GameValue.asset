@@ -48,20 +48,20 @@ MonoBehaviour:
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: d23edc258869cb14ab6a2ff8eb1b3629, type: 2}
-    color: {r: 0.36078432, g: 0.85490197, b: 0.7176471, a: 1}
+    color: {r: 0.83136815, g: 0.36078432, b: 0.85490197, a: 1}
   - isActive: 1
     name: Orange Earth
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: 61a912182470ad24fa2c945aeb5a9c79, type: 2}
     color: {r: 0.8584906, g: 0.3701283, b: 0.1822268, a: 1}
-  betKeyCodes: 7a00000071000000730000006400000066000000
-  baseSpeed: 60
-  addBetSpeed: 30
+  betKeyCodes: 0101000002010000030100000401000005010000
+  baseSpeed: 50
+  addBetSpeed: 25
   withResetSpeed: 1
   speedStepToOverride: 4
   overrideChance: 0.1
-  stepRacing: 5
+  stepRacing: 3
   checkpointPositions: []
   timeToApplyBet: 0
-  circuitLength: 2000
+  circuitLength: 1500
