@@ -20,22 +20,26 @@ public class GameValue : ScriptableObject
 
     [Header("VEHICLES")]
 
-    public float minBaseSpeed;
-    public float maxBaseSpeed;
+    public KeyCode[] betKeyCodes;
 
-    public float baseAcceleration;
-
-    public float minBetSpeed;
-    public float maxBetSpeed;
+    public float baseSpeed;
+    public float addBetSpeed;
     
+    public bool withResetSpeed;
     public int speedStepToOverride;
     public float overrideChance;
+
+
+    [Header("BETS")]
+
+    public int stepRacing;
+
+    [Range(0, 100)]
+    public float[] checkpointPositions; 
+    public float timeToApplyBet;
 
     
     [Header("CIRCUIT")]
 
     public float circuitLength;
-
-    [Range(0, 100)]
-    public float[] checkpointPositions; 
 }

@@ -20,7 +20,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: a203bb8ddcffbdd4cab1f4b48ea92518, type: 2}
     color: {r: 0.21698113, g: 0.51894236, b: 0.8679245, a: 1}
   - isActive: 1
-    name: Magma
+    name: Burning Line
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: d74dafb2e8381cf48906fc318b36f946, type: 2}
@@ -31,41 +31,37 @@ MonoBehaviour:
       type: 3}
     material: {fileID: 2100000, guid: 9a21f405ffe068e419d562e8e27cf715, type: 2}
     color: {r: 0.28034887, g: 0.7924528, b: 0.32941267, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Stardust
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: 62397fbecf49a804da74451eba574581, type: 2}
     color: {r: 0.7830189, g: 0.7445555, b: 0.35826808, a: 1}
-  - isActive: 1
+  - isActive: 0
     name: Magic Blow
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: fc1ca3d81fde24c438c0c0d5002abbcf, type: 2}
     color: {r: 0.61775964, g: 0.36187258, b: 0.7169812, a: 1}
-  - isActive: 0
+  - isActive: 1
     name: Tropical Bear
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: d23edc258869cb14ab6a2ff8eb1b3629, type: 2}
-    color: {r: 0.36078432, g: 0.85490197, b: 0.7176471, a: 1}
-  - isActive: 0
+    color: {r: 0.83136815, g: 0.36078432, b: 0.85490197, a: 1}
+  - isActive: 1
     name: Orange Earth
     prefab: {fileID: 3915200254371551708, guid: 539a0e8ec35e33246892a3fcd9eec319,
       type: 3}
     material: {fileID: 2100000, guid: 61a912182470ad24fa2c945aeb5a9c79, type: 2}
     color: {r: 0.8584906, g: 0.3701283, b: 0.1822268, a: 1}
-  minBaseSpeed: 25
-  maxBaseSpeed: 25
-  baseAcceleration: 0
-  minBetSpeed: 12.5
-  maxBetSpeed: 12.5
-  speedStepToOverride: 2
-  overrideChance: 1
-  circuitLength: 1650
-  checkpointPositions:
-  - 10
-  - 25
-  - 40
-  - 60
-  - 80
+  betKeyCodes: 0101000002010000030100000401000005010000
+  baseSpeed: 50
+  addBetSpeed: 25
+  withResetSpeed: 1
+  speedStepToOverride: 4
+  overrideChance: 0.1
+  stepRacing: 3
+  checkpointPositions: []
+  timeToApplyBet: 0
+  circuitLength: 1500
