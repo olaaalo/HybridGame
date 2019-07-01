@@ -1,0 +1,70 @@
+{
+    "format": {
+        "version": "1.0"
+    },
+    "shaders": {
+        "Main shader": {
+            "parameters": {
+                "Common Parameters": {
+                    "ao_intensity": 0.75,
+                    "emissive_intensity": 68.9000015258789,
+                    "horizonFade": 1.2999999523162842,
+                    "nbSamples": 16
+                },
+                "Parallax Occlusion Mapping": {
+                    "maxPOMSamples": 28,
+                    "minPOMSamples": 26,
+                    "pomStrength": 3.440000057220459,
+                    "usePOM": false
+                },
+                "Subsurface Scattering Parameters": {
+                    "sssColor": [
+                        0.7009999752044678,
+                        0.3009999990463257,
+                        0.3050000071525574
+                    ],
+                    "sssEnabled": true,
+                    "sssScale": 0.5,
+                    "sssType": 1
+                }
+            },
+            "shader": "pbr-metal-rough",
+            "shaderInstance": "Main shader"
+        }
+    },
+    "texturesets": {
+        "CacheBoue_arriere": {
+            "shader": "Main shader"
+        },
+        "aerationFat": {
+            "shader": "Main shader"
+        },
+        "arerationCotes": {
+            "shader": "Main shader"
+        },
+        "attach": {
+            "shader": "Main shader"
+        },
+        "cacheBoue_avant": {
+            "shader": "Main shader"
+        },
+        "direction": {
+            "shader": "Main shader"
+        },
+        "generalShape": {
+            "shader": "Main shader"
+        },
+        "moteur_shape": {
+            "shader": "Main shader"
+        },
+        "petitespieces": {
+            "shader": "Main shader"
+        },
+        "reacteur": {
+            "shader": "Main shader"
+        },
+        "tubes": {
+            "shader": "Main shader"
+        }
+    }
+}
