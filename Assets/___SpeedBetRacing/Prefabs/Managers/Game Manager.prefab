@@ -43,9 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390c437e8a1424347a984ec921c99d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUGApplyLLSystem: 1
+  gameHasStarted: 0
+  settingValues: {fileID: 0}
+  toActiveAtStart: []
+  toDisableAtStart: []
   gameValue: {fileID: 11400000, guid: ba617f448779b0c41a11b70e4f4fa249, type: 2}
   commentatorObject: {fileID: 11400000, guid: 3ebb7db0693be3d48bc094693f1962bf, type: 2}
-  gameHasStarted: 0
   commentator: {fileID: 0}
   cameraConstraint: {fileID: 0}
   startCameraTarget: {fileID: 0}
@@ -54,8 +58,6 @@ MonoBehaviour:
   end: {fileID: 0}
   circuitParent: {fileID: 0}
   roadTransform: {fileID: 0}
-  betZonePrefab: {fileID: 7125351640781891476, guid: ede4c7b8a32a2324290d8e084e358fe1,
-    type: 3}
   vehiclesParent: {fileID: 0}
   vehicles: []
   vehiclesRankList: []

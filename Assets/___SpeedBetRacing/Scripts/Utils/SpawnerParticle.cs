@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LibLabSystem;
 
 public class SpawnerParticle : MonoBehaviour
 {
@@ -40,6 +41,6 @@ public class SpawnerParticle : MonoBehaviour
 		while (particle.isPlaying)
 			yield return null;
 
-		PoolManager.instance.Despawn(transform);
+		LLPoolManager.instance.Despawn(transform);
 	}
 }

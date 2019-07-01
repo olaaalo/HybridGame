@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/___SpeedBetRacing/Scenes/0_Game_SpeedBetRacing.unity
+    path: Assets/___LIBLAB/0___ LibLab Init.unity
+    guid: 06e65219892b0b74989d79e4f1bb9706
+  - enabled: 1
+    path: Assets/___SpeedBetRacing/Scenes/1_SpeedBetRacing.unity
     guid: f8a456311f02e7c48a57ea9f834fd734
   m_configObjects: {}

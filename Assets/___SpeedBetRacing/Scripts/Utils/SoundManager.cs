@@ -1,70 +1,76 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
+using LibLabSystem;
 
-public class SoundManager : MonoSingleton<SoundManager>
+namespace LibLabGames.SpeedBetRacing
 {
-    public static List<FMOD.Studio.EventInstance> FmodEvent_empties;
-    public static List<FMOD.Studio.EventInstance> FmodEvent_traps;
-    public static List<FMOD.Studio.EventInstance> FmodEvent_monies;
-
-    override protected void Awake()
+    public class SoundManager : MonoBehaviour
     {
-        base.Awake();
+        public static SoundManager instance;
 
-        FmodEvent_empties = new List<FMOD.Studio.EventInstance>();
-        FmodEvent_traps = new List<FMOD.Studio.EventInstance>();
-        FmodEvent_monies = new List<FMOD.Studio.EventInstance>();
-    }
+        public List<FMOD.Studio.EventInstance> FmodEvent_empties;
+        public List<FMOD.Studio.EventInstance> FmodEvent_traps;
+        public List<FMOD.Studio.EventInstance> FmodEvent_monies;
 
+        void Awake()
+        {
+            instance = this;
+			DontDestroyOnLoad(gameObject);
 
-    static public void PlayEmptySound()
-    {
-        FmodEvent_empties.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Empty"));
-        FmodEvent_empties[FmodEvent_empties.Count - 1].start();
-    }
+            FmodEvent_empties = new List<FMOD.Studio.EventInstance>();
+            FmodEvent_traps = new List<FMOD.Studio.EventInstance>();
+            FmodEvent_monies = new List<FMOD.Studio.EventInstance>();
+        }
 
-    static public void PlayTrapSound()
-    {
-        FmodEvent_traps.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Trap"));
-        FmodEvent_traps[FmodEvent_traps.Count - 1].start();
-    }
+        public void PlayEmptySound()
+        {
+            FmodEvent_empties.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Empty"));
+            FmodEvent_empties[FmodEvent_empties.Count - 1].start();
+        }
 
-    static public void PlayMoneySound()
-    {
-        FmodEvent_monies.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Money"));
-        FmodEvent_monies[FmodEvent_monies.Count - 1].start();
-    }
+        public void PlayTrapSound()
+        {
+            FmodEvent_traps.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Trap"));
+            FmodEvent_traps[FmodEvent_traps.Count - 1].start();
+        }
 
-    static public void StopEventSound()
-    {
-        foreach (var fEvent in FmodEvent_empties)
-            fEvent.stop(0);
-        foreach (var fEvent in FmodEvent_traps)
-            fEvent.stop(0);
-        foreach (var fEvent in FmodEvent_monies)
-            fEvent.stop(0);
+        public void PlayMoneySound()
+        {
+            FmodEvent_monies.Add(FMODUnity.RuntimeManager.CreateInstance("event:/Money"));
+            FmodEvent_monies[FmodEvent_monies.Count - 1].start();
+        }
 
-        DOVirtual.DelayedCall(0.5f, ClearEventSound);
-    }
+        public void StopEventSound()
+        {
+            foreach (var fEvent in FmodEvent_empties)
+                fEvent.stop(0);
+            foreach (var fEvent in FmodEvent_traps)
+                fEvent.stop(0);
+            foreach (var fEvent in FmodEvent_monies)
+                fEvent.stop(0);
 
-    static public void ClearEventSound()
-    {
-        foreach (var fEvent in FmodEvent_empties)
-            fEvent.clearHandle();
-        foreach (var fEvent in FmodEvent_traps)
-            fEvent.clearHandle();
-        foreach (var fEvent in FmodEvent_monies)
-            fEvent.clearHandle();
+            DOVirtual.DelayedCall(0.5f, ClearEventSound);
+        }
 
-        FmodEvent_empties = new List<FMOD.Studio.EventInstance>();
-        FmodEvent_traps = new List<FMOD.Studio.EventInstance>();
-        FmodEvent_monies = new List<FMOD.Studio.EventInstance>();
-    }
+        public void ClearEventSound()
+        {
+            foreach (var fEvent in FmodEvent_empties)
+                fEvent.clearHandle();
+            foreach (var fEvent in FmodEvent_traps)
+                fEvent.clearHandle();
+            foreach (var fEvent in FmodEvent_monies)
+                fEvent.clearHandle();
 
-    private void OnDisable()
-    {
-        ClearEventSound();
+            FmodEvent_empties = new List<FMOD.Studio.EventInstance>();
+            FmodEvent_traps = new List<FMOD.Studio.EventInstance>();
+            FmodEvent_monies = new List<FMOD.Studio.EventInstance>();
+        }
+
+        void OnDisable()
+        {
+            ClearEventSound();
+        }
     }
 }

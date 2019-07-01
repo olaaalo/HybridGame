@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spectator : MonoBehaviour
+namespace LibLabGames.SpeedBetRacing
 {
-    public Animator animator;
-    public Renderer surfaceRenderer;
-
-    public int vehiculeID;
-
-    private void Start()
+    public class Spectator : MonoBehaviour
     {
-        animator.speed = Random.Range(0.7f, 1.3f);
+        public Animator animator;
+        public Renderer surfaceRenderer;
 
-        vehiculeID = Random.Range(0, GameManager.instance.gameValue.vehiclesInfos.Count);
+        public int vehiculeID;
 
-        surfaceRenderer.material.color = GameManager.instance.gameValue.vehiclesInfos[vehiculeID].color + Color.Lerp(Color.white * 0.8f, Color.black * 0.8f, Random.value) / Random.Range(3f, 5f);
+        private void Start()
+        {
+            animator.speed = Random.Range(0.7f, 1.3f);
+
+            vehiculeID = Random.Range(0, GameManager.instance.gameValue.vehiclesInfos.Count);
+
+            surfaceRenderer.material.color = GameManager.instance.gameValue.vehiclesInfos[vehiculeID].color + Color.Lerp(Color.white * 0.8f, Color.black * 0.8f, Random.value) / Random.Range(3f, 5f);
+        }
     }
 }

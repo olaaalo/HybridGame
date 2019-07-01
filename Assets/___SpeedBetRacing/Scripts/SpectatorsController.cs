@@ -2,37 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpectatorsController : MonoBehaviour
+namespace LibLabGames.SpeedBetRacing
 {
-    public GameObject[] spectatorPrefabs;
-    public Transform[] spectatorTransforms;
-
-    public List<Spectator> spectators;
-
-    private void OnDrawGizmos()
+    public class SpectatorsController : MonoBehaviour
     {
-        for (int i = 0; i < spectatorTransforms.Length; ++i)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(spectatorTransforms[i].position, 0.5f);
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(spectatorTransforms[i].position, spectatorTransforms[i].position + spectatorTransforms[i].forward);
-        }
-    }
+        public GameObject[] spectatorPrefabs;
+        public Transform[] spectatorTransforms;
 
-    private void Start()
-    {
-        spectators = new List<Spectator>();
+        public List<Spectator> spectators;
 
-        for (int i = 0; i < spectatorTransforms.Length; ++i)
+        private void OnDrawGizmos()
         {
-            if (Random.value > 0.1f)
+            for (int i = 0; i < spectatorTransforms.Length; ++i)
             {
-                spectators.Add(Instantiate(
-                        spectatorPrefabs[Random.Range(0, spectatorPrefabs.Length)],
-                        spectatorTransforms[i].position, spectatorTransforms[i].rotation,
-                        spectatorTransforms[i])
-                    .GetComponent<Spectator>());
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(spectatorTransforms[i].position, 0.5f);
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(spectatorTransforms[i].position, spectatorTransforms[i].position + spectatorTransforms[i].forward);
+            }
+        }
+
+        private void Start()
+        {
+            spectators = new List<Spectator>();
+
+            for (int i = 0; i < spectatorTransforms.Length; ++i)
+            {
+                if (Random.value > 0.1f)
+                {
+                    spectators.Add(Instantiate(
+                            spectatorPrefabs[Random.Range(0, spectatorPrefabs.Length)],
+                            spectatorTransforms[i].position, spectatorTransforms[i].rotation,
+                            spectatorTransforms[i])
+                        .GetComponent<Spectator>());
+                }
             }
         }
     }

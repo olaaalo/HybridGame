@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 38601f30e04fb634bb8ee3edadfb047f
+labels:
+- Billboard
+- Sprite
+- Constrain
+- Constraint
+- Look
+- Transform
+- LookAt
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
