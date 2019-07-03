@@ -54,6 +54,7 @@ MonoBehaviour:
   cameraConstraint: {fileID: 0}
   startCameraTarget: {fileID: 0}
   startTransform: {fileID: 0}
+  start: {fileID: 0}
   endTransform: {fileID: 0}
   end: {fileID: 0}
   circuitParent: {fileID: 0}

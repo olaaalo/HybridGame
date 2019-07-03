@@ -10,8 +10,14 @@ PrefabInstance:
     - target: {fileID: 3915200254371551708, guid: f5e1a5601ada1d245ba10b575b39908f,
         type: 3}
       propertyPath: m_Name
-      value: Vehicle Type 1_Blue
+      value: Vehicle Type 1 Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 7343837487601205353, guid: f5e1a5601ada1d245ba10b575b39908f,
+        type: 3}
+      propertyPath: engineDronePrefab
+      value: 
+      objectReference: {fileID: 240446614384410251, guid: 8a059fd0bb48208439097bf36ae43166,
+        type: 3}
     - target: {fileID: 3915200254371551709, guid: f5e1a5601ada1d245ba10b575b39908f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,16 +73,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4191781847801642556, guid: f5e1a5601ada1d245ba10b575b39908f,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b66537ba026f4054e8813b84dbdc91dc, type: 2}
     - target: {fileID: 3187315427110267535, guid: f5e1a5601ada1d245ba10b575b39908f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a6cbf36c04698db40a2454cdd644b9f9, type: 2}
+    - target: {fileID: 4191781847801642556, guid: f5e1a5601ada1d245ba10b575b39908f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b66537ba026f4054e8813b84dbdc91dc, type: 2}
     - target: {fileID: 1873227372584999890, guid: f5e1a5601ada1d245ba10b575b39908f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

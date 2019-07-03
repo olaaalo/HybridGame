@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 9089463505265658025}
   - component: {fileID: 2426838084701888007}
   - component: {fileID: 1361448635318893927}
+  - component: {fileID: 4641207708464530524}
   m_Layer: 12
   m_Name: Object002
   m_TagString: Untagged
@@ -193,6 +194,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.37, z: 1.2860852}
   m_Center: {x: 0, y: -0.17, z: -0.23212633}
+--- !u!54 &4641207708464530524
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383525869329756432}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3172820788876498164
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +310,7 @@ GameObject:
   - component: {fileID: 1282609609540614850}
   - component: {fileID: 1431184842190803290}
   - component: {fileID: 754750645737308049}
+  - component: {fileID: 3466491012901564737}
   m_Layer: 12
   m_Name: engine
   m_TagString: Untagged
@@ -373,6 +391,22 @@ CapsuleCollider:
   m_Height: 3.13
   m_Direction: 2
   m_Center: {x: 0.0017066896, y: -0.000000059604645, z: 0.09}
+--- !u!54 &3466491012901564737
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3469853947384232653}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3609433286447936098
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,6 +506,7 @@ GameObject:
   - component: {fileID: 2613617017447863608}
   - component: {fileID: 5419792942850023261}
   - component: {fileID: 6161602757914245645}
+  - component: {fileID: 2682901280860881616}
   m_Layer: 12
   m_Name: tube_008
   m_TagString: Untagged
@@ -542,6 +577,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!54 &2682901280860881616
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137612546586455867}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5924732272746874240
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,6 +605,7 @@ GameObject:
   - component: {fileID: 2497662278227712395}
   - component: {fileID: 5535977147365149543}
   - component: {fileID: 1222053789716865894}
+  - component: {fileID: 4333666194753982989}
   m_Layer: 12
   m_Name: Box005
   m_TagString: Untagged
@@ -633,6 +685,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5988287, y: 0.46437892, z: 1.2860848}
   m_Center: {x: 0.023147957, y: -0.18091272, z: -0.2321261}
+--- !u!54 &4333666194753982989
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5924732272746874240}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6854168370023478163
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,6 +712,7 @@ GameObject:
   - component: {fileID: 8725067015192708153}
   - component: {fileID: 4220536699413400622}
   - component: {fileID: 2168803403351770882}
+  - component: {fileID: 8921221015989679956}
   m_Layer: 12
   m_Name: tube_007
   m_TagString: Untagged
@@ -714,6 +783,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!54 &8921221015989679956
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6854168370023478163}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7506329893468862881
 GameObject:
   m_ObjectHideFlags: 0

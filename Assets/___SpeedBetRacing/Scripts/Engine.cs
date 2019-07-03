@@ -23,8 +23,10 @@ public class Engine : MonoBehaviour
 
         for (int i = 0; i < piecesRigidbodies.Length; ++i)
         {
+            piecesRigidbodies[i].transform.SetParent(null);
             piecesRigidbodies[i].useGravity = true;
             piecesRigidbodies[i].isKinematic = false;
+            piecesRigidbodies[i].velocity = Vector3.up * Random.Range(0f, 5f);
         }
     }
 }
