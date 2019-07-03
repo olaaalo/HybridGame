@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5949625188669286463}
   - component: {fileID: 5949625188669286448}
   - component: {fileID: 5949625188669286449}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,13 +93,13 @@ GameObject:
   - component: {fileID: 5287446318746441672}
   - component: {fileID: 2092514932007539843}
   - component: {fileID: 3922134287822426888}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2995790660439347436
 Transform:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8003984149228867227}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 952, y: 129, z: 948}
+  m_LocalPosition: {x: 952, y: 67, z: 948}
   m_LocalScale: {x: 3, y: 10, z: 250}
   m_Children: []
   m_Father: {fileID: 5949625188669286463}

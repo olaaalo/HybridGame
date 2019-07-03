@@ -12,7 +12,7 @@ public class GameValue : ScriptableObject
         public bool isActive;
         public string name;
         public GameObject prefab;
-        public Material material;
+        //public Material material;
         public Color color;
     }
 

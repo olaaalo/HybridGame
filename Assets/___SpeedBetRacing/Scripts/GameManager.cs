@@ -149,6 +149,12 @@ namespace LibLabGames.SpeedBetRacing
             yield return null;
             yield return null;
             yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
 
             commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
 

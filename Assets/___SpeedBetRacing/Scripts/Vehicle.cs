@@ -13,9 +13,10 @@ namespace LibLabGames.SpeedBetRacing
         public string machineName;
         public Color color;
 
-        public CameraTarget[] cameraTargets;
+        public Rigidbody rb;
+        public GameObject bottomColliderObject;
 
-        public MeshRenderer[] meshRenderers;
+        public CameraTarget[] cameraTargets;
 
         public ParticleSystem[] rowsParticles;
 
@@ -54,11 +55,6 @@ namespace LibLabGames.SpeedBetRacing
             name = ID + " | " + machineName;
 #endif
 
-            for (int i = 0; i < meshRenderers.Length; ++i)
-            {
-                meshRenderers[i].material = GameManager.instance.gameValue.vehiclesInfos[ID - 1].material;
-            }
-
             baseSpeed = GameManager.instance.gameValue.baseSpeed;
 
             StartCoroutine(StartAnimation());
@@ -67,8 +63,19 @@ namespace LibLabGames.SpeedBetRacing
             baseSpeedSmallFireParticle = engineSmallFireParticles[0].main.startSpeed.constant;
         }
 
+        private RaycastHit hitBottom;
         private IEnumerator StartAnimation()
         {
+            if (Physics.Raycast(transform.position, transform.up * -1, out hitBottom, distanceRaycastForward, 1 << 13))
+            {
+                transform.position = hitBottom.point;
+            }
+
+            rb.isKinematic = true;
+            bottomColliderObject.SetActive(false);
+
+            yield return null;
+
             yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
 
             startEngineEventEmitter.Play();
@@ -78,7 +85,8 @@ namespace LibLabGames.SpeedBetRacing
                 rowsParticles[i].Play();
             }
 
-            transform.DOLocalMoveY(1f, 3f).SetEase(Ease.OutBack);
+            transform.DOLocalMoveY(0.6f, 3f).SetRelative().SetEase(Ease.OutBack)
+                .OnComplete(() => bottomColliderObject.SetActive(true));
 
             transform.DOLocalRotate(Vector3.right * -5f, 0.3f);
             transform.DOLocalRotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
@@ -90,6 +98,8 @@ namespace LibLabGames.SpeedBetRacing
         private float timeToWait;
         public void DOStartRace()
         {
+            rb.isKinematic = false;
+
             if (raceRank == 0)
                 timeToWait = Random.Range(0.1f, 0.3f);
             else
