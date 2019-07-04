@@ -17,9 +17,10 @@ namespace LibLabGames.SpeedBetRacing
         {
             transform.SetParent(GameManager.instance.circuitParent);
 
-            startPosition = vehicleTarget.transform.localPosition + new Vector3(-15f, 10f, 45f);
-            transform.localPosition = startPosition;
+            startPosition = vehicleTarget.GetGroundPosition() + new Vector3(-15f, 10f, 45f);
+            transform.position = startPosition;
             transform.rotation = vehicleTarget.transform.rotation;
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
 
             transform.DOLocalRotate(Vector3.up * -90f, 0.8f).SetDelay(timeToVehicle - 1f).SetRelative();
             transform.DOMoveX(vehicleTarget.engineTransform.position.x + 1f, timeToVehicle).SetEase(Ease.InQuad);
@@ -36,7 +37,7 @@ namespace LibLabGames.SpeedBetRacing
                             vehicleTarget = null;
 
                             transform.DOLocalRotateQuaternion(Quaternion.identity, 1f);
-                            transform.DOLocalMove(startPosition, timeToVehicle / 1.5f);
+                            transform.DOMove(startPosition, timeToVehicle / 1.5f);
                         });
                 });
         }

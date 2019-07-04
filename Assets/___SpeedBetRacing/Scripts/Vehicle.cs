@@ -104,10 +104,23 @@ namespace LibLabGames.SpeedBetRacing
 
         public void PlaceOnBottom()
         {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
             if (Physics.Raycast(transform.position, transform.up * -1, out hit, Mathf.Infinity, 1 << 13))
             {
                 transform.position = hit.point + Vector3.up * 0.3f;
             }
+        }
+
+        public Vector3 GetGroundPosition()
+        {
+            if (Physics.Raycast(transform.position, transform.up * -1, out hit, Mathf.Infinity, 1 << 13))
+            {
+                return hit.point + Vector3.up * 0.3f;
+            }
+            else
+                return transform.position;
         }
 
         private float timeToWait;
@@ -160,8 +173,16 @@ namespace LibLabGames.SpeedBetRacing
         public bool isStartRace;
         private void FixedUpdate()
         {
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, 1 << 13))
+            {
+                LLLog.LogE (string.Format("Vehicle {0}", machineName), "Vehicle was underground, it's fixed. Thanks to me my lord !");
+                transform.position = hit.point + Vector3.up * 0.3f;
+            }
+
             if (!GameManager.instance.gameHasStarted || !isStartRace || isArrived || isOverheated) return;
 
+            transform.localEulerAngles = Vector3.forward *
+                ((transform.eulerAngles.z < 180) ? Mathf.Clamp(transform.eulerAngles.z, 0f, 45f) : Mathf.Clamp(transform.eulerAngles.z, 315f, 360f));
             transform.Translate(Vector3.right * speed * Time.deltaTime, transform);
 
             if (Physics.Raycast(transform.position, transform.right, out hit, distanceRaycastForward, 1 << 11))
@@ -202,11 +223,12 @@ namespace LibLabGames.SpeedBetRacing
         private ParticleSystem.ForceOverLifetimeModule mainB_1;
         public void UpgradeSpeedStep(int step, int stepToOverride)
         {
-            engineSpeedUpParticle.Play();
+            if (!isArrived)
+                engineSpeedUpParticle.Play();
 
             if (!GameManager.instance.gameValue.withResetSpeed)
             {
-                if (!isOverheated)
+                if (!isOverheated && !isArrived)
                 {
                     if (Random.value < GameManager.instance.gameValue.overrideChance * (speedStep + step))
                         StartCoroutine(Overheated(speed));
@@ -221,7 +243,7 @@ namespace LibLabGames.SpeedBetRacing
             }
             else
             {
-                if (!isOverheated)
+                if (!isOverheated && !isArrived)
                 {
                     if (speedStep + step >= stepToOverride)
                         StartCoroutine(Overheated(speed));
@@ -249,7 +271,13 @@ namespace LibLabGames.SpeedBetRacing
         EngineDrone drone;
         IEnumerator Overheated(float sp)
         {
+            rb.angularVelocity = Vector3.forward * Random.Range(3f, 10f);
+            transform.DOLocalRotate(Vector3.zero, 0.5f).SetDelay(1f)
+                .OnStart(() => rb.angularVelocity = Vector3.zero);
+            transform.DOLocalMoveX(5, 1f).SetRelative();
+
             engineBigFireParticle.Stop();
+            engineUpStepEventEmitter.Stop();
             dustParticle.Stop();
 
             LLPoolManager.instance.GetExplosionParticle(engine.transform.position, null);
@@ -280,6 +308,7 @@ namespace LibLabGames.SpeedBetRacing
         public void Repared()
         {
             engine.transform.SetParent(engineTransform);
+            engine.transform.DOLocalRotate(Vector3.zero, 0.3f);
 
             AccelerationCoco = Acceleration(saveSpeed);
             StartCoroutine(AccelerationCoco);
