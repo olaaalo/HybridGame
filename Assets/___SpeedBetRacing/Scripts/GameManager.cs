@@ -86,6 +86,8 @@ namespace LibLabGames.SpeedBetRacing
             yield return null;
             yield return null;
 
+            Inputs.instance.ActiveSerialPort();
+
             fadeScreen.DOFade(0, 3f);
 
             roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
