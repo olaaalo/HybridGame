@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using UnityEngine;
 using UnityEngine.Events;
+using LibLabSystem;
 
 namespace LibLabGames.SpeedBetRacing
 {
     public class Inputs : MonoBehaviour
     {
+        public static Inputs instance;
+
         public static string port = "COM4";
         private static SerialPort sp;
 
@@ -19,6 +22,8 @@ namespace LibLabGames.SpeedBetRacing
 
         void Start()
         {
+            instance = this;
+
             sp = new SerialPort(port, 9600);
             sp.Open();
             sp.ReadTimeout = 10;
@@ -61,32 +66,32 @@ namespace LibLabGames.SpeedBetRacing
 
         private void Input0()
         {
-            //ICI TU FAIS CE QUE TU VEUX MON CHER CLEMENT ! 
-            //APPEL TES FONCTIONS, INCREMENTE TES VARIABLES, DECLANCHE TES EVENTS, DEMERDE TOI ....
-
-            //MAIS MAINTENANT STOP AVEC CE PUTAIN DE ARDUINO DE MEEEEEEEEERDE !!!!!!!!!!!!!!!!!!
-
-            Debug.Log("Input0");
+            LLLog.Log("ARDUINO", "Input 0");
+            GameManager.instance.BetOnVehicle(0, 1);
         }
 
         private void Input1()
         {
-            Debug.Log("Input1");
+            LLLog.Log("ARDUINO", "Input 1");
+            GameManager.instance.BetOnVehicle(1, 1);
         }
 
         private void Input2()
         {
-            Debug.Log("Input2");
+            LLLog.Log("ARDUINO", "Input 2");
+            GameManager.instance.BetOnVehicle(2, 1);
         }
 
         private void Input3()
         {
-            Debug.Log("Input3");
+            LLLog.Log("ARDUINO", "Input 3");
+            GameManager.instance.BetOnVehicle(3, 1);
         }
 
         private void Input4()
         {
-            Debug.Log("Input4");
+            LLLog.Log("ARDUINO", "Input 4");
+            GameManager.instance.BetOnVehicle(4, 1);
         }
     }
 }

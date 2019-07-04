@@ -39,6 +39,8 @@ namespace LibLabGames.SpeedBetRacing
         [HideInInspector] public int[] vehiclesBetAll;
         [HideInInspector] public List<int[]> vehiclesRanks;
 
+        public CanvasGroup fadeScreen;
+
         public RectTransform sectorRectTransform;
         public TextMeshProUGUI sectorsCountText;
 
@@ -70,9 +72,21 @@ namespace LibLabGames.SpeedBetRacing
             instance = this;
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
             //base.DOStart();
+
+            fadeScreen.alpha = 1;
+            
+            yield return new WaitForSeconds(0.5f);
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+
+            fadeScreen.DOFade(0, 3f);
 
             roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
 
@@ -202,8 +216,7 @@ namespace LibLabGames.SpeedBetRacing
 
                 if (Input.GetKeyDown(gameValue.betKeyCodes[i]))
                 {
-                    vehiclesBetOnStep[i]++;
-                    vehiclesBetAll[i]++;
+                    BetOnVehicle(i, 1);
                 }
             }
 
@@ -218,6 +231,12 @@ namespace LibLabGames.SpeedBetRacing
             }
 
             UpdateVehicleRank();
+        }
+
+        public void BetOnVehicle(int indexVehicle, int betValue)
+        {
+            vehiclesBetOnStep[indexVehicle] += betValue;
+            vehiclesBetAll[indexVehicle] += betValue;
         }
 
         private Vehicle currentVehicleFirstRank;

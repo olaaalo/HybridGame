@@ -13911,7 +13911,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599232788917106805}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0010000467, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0.0010000467, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3915200254371551709}
@@ -14044,6 +14044,7 @@ MonoBehaviour:
   machineName: '[NO NAME]'
   color: {r: 0, g: 0, b: 0, a: 0}
   rb: {fileID: 7812506730631197170}
+  mainCollider: {fileID: 3942096463680315774}
   bottomColliderObject: {fileID: 599232788917106805}
   cameraTargets:
   - {fileID: 1793262122319287937}
@@ -15114,7 +15115,7 @@ PrefabInstance:
     - target: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
         type: 3}
@@ -15647,7 +15648,7 @@ PrefabInstance:
     - target: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.02
+      value: 1.021
       objectReference: {fileID: 0}
     - target: {fileID: 4298144002262334707, guid: 3985859784e56a64f81c8e2d3596d656,
         type: 3}

@@ -14,6 +14,7 @@ namespace LibLabGames.SpeedBetRacing
         public Color color;
 
         public Rigidbody rb;
+        public Collider mainCollider;
         public GameObject bottomColliderObject;
 
         public CameraTarget[] cameraTargets;
@@ -59,14 +60,22 @@ namespace LibLabGames.SpeedBetRacing
 
             baseSpeedBigFireParticle = engineBigFireParticle.main.startSpeed.constant;
             baseSpeedSmallFireParticle = engineSmallFireParticles[0].main.startSpeed.constant;
+            
+            bottomColliderObject.SetActive(false);
+            mainCollider.enabled = false;
+
+            rb.useGravity = false;
         }
 
         public IEnumerator StartAnimation()
         {
+            bottomColliderObject.SetActive(false);
+            mainCollider.enabled = false;
+
             PlaceOnBottom();
 
             rb.isKinematic = true;
-            bottomColliderObject.SetActive(false);
+            rb.useGravity = true;
 
             yield return null;
 
@@ -80,11 +89,15 @@ namespace LibLabGames.SpeedBetRacing
             }
 
             transform.DOLocalMoveY(0.6f, 3f).SetRelative().SetEase(Ease.OutBack)
-                .OnComplete(() => bottomColliderObject.SetActive(true));
+                .OnComplete(() =>
+                {
+                    mainCollider.enabled = true;
+                    bottomColliderObject.SetActive(true);
+                });
 
-            transform.DOLocalRotate(Vector3.right * -5f, 0.3f);
-            transform.DOLocalRotate(Vector3.right * 7f, 0.5f).SetDelay(0.3f);
-            transform.DOLocalRotate(Vector3.right * -3f, 0.3f).SetDelay(0.8f);
+            transform.DOLocalRotate(Vector3.right * -3f, 0.3f);
+            transform.DOLocalRotate(Vector3.right * 5f, 0.5f).SetDelay(0.3f);
+            transform.DOLocalRotate(Vector3.right * -2f, 0.3f).SetDelay(0.8f);
             transform.DOLocalRotate(Vector3.zero, 0.3f).SetDelay(1.2f)
                 .OnStart(() => engineEventEmitter.Play());
         }
@@ -93,7 +106,7 @@ namespace LibLabGames.SpeedBetRacing
         {
             if (Physics.Raycast(transform.position, transform.up * -1, out hit, Mathf.Infinity, 1 << 13))
             {
-                transform.position = hit.point + Vector3.up * 0.5f;
+                transform.position = hit.point + Vector3.up * 0.3f;
             }
         }
 
