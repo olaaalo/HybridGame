@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using DG.Tweening;
+using LibLabSystem;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using LibLabSystem;
 
 namespace LibLabGames.SpeedBetRacing
 {
@@ -26,6 +26,7 @@ namespace LibLabGames.SpeedBetRacing
         public CameraTarget startCameraTarget;
 
         public Transform startTransform;
+        public StartRace start;
         public Transform endTransform;
         public End end;
         public Transform circuitParent;
@@ -37,6 +38,8 @@ namespace LibLabGames.SpeedBetRacing
         [HideInInspector] public int[] vehiclesBetOnStep;
         [HideInInspector] public int[] vehiclesBetAll;
         [HideInInspector] public List<int[]> vehiclesRanks;
+
+        public CanvasGroup fadeScreen;
 
         public RectTransform sectorRectTransform;
         public TextMeshProUGUI sectorsCountText;
@@ -69,13 +72,28 @@ namespace LibLabGames.SpeedBetRacing
             instance = this;
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
-            base.DOStart();
+            //base.DOStart();
+
+            fadeScreen.alpha = 1;
+            
+            yield return new WaitForSeconds(0.5f);
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+
+            fadeScreen.DOFade(0, 3f);
 
             roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
 
+            start.PlaceOnBottom();
+
             endTransform.localPosition = Vector3.right * gameValue.circuitLength;
+            end.PlaceOnBottom();
 
             sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
 
@@ -121,6 +139,7 @@ namespace LibLabGames.SpeedBetRacing
             {
                 // Vehicles position & info
                 vehicles[i].transform.localPosition += Vector3.forward * i * 6f - Vector3.forward * (vehicles.Count - 1) * 6f / 2;
+                vehicles[i].PlaceOnBottom();
                 vehicles[i].inGameID = i;
 
                 // Rank panel preparation
@@ -167,6 +186,11 @@ namespace LibLabGames.SpeedBetRacing
         {
             commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startRace);
 
+            for (int i = 0; i < vehicles.Count; ++i)
+            {
+                vehicles[i].StartCoroutine(vehicles[i].StartAnimation());
+            }
+
             DOVirtual.DelayedCall(4f, () =>
             {
                 gameHasStarted = true;
@@ -192,8 +216,7 @@ namespace LibLabGames.SpeedBetRacing
 
                 if (Input.GetKeyDown(gameValue.betKeyCodes[i]))
                 {
-                    vehiclesBetOnStep[i]++;
-                    vehiclesBetAll[i]++;
+                    BetOnVehicle(i, 1);
                 }
             }
 
@@ -208,6 +231,12 @@ namespace LibLabGames.SpeedBetRacing
             }
 
             UpdateVehicleRank();
+        }
+
+        public void BetOnVehicle(int indexVehicle, int betValue)
+        {
+            vehiclesBetOnStep[indexVehicle] += betValue;
+            vehiclesBetAll[indexVehicle] += betValue;
         }
 
         private Vehicle currentVehicleFirstRank;
@@ -317,7 +346,8 @@ namespace LibLabGames.SpeedBetRacing
 
                 for (int i = 0; i < vehicles.Count; ++i)
                 {
-                    vehicles[i].transform.localPosition = new Vector3(0, vehicles[i].transform.localPosition.y, vehicles[i].transform.localPosition.z);
+                    vehicles[i].transform.localPosition = new Vector3(0, 10, vehicles[i].transform.localPosition.z);
+                    vehicles[i].PlaceOnBottom();
                     vehicles[i].isArrived = false;
                     vehicles[i].isStartRace = false;
                 }

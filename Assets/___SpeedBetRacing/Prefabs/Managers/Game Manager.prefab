@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7520822109433675097}
   - component: {fileID: 8682659213698381389}
+  - component: {fileID: 8942954615508558678}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -54,6 +55,7 @@ MonoBehaviour:
   cameraConstraint: {fileID: 0}
   startCameraTarget: {fileID: 0}
   startTransform: {fileID: 0}
+  start: {fileID: 0}
   endTransform: {fileID: 0}
   end: {fileID: 0}
   circuitParent: {fileID: 0}
@@ -63,6 +65,7 @@ MonoBehaviour:
   vehiclesRankList: []
   vehiclesBetOnStep: 
   vehiclesBetAll: 
+  fadeScreen: {fileID: 0}
   sectorRectTransform: {fileID: 0}
   sectorsCountText: {fileID: 0}
   rankRectTransform: {fileID: 0}
@@ -133,3 +136,15 @@ MonoBehaviour:
   vehiclesProgressions: []
   countVehiclesArrived: 0
   countRace: 0
+--- !u!114 &8942954615508558678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841911652929890152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ead0f519a5f6c4f98608cd27d96695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

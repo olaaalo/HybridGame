@@ -15,7 +15,7 @@ MonoBehaviour:
   vehiclesInfos:
   - isActive: 1
     name: Dream Shark
-    prefab: {fileID: 6409902548542946445, guid: abcdae1ae5cc19d4c8f4334edea74181,
+    prefab: {fileID: 6409902548542946445, guid: cc2232eb6cf3c694298bbf9a64e31438,
       type: 3}
     color: {r: 0.21698113, g: 0.51894236, b: 0.8679245, a: 1}
   - isActive: 1
