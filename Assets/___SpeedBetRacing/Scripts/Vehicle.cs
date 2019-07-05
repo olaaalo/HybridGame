@@ -57,14 +57,17 @@ namespace LibLabGames.SpeedBetRacing
 #endif
 
             baseSpeed = GameManager.instance.gameValue.baseSpeed;
+            stepToOverride = GameManager.instance.gameValue.speedStepToOverride + 1;
 
             baseSpeedBigFireParticle = engineBigFireParticle.main.startSpeed.constant;
             baseSpeedSmallFireParticle = engineSmallFireParticles[0].main.startSpeed.constant;
-            
+
             bottomColliderObject.SetActive(false);
             mainCollider.enabled = false;
 
             rb.useGravity = false;
+
+            colObjects = new List<GameObject>();
         }
 
         public IEnumerator StartAnimation()
@@ -173,9 +176,12 @@ namespace LibLabGames.SpeedBetRacing
         public bool isStartRace;
         private void FixedUpdate()
         {
+            if (Time.frameCount % 120 + inGameID * 13 == 0)
+                RecalculateSpeed();
+
             if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, 1 << 13))
             {
-                LLLog.LogE (string.Format("Vehicle {0}", machineName), "Vehicle was underground, it's fixed. Thanks to me my lord !");
+                LLLog.LogE(string.Format("Vehicle {0}", machineName), "Vehicle was underground, it's fixed. Thanks to me my lord !");
                 transform.position = hit.point + Vector3.up * 0.3f;
             }
 
@@ -217,59 +223,69 @@ namespace LibLabGames.SpeedBetRacing
         }
 #endif
 
+        private int stepToOverride;
         private float saveSpeed;
         private ParticleSystem.ForceOverLifetimeModule mainA;
         private ParticleSystem.ForceOverLifetimeModule mainB_0;
         private ParticleSystem.ForceOverLifetimeModule mainB_1;
-        public void UpgradeSpeedStep(int step, int stepToOverride)
+        public void UpgradeSpeedStep(int step)
         {
+            if (step < 0 && speedStep % stepToOverride == 0)
+                return;
+
             if (!isArrived)
                 engineSpeedUpParticle.Play();
 
-            if (!GameManager.instance.gameValue.withResetSpeed)
+            // if (!GameManager.instance.gameValue.withResetSpeed)
+            // {
+            //     if (!isOverheated && !isArrived)
+            //     {
+            //         if (Random.value < GameManager.instance.gameValue.overrideChance * (speedStep + step))
+            //             StartCoroutine(Overheated(speed));
+            //         else
+            //             engineUpStepEventEmitter.Play();
+            //     }
+
+            //     speedStep += step;
+
+            //     speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * speedStep;
+            //     saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * speedStep;
+            // }
+            // else
+            // {
+            if (!isOverheated && !isArrived)
             {
-                if (!isOverheated && !isArrived)
+                if (speedStep + step >= stepToOverride)
+                    StartCoroutine(Overheated(speed));
+                else
                 {
-                    if (Random.value < GameManager.instance.gameValue.overrideChance * (speedStep + step))
-                        StartCoroutine(Overheated(speed));
-                    else
-                        engineUpStepEventEmitter.Play();
+                    engineUpStepEventEmitter.Play();
                 }
-
-                speedStep += step;
-
-                speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * speedStep;
-                saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * speedStep;
             }
-            else
-            {
-                if (!isOverheated && !isArrived)
-                {
-                    if (speedStep + step >= stepToOverride)
-                        StartCoroutine(Overheated(speed));
-                    else
-                    {
-                        engineUpStepEventEmitter.Play();
-                    }
-                }
 
-                speedStep += step;
-                speedStep = speedStep % stepToOverride;
+            speedStep += step;
 
-                mainA = engineBigFireParticle.forceOverLifetime;
-                mainA.z = speedStep * 10;
-                mainB_0 = engineSmallFireParticles[0].forceOverLifetime;
-                mainB_0.z = speedStep * 10;
-                mainB_1 = engineSmallFireParticles[1].forceOverLifetime;
-                mainB_1.z = speedStep * 10;
+            RecalculateSpeed();
 
-                speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
-                saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
-            }
+            mainA = engineBigFireParticle.forceOverLifetime;
+            mainA.z = speedStep * 10;
+            mainB_0 = engineSmallFireParticles[0].forceOverLifetime;
+            mainB_0.z = speedStep * 10;
+            mainB_1 = engineSmallFireParticles[1].forceOverLifetime;
+            mainB_1.z = speedStep * 10;
+            // }
         }
 
-        EngineDrone drone;
-        IEnumerator Overheated(float sp)
+        private void RecalculateSpeed()
+        {
+            speedStep = speedStep % stepToOverride;
+
+            speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
+            saveSpeed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
+        }
+
+        private EngineDrone drone;
+        private IEnumerator Overheated(float sp)
         {
             rb.angularVelocity = Vector3.forward * Random.Range(3f, 10f);
             transform.DOLocalRotate(Vector3.zero, 0.5f).SetDelay(1f)
@@ -315,6 +331,8 @@ namespace LibLabGames.SpeedBetRacing
         }
 
         private BetZone betZone;
+        private List<GameObject> colObjects;
+        private bool pass;
         private void OnTriggerEnter(Collider col)
         {
             if (col.gameObject.layer == 9 && !isArrived)
@@ -341,6 +359,36 @@ namespace LibLabGames.SpeedBetRacing
                     betZone.Activate();
                     GameManager.instance.UpdateBetValue();
                 }
+            }
+
+            if (col.gameObject.layer == 14)
+            {
+                pass = true;
+                foreach(var c in colObjects)
+                {
+                    if (c == col.gameObject)
+                        pass = false;
+                }
+
+                if (!pass) return;
+
+                colObjects.Add(col.gameObject);
+                UpgradeSpeedStep(1);
+            }
+
+            if (col.gameObject.layer == 15)
+            {
+                pass = true;
+                foreach(var c in colObjects)
+                {
+                    if (c == col.gameObject)
+                        pass = false;
+                }
+
+                if (!pass) return;
+
+                colObjects.Add(col.gameObject);
+                UpgradeSpeedStep(-1);
             }
         }
     }

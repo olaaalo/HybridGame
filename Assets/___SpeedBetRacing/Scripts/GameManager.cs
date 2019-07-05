@@ -39,6 +39,9 @@ namespace LibLabGames.SpeedBetRacing
         [HideInInspector] public int[] vehiclesBetAll;
         [HideInInspector] public List<int[]> vehiclesRanks;
 
+        public List<Transform> zoneSpeedDecreases;
+        public List<Transform> zoneSpeedIncreases;
+
         public CanvasGroup fadeScreen;
 
         public RectTransform sectorRectTransform;
@@ -63,6 +66,8 @@ namespace LibLabGames.SpeedBetRacing
 
         public RectTransform vehiclesProgressionsParent;
         public GameObject vehicleProgressionsPrefab;
+        public GameObject zoneIncreaseSliderPrefab;
+        public GameObject zoneDecreaseSliderPrefab;
         [HideInInspector] public List<Slider> vehiclesProgressions;
 
         private void Awake()
@@ -77,7 +82,7 @@ namespace LibLabGames.SpeedBetRacing
             //base.DOStart();
 
             fadeScreen.alpha = 1;
-            
+
             yield return new WaitForSeconds(0.5f);
             yield return null;
             yield return null;
@@ -86,11 +91,17 @@ namespace LibLabGames.SpeedBetRacing
             yield return null;
             yield return null;
 
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Decrease").Length; ++i)
+                GameObject.FindGameObjectsWithTag("Decrease") [i].transform.SetParent(roadTransform);
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Increase").Length; ++i)
+                GameObject.FindGameObjectsWithTag("Increase") [i].transform.SetParent(roadTransform);
+            positionSliderZones = new List<Slider>();
+
             Inputs.instance.ActiveSerialPort();
 
             fadeScreen.DOFade(0, 3f);
 
-            roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
+            //roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
 
             start.PlaceOnBottom();
 
@@ -184,8 +195,43 @@ namespace LibLabGames.SpeedBetRacing
             StartRace();
         }
 
+        private Transform tempZone;
+        private List<Slider> positionSliderZones;
         private void StartRace()
         {
+            if (positionSliderZones.Count > 0)
+            {
+                for (int i = 0; i < positionSliderZones.Count; ++i)
+                    Destroy(positionSliderZones[i].gameObject);
+            }
+            positionSliderZones = new List<Slider>();
+
+            zoneSpeedDecreases = new List<Transform>();
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Decrease").Length; ++i)
+            {
+                tempZone = GameObject.FindGameObjectsWithTag("Decrease") [i].transform;
+                if (tempZone.localPosition.x < gameValue.circuitLength * (countRace + 1) && tempZone.localPosition.x > gameValue.circuitLength * countRace)
+                {
+                    positionSliderZones.Add(Instantiate(zoneDecreaseSliderPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
+                    positionSliderZones[positionSliderZones.Count - 1].value = 1 - (gameValue.circuitLength - tempZone.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
+
+                    zoneSpeedDecreases.Add(tempZone);
+                }
+            }
+
+            zoneSpeedIncreases = new List<Transform>();
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Increase").Length; ++i)
+            {
+                tempZone = GameObject.FindGameObjectsWithTag("Increase") [i].transform;
+                if (tempZone.localPosition.x < gameValue.circuitLength * (countRace + 1) && tempZone.localPosition.x > gameValue.circuitLength * countRace)
+                {
+                    positionSliderZones.Add(Instantiate(zoneIncreaseSliderPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
+                    positionSliderZones[positionSliderZones.Count - 1].value = 1 - (gameValue.circuitLength - tempZone.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
+
+                    zoneSpeedIncreases.Add(tempZone);
+                }
+            }
+
             commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startRace);
 
             for (int i = 0; i < vehicles.Count; ++i)
@@ -214,7 +260,7 @@ namespace LibLabGames.SpeedBetRacing
             // Update all vehicles
             for (int i = 0; i < vehicles.Count; ++i)
             {
-                vehiclesProgressions[i].value = 1 - (gameValue.circuitLength - vehicles[i].transform.localPosition.x) / gameValue.circuitLength;
+                vehiclesProgressions[i].value = 1 - (gameValue.circuitLength - vehicles[i].transform.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
 
                 if (Input.GetKeyDown(gameValue.betKeyCodes[i]))
                 {
@@ -283,7 +329,7 @@ namespace LibLabGames.SpeedBetRacing
             {
                 if (vehiclesBetOnStep[i] > 0)
                 {
-                    vehicles[i].UpgradeSpeedStep(vehiclesBetOnStep[i], gameValue.speedStepToOverride + 1);
+                    vehicles[i].UpgradeSpeedStep(vehiclesBetOnStep[i]);
                 }
 
                 vehiclesBetOnStep[i] = 0;
