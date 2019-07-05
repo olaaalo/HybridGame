@@ -182,7 +182,7 @@ namespace LibLabGames.SpeedBetRacing
             if (!GameManager.instance.gameHasStarted || !isStartRace || isArrived || isOverheated) return;
 
             transform.localEulerAngles = Vector3.forward *
-                ((transform.eulerAngles.z < 180) ? Mathf.Clamp(transform.eulerAngles.z, 0f, 45f) : Mathf.Clamp(transform.eulerAngles.z, 315f, 360f));
+                ((transform.eulerAngles.z < 180) ? Mathf.Clamp(transform.eulerAngles.z, 0f, 30) : Mathf.Clamp(transform.eulerAngles.z, 330f, 360f));
             transform.Translate(Vector3.right * speed * Time.deltaTime, transform);
 
             if (Physics.Raycast(transform.position, transform.right, out hit, distanceRaycastForward, 1 << 11))

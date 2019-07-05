@@ -338,6 +338,11 @@ namespace LibLabGames.SpeedBetRacing
 
             DOVirtual.DelayedCall(3f, () =>
             {
+                startTransform.localPosition = Vector3.right * gameValue.circuitLength * countRace + Vector3.up * 100;
+                start.PlaceOnBottom();
+                endTransform.localPosition = Vector3.right * gameValue.circuitLength * (countRace + 1) + Vector3.up * 100;
+                end.PlaceOnBottom();
+
                 countVehiclesArrived = 0;
 
                 cameraConstraint.ChangeConstraint(startCameraTarget);
@@ -348,7 +353,7 @@ namespace LibLabGames.SpeedBetRacing
 
                 for (int i = 0; i < vehicles.Count; ++i)
                 {
-                    vehicles[i].transform.localPosition = new Vector3(0, 10, vehicles[i].transform.localPosition.z);
+                    vehicles[i].transform.localPosition = new Vector3(gameValue.circuitLength * (countRace), 100, vehicles[i].transform.localPosition.z);
                     vehicles[i].PlaceOnBottom();
                     vehicles[i].isArrived = false;
                     vehicles[i].isStartRace = false;

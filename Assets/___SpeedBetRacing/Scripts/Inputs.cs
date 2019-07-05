@@ -28,8 +28,21 @@ namespace LibLabGames.SpeedBetRacing
             instance = this;
         }
 
+        string[] portNames;
+        bool find;
         public void ActiveSerialPort()
         {
+            portNames = SerialPort.GetPortNames();
+
+            foreach(var p in portNames)
+            {
+                if (p == port)
+                    find = true;
+            }
+
+            if (!find)
+                return;
+
             sp = new SerialPort(port, 9600, Parity.None, 8, StopBits.One);
             sp.DtrEnable = false;
             sp.ReadTimeout = 10;
