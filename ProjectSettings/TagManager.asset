@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - FxTemporaire
+  - Increase
+  - Decrease
   layers:
   - Default
   - TransparentFX
@@ -20,8 +22,8 @@ TagManager:
   - BetZone
   - Engine
   - Terrain
-  - 
-  - 
+  - Increase
+  - Decrease
   - 
   - 
   - 

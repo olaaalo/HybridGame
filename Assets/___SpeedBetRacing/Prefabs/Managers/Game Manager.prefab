@@ -65,6 +65,8 @@ MonoBehaviour:
   vehiclesRankList: []
   vehiclesBetOnStep: 
   vehiclesBetAll: 
+  zoneSpeedDecreases: []
+  zoneSpeedIncreases: []
   fadeScreen: {fileID: 0}
   sectorRectTransform: {fileID: 0}
   sectorsCountText: {fileID: 0}
@@ -132,6 +134,10 @@ MonoBehaviour:
     - {fileID: 0}
   vehiclesProgressionsParent: {fileID: 0}
   vehicleProgressionsPrefab: {fileID: 3323252525684536880, guid: 42344f83dd78a914fa370d8385e30cf5,
+    type: 3}
+  zoneIncreaseSliderPrefab: {fileID: 3323252525684536880, guid: 97aad639bdbb5104690aaeb18efe9a2a,
+    type: 3}
+  zoneDecreaseSliderPrefab: {fileID: 3323252525684536880, guid: 934b7cb80f6036946bcc797a7c90d9f3,
     type: 3}
   vehiclesProgressions: []
   countVehiclesArrived: 0

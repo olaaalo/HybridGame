@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
+using LibLabSystem;
 using UnityEngine;
 using UnityEngine.Events;
-using LibLabSystem;
 
 namespace LibLabGames.SpeedBetRacing
 {
@@ -11,7 +11,7 @@ namespace LibLabGames.SpeedBetRacing
     {
         public static Inputs instance;
 
-        public static string port = "COM4";
+        public static string port = "COM6";
         private static SerialPort sp;
 
         UnityEvent eventInput0 = new UnityEvent();
@@ -22,11 +22,31 @@ namespace LibLabGames.SpeedBetRacing
 
         void Start()
         {
-            instance = this;
+            if (LLSystem.isInit == false)
+                return;
 
-            sp = new SerialPort(port, 9600);
-            sp.Open();
+            instance = this;
+        }
+
+        string[] portNames;
+        bool find;
+        public void ActiveSerialPort()
+        {
+            portNames = SerialPort.GetPortNames();
+
+            foreach(var p in portNames)
+            {
+                if (p == port)
+                    find = true;
+            }
+
+            if (!find)
+                return;
+
+            sp = new SerialPort(port, 9600, Parity.None, 8, StopBits.One);
+            sp.DtrEnable = false;
             sp.ReadTimeout = 10;
+            sp.Open();
 
             eventInput0.AddListener(Input0);
             eventInput1.AddListener(Input1);
@@ -37,31 +57,38 @@ namespace LibLabGames.SpeedBetRacing
 
         void Update()
         {
+            if (sp == null) return;
+
             if (sp.IsOpen)
             {
-                string k = sp.ReadLine();
-                if (k != null)
+                string cmd = CheckForRecievedData();
+
+                if (cmd != string.Empty)
                 {
-                    switch (k)
-                    {
-                    case "passage0":
+                    if (cmd.Contains("0"))
                         eventInput0.Invoke();
-                        break;
-                    case "passage1":
+                    if (cmd.Contains("1"))
                         eventInput1.Invoke();
-                        break;
-                    case "passage2":
+                    if (cmd.Contains("2"))
                         eventInput2.Invoke();
-                        break;
-                    case "passage3":
+                    if (cmd.Contains("3"))
                         eventInput3.Invoke();
-                        break;
-                    case "passage4":
+                    if (cmd.Contains("4"))
                         eventInput4.Invoke();
-                        break;
-                    }
                 }
             }
+        }
+
+        public string CheckForRecievedData()
+        {
+            try
+            {
+                string inData = sp.ReadLine();
+                sp.BaseStream.Flush();
+                sp.DiscardInBuffer();
+                return inData;
+            }
+            catch { return string.Empty; }
         }
 
         private void Input0()
@@ -92,6 +119,30 @@ namespace LibLabGames.SpeedBetRacing
         {
             LLLog.Log("ARDUINO", "Input 4");
             GameManager.instance.BetOnVehicle(4, 1);
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (sp != null && sp.IsOpen)
+            {
+                sp.Close();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (sp != null && sp.IsOpen)
+            {
+                sp.Close();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (sp != null && sp.IsOpen)
+            {
+                sp.Close();
+            }
         }
     }
 }

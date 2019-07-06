@@ -42,4 +42,6 @@ public class GameValue : ScriptableObject
     [Header("CIRCUIT")]
 
     public float circuitLength;
+    public Color zoneDecreaseSliderColor;
+    public Color zoneIncreaseSliderColor;
 }
