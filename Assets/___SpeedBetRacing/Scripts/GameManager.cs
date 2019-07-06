@@ -176,18 +176,8 @@ namespace LibLabGames.SpeedBetRacing
             StartCoroutine(StartGameCoco());
         }
 
-        IEnumerator StartGameCoco()
+        private IEnumerator StartGameCoco()
         {
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-
             commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
 
             yield return null;
@@ -199,6 +189,8 @@ namespace LibLabGames.SpeedBetRacing
         private List<Slider> positionSliderZones;
         private void StartRace()
         {
+            cameraConstraint.canChange = false;
+
             if (positionSliderZones.Count > 0)
             {
                 for (int i = 0; i < positionSliderZones.Count; ++i)
@@ -249,6 +241,12 @@ namespace LibLabGames.SpeedBetRacing
                 {
                     vehicles[i].DOStartRace();
                 }
+
+                DOVirtual.DelayedCall(1f, () =>
+                {
+                    cameraConstraint.canChange = true;
+                    cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets, currentVehicleFirstRank.ID, null);
+                });
             });
         }
 
@@ -293,13 +291,13 @@ namespace LibLabGames.SpeedBetRacing
             vehiclesRankList = vehiclesRankList.OrderBy(v => v.transform.localPosition.x).ToList();
 
             // Camera sur véhicle première classe
-            if (currentVehicleFirstRank != vehiclesRankList[vehiclesRankList.Count - 1])
+            if (currentVehicleFirstRank != vehiclesRankList[vehiclesRankList.Count - 1] || cameraConstraint.vehicleIDLooked != vehiclesRankList[vehiclesRankList.Count - 1].ID)
             {
                 currentVehicleFirstRank = vehiclesRankList[vehiclesRankList.Count - 1];
 
                 if (countVehiclesArrived == 0 && gameHasStarted)
                 {
-                    cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets, null);
+                    cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets, currentVehicleFirstRank.ID, null);
                     commentator.FirstPlaceVehicle(currentVehicleFirstRank.machineName);
                 }
             }
@@ -399,8 +397,10 @@ namespace LibLabGames.SpeedBetRacing
 
                 for (int i = 0; i < vehicles.Count; ++i)
                 {
-                    vehicles[i].transform.localPosition = new Vector3(gameValue.circuitLength * (countRace), 100, vehicles[i].transform.localPosition.z);
-                    vehicles[i].PlaceOnBottom();
+                    vehicles[i].transform.localPosition = new Vector3(gameValue.circuitLength * countRace, startTransform.localPosition.y + 1f, vehicles[i].transform.localPosition.z);
+                    // vehicles[i].transform.localPosition = new Vector3(gameValue.circuitLength * countRace,
+                    //     100, vehicles[i].transform.localPosition.z);
+                    // vehicles[i].PlaceOnBottom();
                     vehicles[i].isArrived = false;
                     vehicles[i].isStartRace = false;
                 }
