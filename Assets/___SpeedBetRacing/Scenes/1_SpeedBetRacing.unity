@@ -9557,8 +9557,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231412254}
-  m_LocalRotation: {x: 0.048414264, y: 0.9499318, z: -0.187626, w: 0.2451166}
-  m_LocalPosition: {x: 1982.14, y: 111.770004, z: 250.8}
+  m_LocalRotation: {x: 0.187626, y: -0.2451166, z: 0.048414264, w: 0.9499318}
+  m_LocalPosition: {x: -982.14, y: 111.770004, z: 209.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -14585,74 +14585,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 69739170, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 88133792, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 143080176, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 169099158, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 175307718, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 176533960, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 319390254, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 815505805, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 897894861, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1246075960, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262183192, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1270661732, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1312750596, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1372296964, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1678683758, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1911110187, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 2077341463, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0d8747a472eb7740961d4ab745b9157, type: 3}
 --- !u!1 &1906641747
@@ -16707,8 +16639,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113885001}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 2000, y: 100, z: 230}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1000, y: 100, z: 230}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 653104170}
@@ -16717,7 +16649,7 @@ Transform:
   - {fileID: 231476498}
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2115958148
 GameObject:
   m_ObjectHideFlags: 0
