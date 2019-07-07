@@ -51,7 +51,6 @@ namespace LibLabGames.SpeedBetRacing
 
         private void Start()
         {
-
 #if UNITY_EDITOR
             name = ID + " | " + machineName;
 #endif
@@ -62,25 +61,25 @@ namespace LibLabGames.SpeedBetRacing
             baseSpeedBigFireParticle = engineBigFireParticle.main.startSpeed.constant;
             baseSpeedSmallFireParticle = engineSmallFireParticles[0].main.startSpeed.constant;
 
+            colObjects = new List<GameObject>();
+
             bottomColliderObject.SetActive(false);
             mainCollider.enabled = false;
-
             rb.useGravity = false;
-
-            colObjects = new List<GameObject>();
         }
 
         public IEnumerator StartAnimation()
         {
             bottomColliderObject.SetActive(false);
             mainCollider.enabled = false;
-
-            PlaceOnBottom();
+            
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            
+            //PlaceOnBottom();
 
             rb.isKinematic = true;
             rb.useGravity = true;
-
-            yield return null;
 
             yield return new WaitForSeconds(Random.Range(0.3f, 0.8f));
 
@@ -147,10 +146,10 @@ namespace LibLabGames.SpeedBetRacing
             });
         }
 
-        IEnumerator AccelerationCoco;
-        float startTime;
-        float t;
-        IEnumerator Acceleration(float speedToGo)
+        private IEnumerator AccelerationCoco;
+        private float startTime;
+        private float t;
+        private IEnumerator Acceleration(float speedToGo)
         {
             engineSpeedUpParticle.Play();
             engineBigFireParticle.Play();
@@ -177,12 +176,14 @@ namespace LibLabGames.SpeedBetRacing
         private void FixedUpdate()
         {
             if (Time.frameCount % 120 + inGameID * 13 == 0)
-                RecalculateSpeed();
-
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, 1 << 13))
             {
-                LLLog.LogE(string.Format("Vehicle {0}", machineName), "Vehicle was underground, it's fixed. Thanks to me my lord !");
-                transform.position = hit.point + Vector3.up * 0.3f;
+                RecalculateSpeed(true);
+                
+                if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, 1 << 13))
+                {
+                    LLLog.LogE(string.Format("Vehicle {0}", machineName), "Vehicle was underground, it's fixed. Thanks to me my lord !");
+                    transform.position = hit.point + Vector3.up * 0.3f;
+                }
             }
 
             if (!GameManager.instance.gameHasStarted || !isStartRace || isArrived || isOverheated) return;
@@ -210,7 +211,7 @@ namespace LibLabGames.SpeedBetRacing
                 {
                     end.wasPrepared = true;
 
-                    GameManager.instance.cameraConstraint.ChangeConstraint(end.cameraTargets);
+                    GameManager.instance.cameraConstraint.EndRaceConstraint(end.cameraTargets);
                 }
             }
         }
@@ -265,7 +266,7 @@ namespace LibLabGames.SpeedBetRacing
 
             speedStep += step;
 
-            RecalculateSpeed();
+            RecalculateSpeed(false);
 
             mainA = engineBigFireParticle.forceOverLifetime;
             mainA.z = speedStep * 10;
@@ -276,8 +277,11 @@ namespace LibLabGames.SpeedBetRacing
             // }
         }
 
-        private void RecalculateSpeed()
+        private void RecalculateSpeed(bool onFixedUpdate)
         {
+            if (speedStep > speedStep % stepToOverride && onFixedUpdate)
+                return;
+
             speedStep = speedStep % stepToOverride;
 
             speed = GameManager.instance.gameValue.baseSpeed + GameManager.instance.gameValue.addBetSpeed * (speedStep % stepToOverride);
@@ -343,7 +347,9 @@ namespace LibLabGames.SpeedBetRacing
 
                 raceRank = GameManager.instance.countVehiclesArrived;
 
-                transform.DOLocalMoveX(GameManager.instance.endTransform.localPosition.x + 5f + 0.6f / raceRank, 0.5f);
+                //rb.isKinematic = true;
+
+                rb.DOMoveX(5.6f * speedStep, 0.5f).SetRelative();
 
                 engineBigFireParticle.Stop();
                 dustParticle.Stop();
@@ -364,7 +370,7 @@ namespace LibLabGames.SpeedBetRacing
             if (col.gameObject.layer == 14)
             {
                 pass = true;
-                foreach(var c in colObjects)
+                foreach (var c in colObjects)
                 {
                     if (c == col.gameObject)
                         pass = false;
@@ -379,7 +385,7 @@ namespace LibLabGames.SpeedBetRacing
             if (col.gameObject.layer == 15)
             {
                 pass = true;
-                foreach(var c in colObjects)
+                foreach (var c in colObjects)
                 {
                     if (c == col.gameObject)
                         pass = false;

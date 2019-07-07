@@ -5686,7 +5686,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 500, z: 30}
+  m_Size: {x: 1, y: 500, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &775967683
 MonoBehaviour:
@@ -9713,10 +9713,12 @@ MonoBehaviour:
   cam: {fileID: 1231412256}
   transformConstraint: {fileID: 1231412260}
   lookAtConstraint: {fileID: 1231412259}
-  limitTimeToChange: 1
+  limitTimeToChange: 1.5
   currentCameraTarget: {fileID: 306596091}
   currentVehicleTarget: {fileID: 0}
-  timeToRandomQuote: 2
+  timeToRandomChange: 0
+  canChange: 0
+  vehicleIDLooked: 0
 --- !u!114 &1231412262
 MonoBehaviour:
   m_ObjectHideFlags: 0
