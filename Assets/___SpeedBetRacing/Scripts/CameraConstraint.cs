@@ -17,6 +17,7 @@ namespace LibLabGames.SpeedBetRacing
         public CameraTarget currentCameraTarget;
         public Vehicle currentVehicleTarget;
 
+        public List<CameraTarget> cameraTargetsGlobalRace;
         public float timeToRandomChange;
         private WaitForSeconds waitRandomChange;
 
@@ -33,6 +34,8 @@ namespace LibLabGames.SpeedBetRacing
             }
 
             waitRandomChange = new WaitForSeconds(timeToRandomChange);
+
+            cameraTargetsGlobalRace.Shuffle();
         }
 
         private float lastChangeTime;
@@ -159,10 +162,23 @@ namespace LibLabGames.SpeedBetRacing
             ChangeConstraintGlobalRace();
         }
 
+        private List<CameraTarget> cameraTargetsGlobalRaceTemp;
+        private Vehicle firstPlaceVehicle;
         public void ChangeConstraintGlobalRace()
         {
-            //TODO => Position camera qui voit globalement la course
+            firstPlaceVehicle = GameManager.instance.currentVehicleFirstRank;
 
+            cameraTargetsGlobalRace[0].transform.localPosition =
+                new Vector3(firstPlaceVehicle.transform.localPosition.x, firstPlaceVehicle.transform.localPosition.y, 0);
+
+            ChangeConstraint(cameraTargetsGlobalRace[0]);
+
+            cameraTargetsGlobalRaceTemp = cameraTargetsGlobalRace;
+
+            for (int i = 0; i < cameraTargetsGlobalRaceTemp.Count; ++i)
+            {
+                cameraTargetsGlobalRace[i] = cameraTargetsGlobalRaceTemp[(i + 1 < cameraTargetsGlobalRaceTemp.Count) ? i + 1 : 0];
+            }
         }
     }
 }

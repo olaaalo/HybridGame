@@ -285,7 +285,7 @@ namespace LibLabGames.SpeedBetRacing
             vehiclesBetAll[indexVehicle] += betValue;
         }
 
-        private Vehicle currentVehicleFirstRank;
+        [HideInInspector] public Vehicle currentVehicleFirstRank;
         private void UpdateVehicleRank()
         {
             vehiclesRankList = vehiclesRankList.OrderBy(v => v.transform.localPosition.x).ToList();
