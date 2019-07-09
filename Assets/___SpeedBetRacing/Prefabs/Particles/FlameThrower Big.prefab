@@ -119,8 +119,8 @@ ParticleSystem:
     enabled: 1
     startLifetime:
       serializedVersion: 2
-      minMaxState: 3
-      scalar: 1.4
+      minMaxState: 0
+      scalar: 2
       minScalar: 1.2
       maxCurve:
         serializedVersion: 2
@@ -271,7 +271,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.8
+      scalar: 2.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -587,7 +587,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 400
+    maxNumParticles: 800
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -852,7 +852,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 300
+      scalar: 250
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1462,7 +1462,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 3
@@ -2050,7 +2050,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
   ForceModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 3
@@ -2220,7 +2220,7 @@ ParticleSystem:
       m_Bits: 4294967295
     influenceList: []
   ClampVelocityModule:
-    enabled: 1
+    enabled: 0
     x:
       serializedVersion: 2
       minMaxState: 1
