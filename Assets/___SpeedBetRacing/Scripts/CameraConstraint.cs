@@ -24,18 +24,22 @@ namespace LibLabGames.SpeedBetRacing
         public bool canChange;
         public int vehicleIDLooked;
 
-        [ContextMenu("Apply Camera Constraint")]
         private void Start()
         {
-            if (currentCameraTarget != null)
-            {
-                ChangeConstraint(currentCameraTarget);
-                transform.SetParent(transformConstraint.target);
-            }
-
             waitRandomChange = new WaitForSeconds(timeToRandomChange);
 
             cameraTargetsGlobalRace.Shuffle();
+        }
+
+        public void StartCameraRace()
+        {
+            cam.fieldOfView = 60;
+            cam.farClipPlane = 1500;
+
+            canChange = true;
+            ChangeConstraint(currentCameraTarget);
+            transform.SetParent(transformConstraint.target);
+            canChange = false;
         }
 
         private float lastChangeTime;

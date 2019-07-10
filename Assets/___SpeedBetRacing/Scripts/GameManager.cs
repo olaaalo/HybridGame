@@ -42,6 +42,8 @@ namespace LibLabGames.SpeedBetRacing
         public List<Transform> zoneSpeedDecreases;
         public List<Transform> zoneSpeedIncreases;
 
+        public GameObject titleScreen;
+
         public CanvasGroup fadeScreen;
 
         public RectTransform sectorRectTransform;
@@ -52,7 +54,6 @@ namespace LibLabGames.SpeedBetRacing
         public Image[] speedStepImages;
         public TextMeshProUGUI[] speedStepRankedTexts;
 
-        public Image timeToBetImage;
         public RectTransform ratingRectTransform;
 
         [Serializable]
@@ -79,9 +80,29 @@ namespace LibLabGames.SpeedBetRacing
 
         private IEnumerator Start()
         {
-            //base.DOStart();
+            Inputs.instance.ActiveSerialPort();
 
-            fadeScreen.alpha = 1;
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Decrease").Length; ++i)
+                GameObject.FindGameObjectsWithTag("Decrease") [i].transform.SetParent(roadTransform);
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Increase").Length; ++i)
+                GameObject.FindGameObjectsWithTag("Increase") [i].transform.SetParent(roadTransform);
+            positionSliderZones = new List<Slider>();
+
+            start.PlaceOnBottom();
+
+            endTransform.localPosition = Vector3.right * gameValue.circuitLength;
+            end.PlaceOnBottom();
+
+
+
+            while (!gameHasStarted)
+                yield return null;
+
+            fadeScreen.DOFade(1, 0.3f).OnComplete(() =>
+            {
+                cameraConstraint.StartCameraRace();
+                titleScreen.SetActive(false);
+            });
 
             yield return new WaitForSeconds(0.5f);
             yield return null;
@@ -91,22 +112,7 @@ namespace LibLabGames.SpeedBetRacing
             yield return null;
             yield return null;
 
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Decrease").Length; ++i)
-                GameObject.FindGameObjectsWithTag("Decrease") [i].transform.SetParent(roadTransform);
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Increase").Length; ++i)
-                GameObject.FindGameObjectsWithTag("Increase") [i].transform.SetParent(roadTransform);
-            positionSliderZones = new List<Slider>();
-
-            Inputs.instance.ActiveSerialPort();
-
             fadeScreen.DOFade(0, 3f);
-
-            //roadTransform.localScale = new Vector3(gameValue.circuitLength, 1, 1);
-
-            start.PlaceOnBottom();
-
-            endTransform.localPosition = Vector3.right * gameValue.circuitLength;
-            end.PlaceOnBottom();
 
             sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
 
@@ -115,8 +121,6 @@ namespace LibLabGames.SpeedBetRacing
 
             rankRectTransform.localScale = new Vector3(1, 0, 1);
             ratingRectTransform.localScale = new Vector3(1, 0, 1);
-
-            timeToBetImage.fillAmount = 0;
 
             if (!gameValue.withResetSpeed)
             {
@@ -233,7 +237,7 @@ namespace LibLabGames.SpeedBetRacing
 
             DOVirtual.DelayedCall(4f, () =>
             {
-                gameHasStarted = true;
+                raceHasStarted = true;
 
                 rankRectTransform.DOScale(1, 0.5f);
 
@@ -250,10 +254,20 @@ namespace LibLabGames.SpeedBetRacing
             });
         }
 
+        private bool raceHasStarted;
         private float timeCount;
         private void Update()
         {
-            if (!gameHasStarted) return;
+            if (!gameHasStarted)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    base.DOStart();
+                }
+                return;
+            }
+
+            if (!raceHasStarted) return;
 
             // Update all vehicles
             for (int i = 0; i < vehicles.Count; ++i)
@@ -268,7 +282,6 @@ namespace LibLabGames.SpeedBetRacing
 
             // Update Bet values
             timeCount += Time.deltaTime;
-            timeToBetImage.fillAmount = timeCount / gameValue.timeToApplyBet;
             if (timeCount >= gameValue.timeToApplyBet)
             {
                 timeCount = 0;
@@ -349,8 +362,6 @@ namespace LibLabGames.SpeedBetRacing
         private void EndRace()
         {
             gameHasStarted = false;
-
-            timeToBetImage.fillAmount = 0;
 
             rankRectTransform.DOScaleY(0, 0.5f);
             ratingRectTransform.DOScale(1, 0.3f);
