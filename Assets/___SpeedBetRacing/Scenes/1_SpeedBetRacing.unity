@@ -10379,7 +10379,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1231412256}
-  startTarget: {fileID: 306596091}
   transformConstraint: {fileID: 1231412260}
   lookAtConstraint: {fileID: 1231412259}
   limitTimeToChange: 1.5
@@ -17362,6 +17361,11 @@ PrefabInstance:
       propertyPath: titleScreen
       value: 
       objectReference: {fileID: 2078405427}
+    - target: {fileID: 8682659213698381389, guid: eeba96692363ea64b9e8fdb95cfb5a79,
+        type: 3}
+      propertyPath: layoutInfoVehicles
+      value: 
+      objectReference: {fileID: 1811047916}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeba96692363ea64b9e8fdb95cfb5a79, type: 3}
 --- !u!1 &2078405427

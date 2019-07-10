@@ -49,6 +49,7 @@ namespace LibLabGames.SpeedBetRacing
         public RectTransform sectorRectTransform;
         public TextMeshProUGUI sectorsCountText;
 
+        public GameObject layoutInfoVehicles;
         public RectTransform rankRectTransform;
         public TextMeshProUGUI[] rankTexts;
         public Image[] speedStepImages;
@@ -93,8 +94,6 @@ namespace LibLabGames.SpeedBetRacing
             endTransform.localPosition = Vector3.right * gameValue.circuitLength;
             end.PlaceOnBottom();
 
-
-
             while (!gameHasStarted)
                 yield return null;
 
@@ -111,6 +110,10 @@ namespace LibLabGames.SpeedBetRacing
             yield return null;
             yield return null;
             yield return null;
+
+            layoutInfoVehicles.SetActive(true);
+            vehiclesProgressionsParent.gameObject.SetActive(true);
+            ratingRectTransform.gameObject.SetActive(true);
 
             fadeScreen.DOFade(0, 3f);
 
