@@ -55,6 +55,8 @@ namespace LibLabGames.SpeedBetRacing
         public Image[] speedStepImages;
         public TextMeshProUGUI[] speedStepRankedTexts;
 
+        public TextMeshProUGUI totalBetText;
+
         public RectTransform ratingRectTransform;
 
         [Serializable]
@@ -66,11 +68,23 @@ namespace LibLabGames.SpeedBetRacing
         }
         public List<RatingVehicleInfo> ratingVehicleInfos;
 
-        public RectTransform vehiclesProgressionsParent;
+        public RectTransform[] vehiclesProgressionsParents;
         public GameObject vehicleProgressionsPrefab;
         public GameObject zoneIncreaseSliderPrefab;
         public GameObject zoneDecreaseSliderPrefab;
-        [HideInInspector] public List<Slider> vehiclesProgressions;
+        public List<Slider> vehiclesProgressions;
+
+        [Serializable]
+        public struct BetVehicleInfo
+        {
+            public Image[] betImages;
+            public TextMeshProUGUI betText;
+            public Image betOverheatedImage;
+            public Color sliderImageBaseColor;
+            public Image sliderImage;
+        }
+        public List<BetVehicleInfo> betVehicleInfos;
+        public Color betInfoBaseColor;
 
         private void Awake()
         {
@@ -79,6 +93,8 @@ namespace LibLabGames.SpeedBetRacing
             instance = this;
         }
 
+
+        private FMOD.Studio.EventInstance fmodEvent_Start;
         private IEnumerator Start()
         {
             Inputs.instance.ActiveSerialPort();
@@ -93,6 +109,12 @@ namespace LibLabGames.SpeedBetRacing
 
             endTransform.localPosition = Vector3.right * gameValue.circuitLength;
             end.PlaceOnBottom();
+
+            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   STEPS RACE", countRace + 1, gameValue.stepRacing);
+            totalBetText.text = "0";
+
+            SpawnVehiclesOnStart();
+            UpdateVehicleRank();
 
             while (!gameHasStarted)
                 yield return null;
@@ -110,19 +132,17 @@ namespace LibLabGames.SpeedBetRacing
             yield return null;
             yield return null;
             yield return null;
+            
 
-            layoutInfoVehicles.SetActive(true);
-            vehiclesProgressionsParent.gameObject.SetActive(true);
-            ratingRectTransform.gameObject.SetActive(true);
+            // layoutInfoVehicles.SetActive(true);
+            // vehiclesProgressionsParent.gameObject.SetActive(true);
+            // ratingRectTransform.gameObject.SetActive(true);
 
             fadeScreen.DOFade(0, 3f);
 
-            sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
+            StartCoroutine(StartGameCoco());
 
-            SpawnVehiclesOnStart();
-            UpdateVehicleRank();
-
-            rankRectTransform.localScale = new Vector3(1, 0, 1);
+            //rankRectTransform.localScale = new Vector3(1, 0, 1);
             ratingRectTransform.localScale = new Vector3(1, 0, 1);
 
             if (!gameValue.withResetSpeed)
@@ -135,7 +155,6 @@ namespace LibLabGames.SpeedBetRacing
         private void SpawnVehiclesOnStart()
         {
             vehicles = new List<Vehicle>();
-            vehiclesProgressions = new List<Slider>();
             vehiclesRanks = new List<int[]>();
 
             // Spawn
@@ -147,9 +166,6 @@ namespace LibLabGames.SpeedBetRacing
                     vehicles[vehicles.Count - 1].ID = i + 1;
                     vehicles[vehicles.Count - 1].machineName = gameValue.vehiclesInfos[i].name;
                     vehicles[vehicles.Count - 1].color = gameValue.vehiclesInfos[i].color;
-
-                    vehiclesProgressions.Add(Instantiate(vehicleProgressionsPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
-                    vehiclesProgressions[vehiclesProgressions.Count - 1].targetGraphic.color = gameValue.vehiclesInfos[i].color;
                 }
             }
 
@@ -165,7 +181,7 @@ namespace LibLabGames.SpeedBetRacing
                 // Rank panel preparation
                 vehiclesRanks.Add(new int[vehicles.Count]);
 
-                ratingVehicleInfos[i].ratingVehicleName.text = string.Format("<color=#{0}>|</color> {1}",
+                ratingVehicleInfos[i].ratingVehicleName.text = string.Format("<color=#{0}>|</color> <i>{1}</i>",
                     ColorUtility.ToHtmlStringRGB(vehicles[i].color),
                     vehicles[i].machineName);
 
@@ -179,13 +195,12 @@ namespace LibLabGames.SpeedBetRacing
 
             vehiclesBetOnStep = new int[vehicles.Count];
             vehiclesBetAll = new int[vehicles.Count];
-
-            StartCoroutine(StartGameCoco());
         }
 
         private IEnumerator StartGameCoco()
         {
-            commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
+            if (commentator.gameObject.activeInHierarchy)
+                commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startGame);
 
             yield return null;
 
@@ -198,51 +213,58 @@ namespace LibLabGames.SpeedBetRacing
         {
             cameraConstraint.canChange = false;
 
-            if (positionSliderZones.Count > 0)
-            {
-                for (int i = 0; i < positionSliderZones.Count; ++i)
-                    Destroy(positionSliderZones[i].gameObject);
-            }
-            positionSliderZones = new List<Slider>();
+            // if (positionSliderZones.Count > 0)
+            // {
+            //     for (int i = 0; i < positionSliderZones.Count; ++i)
+            //         Destroy(positionSliderZones[i].gameObject);
+            // }
+            // positionSliderZones = new List<Slider>();
 
-            zoneSpeedDecreases = new List<Transform>();
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Decrease").Length; ++i)
-            {
-                tempZone = GameObject.FindGameObjectsWithTag("Decrease") [i].transform;
-                if (tempZone.localPosition.x < gameValue.circuitLength * (countRace + 1) && tempZone.localPosition.x > gameValue.circuitLength * countRace)
-                {
-                    positionSliderZones.Add(Instantiate(zoneDecreaseSliderPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
-                    positionSliderZones[positionSliderZones.Count - 1].value = 1 - (gameValue.circuitLength - tempZone.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
+            // zoneSpeedDecreases = new List<Transform>();
+            // for (int i = 0; i < GameObject.FindGameObjectsWithTag("Decrease").Length; ++i)
+            // {
+            //     tempZone = GameObject.FindGameObjectsWithTag("Decrease") [i].transform;
+            //     if (tempZone.localPosition.x < gameValue.circuitLength * (countRace + 1) && tempZone.localPosition.x > gameValue.circuitLength * countRace)
+            //     {
+            //         positionSliderZones.Add(Instantiate(zoneDecreaseSliderPrefab, vehiclesProgressionsParents[i]).GetComponent<Slider>());
+            //         positionSliderZones[positionSliderZones.Count - 1].value = 1 - (gameValue.circuitLength - tempZone.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
 
-                    zoneSpeedDecreases.Add(tempZone);
-                }
-            }
+            //         zoneSpeedDecreases.Add(tempZone);
+            //     }
+            // }
 
-            zoneSpeedIncreases = new List<Transform>();
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Increase").Length; ++i)
-            {
-                tempZone = GameObject.FindGameObjectsWithTag("Increase") [i].transform;
-                if (tempZone.localPosition.x < gameValue.circuitLength * (countRace + 1) && tempZone.localPosition.x > gameValue.circuitLength * countRace)
-                {
-                    positionSliderZones.Add(Instantiate(zoneIncreaseSliderPrefab, vehiclesProgressionsParent).GetComponent<Slider>());
-                    positionSliderZones[positionSliderZones.Count - 1].value = 1 - (gameValue.circuitLength - tempZone.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
+            // zoneSpeedIncreases = new List<Transform>();
+            // for (int i = 0; i < GameObject.FindGameObjectsWithTag("Increase").Length; ++i)
+            // {
+            //     tempZone = GameObject.FindGameObjectsWithTag("Increase") [i].transform;
+            //     if (tempZone.localPosition.x < gameValue.circuitLength * (countRace + 1) && tempZone.localPosition.x > gameValue.circuitLength * countRace)
+            //     {
+            //         positionSliderZones.Add(Instantiate(zoneIncreaseSliderPrefab, vehiclesProgressionsParents[i]).GetComponent<Slider>());
+            //         positionSliderZones[positionSliderZones.Count - 1].value = 1 - (gameValue.circuitLength - tempZone.localPosition.x + gameValue.circuitLength * countRace) / gameValue.circuitLength;
 
-                    zoneSpeedIncreases.Add(tempZone);
-                }
-            }
+            //         zoneSpeedIncreases.Add(tempZone);
+            //     }
+            // }
 
-            commentator.PlayQuote(commentatorObject.commentatorQuotes[0].startRace);
+            if (commentator.gameObject.activeInHierarchy)
+                commentator?.PlayQuote(commentatorObject.commentatorQuotes[0].startRace);
 
             for (int i = 0; i < vehicles.Count; ++i)
             {
                 vehicles[i].StartCoroutine(vehicles[i].StartAnimation());
             }
 
+            DOVirtual.DelayedCall(1.5f, () =>
+            {
+                fmodEvent_Start = FMODUnity.RuntimeManager.CreateInstance("event:/StartRace");
+                fmodEvent_Start.start();
+            });
+
             DOVirtual.DelayedCall(4f, () =>
             {
                 raceHasStarted = true;
 
-                rankRectTransform.DOScale(1, 0.5f);
+                //rankRectTransform.DOScale(1, 0.5f);
 
                 for (int i = 0; i < vehicles.Count; ++i)
                 {
@@ -281,24 +303,34 @@ namespace LibLabGames.SpeedBetRacing
                 {
                     BetOnVehicle(i, 1);
                 }
-            }
+                
+                for (int j = 0; j < 4; ++j)
+                {
+                    betVehicleInfos[i].betImages[j].color = (vehicles[i].speedStep > j) ? vehicles[i].color : betInfoBaseColor;
+                }
 
-            // Update Bet values
-            timeCount += Time.deltaTime;
-            if (timeCount >= gameValue.timeToApplyBet)
-            {
-                timeCount = 0;
-
-                UpdateBetValue();
+                betVehicleInfos[i].betText.text = vehicles[i].isOverheated ? "X" : vehicles[i].speedStep.ToString();
+                betVehicleInfos[i].betOverheatedImage.color = vehicles[i].isOverheated ? Color.red : betInfoBaseColor;
             }
 
             UpdateVehicleRank();
         }
 
+        private FMOD.Studio.EventInstance fmodEvent_Money;
+        private float totalBet;
         public void BetOnVehicle(int indexVehicle, int betValue)
         {
-            vehiclesBetOnStep[indexVehicle] += betValue;
+            vehicles[indexVehicle].UpgradeSpeedStep(betValue);
             vehiclesBetAll[indexVehicle] += betValue;
+            totalBet++;
+            totalBetText.transform.localScale = Vector3.one;
+            totalBetText.transform.DOScale(1.4f, 0.2f);
+            totalBetText.transform.DOScale(1f, 0.3f).SetDelay(0.2f);
+            totalBetText.text = totalBet.ToString();
+
+            fmodEvent_Money.stop(0);
+            fmodEvent_Money = FMODUnity.RuntimeManager.CreateInstance("event:/Money");
+            fmodEvent_Money.start();
         }
 
         [HideInInspector] public Vehicle currentVehicleFirstRank;
@@ -314,7 +346,8 @@ namespace LibLabGames.SpeedBetRacing
                 if (countVehiclesArrived == 0 && gameHasStarted)
                 {
                     cameraConstraint.ChangeConstraint(currentVehicleFirstRank.cameraTargets, currentVehicleFirstRank.ID, null);
-                    commentator.FirstPlaceVehicle(currentVehicleFirstRank.machineName);
+                    if (commentator.gameObject.activeInHierarchy)
+                        commentator.FirstPlaceVehicle(currentVehicleFirstRank.machineName);
                 }
             }
 
@@ -326,8 +359,6 @@ namespace LibLabGames.SpeedBetRacing
                     ColorUtility.ToHtmlStringRGB(vehiclesRankList[vehiclesRankList.Count - 1 - i].color),
                     vehiclesRankList[vehiclesRankList.Count - 1 - i].machineName);
 
-                speedStepImages[i].color = vehiclesRankList[vehiclesRankList.Count - 1 - i].isOverheated ? Color.red : Color.white;
-
                 if (gameValue.withResetSpeed)
                 {
                     speedStepRankedTexts[i].text = string.Format("{0} / {1}",
@@ -337,22 +368,13 @@ namespace LibLabGames.SpeedBetRacing
             }
         }
 
-        public void UpdateBetValue()
-        {
-            for (int i = 0; i < vehicles.Count; ++i)
-            {
-                if (vehiclesBetOnStep[i] > 0)
-                {
-                    vehicles[i].UpgradeSpeedStep(vehiclesBetOnStep[i]);
-                }
-
-                vehiclesBetOnStep[i] = 0;
-            }
-        }
-
         public int countVehiclesArrived;
+        private FMOD.Studio.EventInstance fmodEvent_Arrival;
         public void CheckEndRace(int vehicleID, string machineName)
         {
+            fmodEvent_Arrival = FMODUnity.RuntimeManager.CreateInstance("event:/Arrival");
+            fmodEvent_Arrival.start();
+
             countVehiclesArrived++;
 
             vehiclesRanks[countRace][vehicleID] = countVehiclesArrived;
@@ -364,9 +386,7 @@ namespace LibLabGames.SpeedBetRacing
         public int countRace;
         private void EndRace()
         {
-            gameHasStarted = false;
-
-            rankRectTransform.DOScaleY(0, 0.5f);
+            //rankRectTransform.DOScaleY(0, 0.5f);
             ratingRectTransform.DOScale(1, 0.3f);
 
             // Rank Panel info
@@ -385,7 +405,8 @@ namespace LibLabGames.SpeedBetRacing
             }
 
             //commentator.RanksVehicle(vehiclesRanks[countRace]);
-            commentator.FirstRankVehicle(vehiclesRanks[countRace]);
+            if (commentator.gameObject.activeInHierarchy)
+                commentator.FirstRankVehicle(vehiclesRanks[countRace]);
 
             countRace++;
 
@@ -405,7 +426,7 @@ namespace LibLabGames.SpeedBetRacing
 
                 cameraConstraint.ChangeConstraint(startCameraTarget);
 
-                sectorsCountText.text = string.Format("<b>{0} / {1}</b>   SECTORS", countRace + 1, gameValue.stepRacing);
+                sectorsCountText.text = string.Format("<b>{0} / {1}</b>   STEPS RACE", countRace + 1, gameValue.stepRacing);
 
                 ratingRectTransform.DOScaleY(0, 0.3f);
 

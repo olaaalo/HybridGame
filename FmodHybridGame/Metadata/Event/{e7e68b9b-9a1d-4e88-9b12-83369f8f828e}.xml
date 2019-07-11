@@ -5,7 +5,7 @@
             <value>StartEngine</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="folder">
             <destination>{99707d2f-a677-48c9-bcc2-9a70c55e1abd}</destination>
@@ -102,6 +102,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{7e271d08-ca93-4fca-b722-f250cae239d3}">
+        <property name="volume">
+            <value>-20.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{cf24f226-1d64-443c-bde1-b25a5ff3a86d}</destination>
         </relationship>
@@ -260,7 +263,6 @@
         <relationship name="effects">
             <destination>{06d4d43f-d1da-40c3-9663-2fd38d1e8bab}</destination>
             <destination>{18e77d73-81a5-4c9f-8eba-da6768711930}</destination>
-            <destination>{b7ec6060-daf7-4063-829a-9686688a1795}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{8fe7acb8-45ba-4323-b7ab-02e05703a206}"/>
@@ -384,11 +386,6 @@
         </property>
     </object>
     <object class="MixerBusFader" id="{18e77d73-81a5-4c9f-8eba-da6768711930}"/>
-    <object class="SpatialiserEffect" id="{b7ec6060-daf7-4063-829a-9686688a1795}">
-        <property name="maximumDistance">
-            <value>100</value>
-        </property>
-    </object>
     <object class="AutomationPoint" id="{8f65885c-5e63-4f10-bbdf-598d49ac298e}">
         <property name="position">
             <value>1.1460090702947847</value>

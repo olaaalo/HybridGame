@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{4c0c58c0-fac8-4be5-b7ca-f2150fd03e25}">
+        <property name="assetPath">
+            <value>265011__sethlind__coin-falling-on-floor.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>1</value>
+        </property>
+        <property name="length">
+            <value>3.7380624999999998</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{62d7ad39-04f3-4bc4-9d92-c345427cc29b}</destination>
+        </relationship>
+    </object>
+</objects>

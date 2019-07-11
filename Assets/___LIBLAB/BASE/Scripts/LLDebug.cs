@@ -24,11 +24,11 @@ namespace LibLabSystem
 
         private void Awake()
         {
-            if (!Debug.isDebugBuild)
-            {
-                DEBUG_KEY_ACTIVE = false;
-                return;
-            }
+            // if (!Debug.isDebugBuild)
+            // {
+            //     DEBUG_KEY_ACTIVE = false;
+            //     return;
+            // }
 
             debugBackground = new Texture2D(1, 1);
             debugBackground.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.5f));

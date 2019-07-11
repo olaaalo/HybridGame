@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{35657a73-b03e-4e21-809c-2c876a56899d}">
+        <property name="assetPath">
+            <value>8BIT_RETRO_Coin_Collect_Two_Dual_Note_Fast_Twinkle_mono.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>1</value>
+        </property>
+        <property name="length">
+            <value>0.17621315192743764</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{62d7ad39-04f3-4bc4-9d92-c345427cc29b}</destination>
+        </relationship>
+    </object>
+</objects>

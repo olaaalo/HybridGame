@@ -72,10 +72,10 @@ namespace LibLabGames.SpeedBetRacing
         {
             bottomColliderObject.SetActive(false);
             mainCollider.enabled = false;
-            
+
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            
+
             //PlaceOnBottom();
 
             rb.isKinematic = true;
@@ -133,7 +133,7 @@ namespace LibLabGames.SpeedBetRacing
             if (raceRank == 0)
                 timeToWait = Random.Range(0.1f, 0.3f);
             else
-                timeToWait = 0.1f + (raceRank - 1) * 0.6f;
+                timeToWait = 0.1f + (raceRank - 1) * 0.4f;
 
             DOVirtual.DelayedCall(timeToWait, () =>
             {
@@ -178,7 +178,7 @@ namespace LibLabGames.SpeedBetRacing
             if (Time.frameCount % 120 + inGameID * 13 == 0)
             {
                 RecalculateSpeed(true);
-                
+
                 if (Physics.Raycast(transform.position, Vector3.up, out hit, Mathf.Infinity, 1 << 13))
                 {
                     LLLog.LogE(string.Format("Vehicle {0}", machineName), "Vehicle was underground, it's fixed. Thanks to me my lord !");
@@ -291,6 +291,9 @@ namespace LibLabGames.SpeedBetRacing
         private EngineDrone drone;
         private IEnumerator Overheated(float sp)
         {
+            GameManager.instance.betVehicleInfos[inGameID].sliderImage.color = GameManager.instance.betVehicleInfos[inGameID].sliderImageBaseColor;
+            GameManager.instance.betVehicleInfos[inGameID].sliderImage.DOColor(Color.red, 0.5f).SetLoops(-1, LoopType.Yoyo);
+
             rb.angularVelocity = Vector3.forward * Random.Range(3f, 10f);
             transform.DOLocalRotate(Vector3.zero, 0.5f).SetDelay(1f)
                 .OnStart(() => rb.angularVelocity = Vector3.zero);
@@ -301,7 +304,8 @@ namespace LibLabGames.SpeedBetRacing
             dustParticle.Stop();
 
             LLPoolManager.instance.GetExplosionParticle(engine.transform.position, null);
-            GameManager.instance.commentator.ExplosionVehicle(machineName);
+            if (GameManager.instance.commentator.isActiveAndEnabled)
+                GameManager.instance.commentator.ExplosionVehicle(machineName);
 
             isOverheated = true;
 
@@ -327,6 +331,9 @@ namespace LibLabGames.SpeedBetRacing
 
         public void Repared()
         {
+            GameManager.instance.betVehicleInfos[inGameID].sliderImage.DOKill();
+            GameManager.instance.betVehicleInfos[inGameID].sliderImage.DOColor(GameManager.instance.betVehicleInfos[inGameID].sliderImageBaseColor, 0.3f);
+
             engine.transform.SetParent(engineTransform);
             engine.transform.DOLocalRotate(Vector3.zero, 0.3f);
 
@@ -347,24 +354,10 @@ namespace LibLabGames.SpeedBetRacing
 
                 raceRank = GameManager.instance.countVehiclesArrived;
 
-                //rb.isKinematic = true;
-
-                rb.DOMoveX(5.6f * speedStep, 0.5f).SetRelative();
+                rb.isKinematic = true;
 
                 engineBigFireParticle.Stop();
                 dustParticle.Stop();
-            }
-
-            if (col.gameObject.layer == 11)
-            {
-                betZone = col.GetComponent<BetZone>();
-
-                if (!betZone.wasActivated)
-                {
-                    betZone.wasActivated = true;
-                    betZone.Activate();
-                    GameManager.instance.UpdateBetValue();
-                }
             }
 
             if (col.gameObject.layer == 14)
